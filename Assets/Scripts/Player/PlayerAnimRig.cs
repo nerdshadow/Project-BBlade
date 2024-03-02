@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerAnimRig : MonoBehaviour
 {
@@ -58,11 +59,11 @@ public class PlayerAnimRig : MonoBehaviour
     {
         if (canRotate == false)
             return;
-        if (moveDirection == Vector3.zero)
-        {
-            CheckRotationTowardTarget(aimTargetGO);
-            RotateTowards(aimTargetGO);
-        }
+        //if (moveDirection == Vector3.zero)
+        //{
+        //    CheckRotationTowardTarget(aimTargetGO);
+        //    RotateTowards(aimTargetGO);
+        //}
         else
         {
             RotateInMove(aimTargetGO);
@@ -175,5 +176,29 @@ public class PlayerAnimRig : MonoBehaviour
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("PrepareAtk"))
             return;
         anim.CrossFade("MovementTree", 0.2f);
+    }
+    [SerializeField]
+    GameObject weapon;
+    [SerializeField]
+    GameObject sheath;
+    public UnityEvent attackAnimSlashed = new UnityEvent();
+    public void AttackAnimSlashed()
+    {
+        SheathWeapon(0);
+        attackAnimSlashed.Invoke();
+    }
+    public void SheathWeapon(int toSheath)
+    {
+        //Debug.Log(toSheath);
+        if (toSheath == 1)
+        {
+            weapon.SetActive(false);
+            sheath.SetActive(true);
+        }
+        else
+        {
+            weapon.SetActive(true);
+            sheath.SetActive(false);
+        }
     }
 }

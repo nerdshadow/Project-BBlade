@@ -49,4 +49,13 @@ public class PlayerCamera : MonoBehaviour
             aimTarget.transform.position = ray.direction * 30;
         }
     }
+
+    [ContextMenu("RefreshCamera")]
+    void RefreshCameraEdit()
+    {
+        Vector3 pos = playerBody.position + offset + (-transform.forward * followDistance);
+        transform.position = pos;
+
+        transform.rotation = rotation;
+    }
 }

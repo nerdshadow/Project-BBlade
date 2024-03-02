@@ -4,9 +4,5 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    public float currentMovSpeed = 1f;
-    private void Start()
-    {
-        currentMovSpeed = 1f;
-    }
+    public float currentMovSpeed = 2f;
 }

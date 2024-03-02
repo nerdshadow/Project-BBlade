@@ -96,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         ApplyDrag();
+        ShowDashDistance();
     }
     private void FixedUpdate()
     {
@@ -170,5 +171,28 @@ public class PlayerMovement : MonoBehaviour
         moveX = 0f;
         moveZ = 0f;
         rigbody.velocity = Vector3.zero;
+    }
+    [SerializeField]
+    GameObject target;
+    public float currentDashDistance = 0;
+    public void ChangeDashDistance(float distance)
+    {
+        currentDashDistance = distance;
+    }
+    public void DashForward()
+    {
+        Vector3 pos = transform.position;
+        Vector3 dir = (target.transform.position - pos).normalized;
+        Debug.Log("Dash" + currentDashDistance);
+        rigbody.MovePosition(pos + dir * currentDashDistance);
+    }
+    [SerializeField]
+    GameObject distanceIdicator;
+    void ShowDashDistance()
+    {
+        Vector3 pos = transform.position + new Vector3(0, 0.05f, 0);
+        Vector3 dir = (target.transform.position - pos).normalized;
+        dir = new Vector3(dir.x, pos.y, dir.z);
+        distanceIdicator.transform.position = pos + dir * currentDashDistance;
     }
 }

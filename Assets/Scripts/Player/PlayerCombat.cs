@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -31,6 +32,10 @@ public class PlayerCombat : MonoBehaviour
         if (playerControls != null)
             DisableControls();
     }
+    private void Update()
+    {
+        IncreasingDashDistance();
+    }
     void EnableControls()
     {
         mainControlsMap.Attack.performed += StartChargingAttack;
@@ -54,7 +59,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (canAttack == false)
             return;
-        Debug.Log("Started atk");
+        //Debug.Log("Started atk");
         playerAttack.Invoke(true);
         startedAttack = true;
     }
@@ -64,15 +69,17 @@ public class PlayerCombat : MonoBehaviour
             return;
         if (startedAttack == false)
             return;
-        Debug.Log("Stopped atk");
+        //Debug.Log("Stopped atk");
         playerAttack.Invoke(false);
         startedAttack = false;
+        StartCoroutine(ResetDashDistance());
         StartCoroutine(DelayBetweenAttacks());
     }
     void CancelAttack(InputAction.CallbackContext context)
     {
         Debug.Log("Cancel atk");
         cancelAttack.Invoke();
+        StartCoroutine(ResetDashDistance());
         StartCoroutine(DelayBetweenAttacks());
     }
     bool canAttack = true;
@@ -81,5 +88,53 @@ public class PlayerCombat : MonoBehaviour
         canAttack = false;
         yield return new WaitForSeconds(0.1f);
         canAttack = true;
+    }
+    public void Slash()
+    {
+        GetComponentInChildren<VisualEffect>().Play();
+    }
+    [SerializeField]
+    float dashDistance = 0f;
+    [SerializeField]
+    float maxDashDistance = 10f;
+    [SerializeField]
+    float dashIncreaseMod = 3f;
+    public UnityEvent<float> ChangeDashDistance = new UnityEvent<float>();
+    void IncreasingDashDistance()
+    {
+        if (startedAttack == false)
+            return;
+        if (dashDistance > maxDashDistance)
+        {
+            dashDistance = maxDashDistance;
+            ChangeDashDistance.Invoke(dashDistance);
+            return;
+        }
+        dashDistance += dashIncreaseMod * Time.deltaTime;
+        ChangeDashDistance.Invoke(dashDistance);
+    }
+    IEnumerator ResetDashDistance()
+    {
+        yield return new WaitForFixedUpdate();
+        dashDistance = 0f;
+        ChangeDashDistance.Invoke(dashDistance);
+    }
+    [SerializeField]
+    GameObject attackPosition;
+    public void TryAttack()
+    {
+        Debug.Log("tried to attack");
+        StartCoroutine(TryAttackAfterDelay());
+    }
+    IEnumerator TryAttackAfterDelay()
+    {
+        yield return new WaitForFixedUpdate();
+        Collider[] colliders = Physics.OverlapSphere(attackPosition.transform.position, 2f);
+        foreach (Collider collider in colliders)
+        {
+            Debug.Log(collider.name);
+            if (collider.GetComponent<SimpleEnemy>() != null)
+                collider.GetComponent<SimpleEnemy>().Die();
+        }
     }
 }
