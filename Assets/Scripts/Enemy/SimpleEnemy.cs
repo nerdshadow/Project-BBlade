@@ -7,6 +7,7 @@ public class SimpleEnemy : MonoBehaviour
     Animator animator;
     Collider coll;
     Rigidbody rb;
+    bool canRotate = true;
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();    
@@ -16,6 +17,12 @@ public class SimpleEnemy : MonoBehaviour
     public GameObject _aimTarget;
     private void Update()
     {
+        TryRotate();
+    }
+    void TryRotate()
+    {
+        if (canRotate == false)
+            return;
         Vector3 toTarget = _aimTarget.transform.position - transform.position;
         toTarget.y = 0;
         Quaternion rotation = Quaternion.LookRotation(toTarget);
@@ -24,6 +31,7 @@ public class SimpleEnemy : MonoBehaviour
     [ContextMenu("Die")]
     public void Die()
     {
+        canRotate = false;
         animator.CrossFade("Death", 0.05f);
         rb.useGravity = false;
         rb.isKinematic = true;

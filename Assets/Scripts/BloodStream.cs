@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
+using UnityEngine.Pool;
 
 public class BloodStream : MonoBehaviour
 {
@@ -8,7 +10,8 @@ public class BloodStream : MonoBehaviour
     public List<ParticleCollisionEvent> collisions;
     [SerializeField]
     GameObject bloodDecal;
-    private void Start()
+    ObjectPool<BloodStream> pool;
+    private void Awake()
     {
         particleS = GetComponent<ParticleSystem>();
         collisions = new List<ParticleCollisionEvent>();
@@ -34,5 +37,19 @@ public class BloodStream : MonoBehaviour
             }
             i++;
         }
+        collisions.Clear();
+    }
+    public void PlayAndTryReturnToPool()
+    {
+        particleS.Play();
+        Invoke("ReturnToPool", 1.1f);
+    }
+    void ReturnToPool()
+    {
+        pool.Release(this);
+    }
+    public void SetPool(ObjectPool<BloodStream> _pool)
+    {
+        pool = _pool;
     }
 }

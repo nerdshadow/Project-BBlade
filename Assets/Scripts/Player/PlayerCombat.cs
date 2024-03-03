@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.VFX;
 
 public class PlayerCombat : MonoBehaviour
@@ -13,6 +14,8 @@ public class PlayerCombat : MonoBehaviour
     MainControls.GameplayActions mainControlsMap;
     public UnityEvent<bool> playerAttack = new UnityEvent<bool>();
     public UnityEvent cancelAttack = new UnityEvent();
+    [SerializeField]
+    ObjectPoolManager objectPoolManager = ObjectPoolManager.instance;
     private void Start()
     {
         if (playerControls == null)
@@ -72,21 +75,45 @@ public class PlayerCombat : MonoBehaviour
         //Debug.Log("Stopped atk");
         playerAttack.Invoke(false);
         startedAttack = false;
-        StartCoroutine(ResetDashDistance());
-        StartCoroutine(DelayBetweenAttacks());
+        ReloadDash();
+        ReloadAttack(missAttackDelay);
     }
     void CancelAttack(InputAction.CallbackContext context)
     {
         Debug.Log("Cancel atk");
+        startedAttack = false;
         cancelAttack.Invoke();
-        StartCoroutine(ResetDashDistance());
-        StartCoroutine(DelayBetweenAttacks());
+        ReloadDash();
+        ReloadAttack(cancelAttackDelay);
     }
+    [SerializeField]
+    float cancelAttackDelay = 1f;
+    [SerializeField]
+    float missAttackDelay = 3f;
+    [SerializeField]
+    float hitAttackDelay = 0.1f;
     bool canAttack = true;
-    IEnumerator DelayBetweenAttacks()
+    Coroutine reloadAttack = null;
+    void ReloadAttack(float _delay)
+    {
+        if (reloadAttack != null)
+            StopCoroutine(reloadAttack);
+        reloadAttack = StartCoroutine(DelayBetweenAttacks(_delay));
+    }
+    public UnityEvent<float, float> AttackRechargeEvent = new UnityEvent<float, float>();
+    IEnumerator DelayBetweenAttacks(float _delay)
     {
         canAttack = false;
-        yield return new WaitForSeconds(0.1f);
+        float currentDelay = 0;
+        AttackRechargeEvent.Invoke(_delay, currentDelay);
+        while (currentDelay < _delay)
+        {
+            currentDelay += Time.deltaTime;
+            AttackRechargeEvent.Invoke(_delay, currentDelay);
+            yield return null;
+        }
+        currentDelay = _delay;
+        AttackRechargeEvent.Invoke(_delay, currentDelay);
         canAttack = true;
     }
     public void Slash()
@@ -100,9 +127,14 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     float dashIncreaseMod = 3f;
     public UnityEvent<float> ChangeDashDistance = new UnityEvent<float>();
+    bool canIncreaseDashDistance = false;
+    public void ChangeCanIncreaseDashDistance(bool _can)
+    {
+        canIncreaseDashDistance = _can;
+    }
     void IncreasingDashDistance()
     {
-        if (startedAttack == false)
+        if (startedAttack == false || canIncreaseDashDistance == false)
             return;
         if (dashDistance > maxDashDistance)
         {
@@ -112,6 +144,13 @@ public class PlayerCombat : MonoBehaviour
         }
         dashDistance += dashIncreaseMod * Time.deltaTime;
         ChangeDashDistance.Invoke(dashDistance);
+    }
+    Coroutine reloadDash = null;
+    void ReloadDash()
+    {
+        if (reloadDash != null)
+            StopCoroutine(reloadDash);
+        reloadDash = StartCoroutine(ResetDashDistance());
     }
     IEnumerator ResetDashDistance()
     {
@@ -129,12 +168,26 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator TryAttackAfterDelay()
     {
         yield return new WaitForFixedUpdate();
+        bool hitTarget = false;
         Collider[] colliders = Physics.OverlapSphere(attackPosition.transform.position, 2f);
         foreach (Collider collider in colliders)
         {
-            Debug.Log(collider.name);
             if (collider.GetComponent<SimpleEnemy>() != null)
+            {
                 collider.GetComponent<SimpleEnemy>().Die();
+                hitTarget = true;
+                //Play BloodVFX
+                Vfx_TryBloodsplash(collider);
+            }
         }
+        if (hitTarget == true)
+            ReloadAttack(hitAttackDelay);
+    }
+    void Vfx_TryBloodsplash(Collider targetColl)
+    {
+        BloodStream currentBloodStram = objectPoolManager.bloodStreamPool.Get();
+        currentBloodStram.transform.position = targetColl.transform.position;
+        currentBloodStram.transform.rotation = Quaternion.LookRotation(transform.forward);
+        currentBloodStram.PlayAndTryReturnToPool();
     }
 }

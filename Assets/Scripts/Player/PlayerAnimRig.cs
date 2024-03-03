@@ -42,6 +42,7 @@ public class PlayerAnimRig : MonoBehaviour
     {
         TryToRotate();
         ManageAnimator();
+        ReadyToDash();
     }
     void CopyPostion(GameObject _positionTarget)
     {
@@ -150,6 +151,8 @@ public class PlayerAnimRig : MonoBehaviour
         }
         anim.SetFloat(name, value, setFloatDamp, setFloatSpeed * Time.deltaTime);
     }
+    [SerializeField]
+    float normAnimTimeForAttack = 0.7f;
     public void Attack(bool isAttacking)
     {
         if (isAttacking == false)
@@ -157,7 +160,7 @@ public class PlayerAnimRig : MonoBehaviour
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("PrepareAtk") != true)
                 return;
             float nTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
-            if (nTime >= 0.9)
+            if (nTime >= normAnimTimeForAttack)
             {
                 anim.Play("EndAtk");
             }
@@ -176,6 +179,17 @@ public class PlayerAnimRig : MonoBehaviour
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("PrepareAtk"))
             return;
         anim.CrossFade("MovementTree", 0.2f);
+    }
+    public UnityEvent<bool> ReadyToDashEvent = new UnityEvent<bool>();
+    public void ReadyToDash()
+    {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("PrepareAtk") != true)
+        {
+            ReadyToDashEvent.Invoke(false);
+            return;
+        }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= normAnimTimeForAttack)
+            ReadyToDashEvent.Invoke(true);
     }
     [SerializeField]
     GameObject weapon;
