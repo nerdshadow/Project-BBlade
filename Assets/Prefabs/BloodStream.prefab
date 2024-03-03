@@ -14740,8 +14740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d959dcb704d56df42a42da775e82fbb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodDecal: {fileID: 1323215515539004745, guid: 4133c217292600a4fab0b4e8467a8f09,
-    type: 3}
+  objectPoolManager: {fileID: 0}
 --- !u!198 &7677691269437105362
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -14878,8 +14877,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 2
-      scalar: 15
-      minScalar: 15
+      scalar: 20
+      minScalar: 20
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -14894,7 +14893,7 @@ ParticleSystem:
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 0
+          value: 0.3
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -15380,7 +15379,7 @@ ParticleSystem:
     radiusThickness: 0
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: 0, z: 0}
+    m_Rotation: {x: -20, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0

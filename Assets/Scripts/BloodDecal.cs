@@ -9,7 +9,7 @@ public class BloodDecal : MonoBehaviour
 {
     [SerializeField]
     List<Material> decalMaterials = new List<Material>();
-    ObjectPool<BloodDecal> pool;
+    ObjectPool<BloodDecal> bloodDecalPool;
     private void OnEnable()
     {
         if (decalMaterials.Count == 1)
@@ -22,6 +22,10 @@ public class BloodDecal : MonoBehaviour
     }
     public void SetPool(ObjectPool<BloodDecal> _pool)
     {
-        pool = _pool;
+        bloodDecalPool = _pool;
+    }
+    void ReturnToPool()
+    {
+        bloodDecalPool.Release(this);
     }
 }

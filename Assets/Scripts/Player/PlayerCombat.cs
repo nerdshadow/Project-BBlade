@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -136,6 +137,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (startedAttack == false || canIncreaseDashDistance == false)
             return;
+        CheckCollisionBeforeDashWithRaycasts();
         if (dashDistance > maxDashDistance)
         {
             dashDistance = maxDashDistance;
@@ -154,10 +156,41 @@ public class PlayerCombat : MonoBehaviour
     }
     IEnumerator ResetDashDistance()
     {
+        Debug.Log("Reseting Dash");
         yield return new WaitForFixedUpdate();
         dashDistance = 0f;
         ChangeDashDistance.Invoke(dashDistance);
     }
+    [SerializeField]
+    GameObject target;
+    [SerializeField]
+    LayerMask collisionLayerMask = 0;
+    [SerializeField]
+    Transform[] raycastPositions;
+    void CheckCollisionBeforeDashWithRaycasts()
+    {
+        RaycastHit hit;
+        float minDistance = Mathf.Infinity;
+        for (int i = 0; i < raycastPositions.Length; i++)
+        {
+            Vector3 dir = raycastPositions[i].forward;
+            //Debug.DrawRay(raycastPositions[i].position, dir * maxDashDistance);
+            if (Physics.Raycast(raycastPositions[i].position, dir, out hit, maxDashDistance, collisionLayerMask))
+            {
+                Vector3 direction = hit.point -raycastPositions[i].position;
+                Debug.DrawRay(raycastPositions[i].position, direction, Color.red);
+                float distance = direction.magnitude;
+                distance = Mathf.Abs(distance);
+                if (distance <= minDistance)
+                    minDistance = distance;
+            }
+        }
+        if (dashDistance > minDistance)
+        {
+            dashDistance = minDistance;
+        }
+    }
+
     [SerializeField]
     GameObject attackPosition;
     public void TryAttack()
@@ -185,7 +218,7 @@ public class PlayerCombat : MonoBehaviour
     }
     void Vfx_TryBloodsplash(Collider targetColl)
     {
-        BloodStream currentBloodStram = objectPoolManager.bloodStreamPool.Get();
+        BloodStreamParticle currentBloodStram = objectPoolManager.bloodStreamPool.Get();
         currentBloodStram.transform.position = targetColl.transform.position;
         currentBloodStram.transform.rotation = Quaternion.LookRotation(transform.forward);
         currentBloodStram.PlayAndTryReturnToPool();

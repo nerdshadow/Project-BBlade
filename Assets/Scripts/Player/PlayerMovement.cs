@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion Movement
     #region "Colliders"
     [SerializeField]
-    Collider characterColl;
+    CapsuleCollider characterColl;
     [SerializeField]
     Collider damageableColl;
     #endregion Colliders
@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 pos = transform.position;
         Vector3 dir = (target.transform.position - pos).normalized;
-        Debug.Log("Dash" + currentDashDistance);
+        Debug.Log("Dashed for " + currentDashDistance);
         rigbody.MovePosition(pos + dir * currentDashDistance);
     }
     [SerializeField]

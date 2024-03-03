@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.Pool;
+using Unity.VisualScripting;
+using UnityEngine.Rendering.Universal;
 
-public class BloodStream : MonoBehaviour
+public class BloodStreamParticle : MonoBehaviour
 {
     ParticleSystem particleS;
     public List<ParticleCollisionEvent> collisions;
     [SerializeField]
-    GameObject bloodDecal;
-    ObjectPool<BloodStream> pool;
+    ObjectPoolManager objectPoolManager = ObjectPoolManager.instance;
+    ObjectPool<BloodStreamParticle> bloodStreamParticlePool;
     private void Awake()
     {
         particleS = GetComponent<ParticleSystem>();
         collisions = new List<ParticleCollisionEvent>();
+    }
+    private void OnEnable()
+    {
+        objectPoolManager = ObjectPoolManager.instance;
     }
     private void OnParticleCollision(GameObject other)
     {
@@ -24,16 +30,21 @@ public class BloodStream : MonoBehaviour
 
         while (i < numCollisionEvents)
         {
+            //if (other.GetComponentInChildren<SimpleEnemy>() || other.GetComponent<PlayerMovement>())
+            //    continue;
             Vector3 pos = collisions[i].intersection;
             Quaternion rot = Quaternion.LookRotation(collisions[i].normal);
 
             //Spawn Decals
-            if (bloodDecal != null)
+            if (objectPoolManager != null)
             {
-                GameObject curDecal = Instantiate(bloodDecal, pos, rot);
-                Vector3 rotation = curDecal.transform.eulerAngles;
+                BloodDecal bloodDecal = objectPoolManager.bloodDecalPool.Get();
+                bloodDecal.transform.position = pos;
+                bloodDecal.transform.rotation = rot;
+                Vector3 rotation = bloodDecal.transform.eulerAngles;
                 rotation.z = Random.Range(0, 361);
-                curDecal.transform.eulerAngles = rotation;
+                bloodDecal.transform.eulerAngles = rotation;
+                bloodDecal.transform.SetParent(other.transform);
             }
             i++;
         }
@@ -46,10 +57,10 @@ public class BloodStream : MonoBehaviour
     }
     void ReturnToPool()
     {
-        pool.Release(this);
+        bloodStreamParticlePool.Release(this);
     }
-    public void SetPool(ObjectPool<BloodStream> _pool)
+    public void SetPool(ObjectPool<BloodStreamParticle> _pool)
     {
-        pool = _pool;
+        bloodStreamParticlePool = _pool;
     }
 }

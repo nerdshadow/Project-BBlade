@@ -8,9 +8,9 @@ public class ObjectPoolManager : MonoBehaviour
 {
     public static ObjectPoolManager instance;
     #region BloodVFX
-    public ObjectPool<BloodStream> bloodStreamPool;
+    public ObjectPool<BloodStreamParticle> bloodStreamPool;
     [SerializeField]
-    BloodStream bloodStreamVFXPrefab = null;
+    BloodStreamParticle bloodStreamVFXPrefab = null;
     int bloodParticleArraySize = 20;
     int bloodParticleMaxArraySize = 50;
     #endregion BloodVFX
@@ -18,8 +18,8 @@ public class ObjectPoolManager : MonoBehaviour
     public ObjectPool<BloodDecal> bloodDecalPool;
     [SerializeField]
     BloodDecal bloodDecalPrefab = null;
-    int bloodDecalArraySize = 20;
-    int bloodDecalMaxArraySize = 50;
+    int bloodDecalArraySize = 1000;
+    int bloodDecalMaxArraySize = 2000;
     #endregion BloodDecal
     void Start()
     {
@@ -33,21 +33,21 @@ public class ObjectPoolManager : MonoBehaviour
     void InitManager()
     {
         Debug.Log("Init manager");
-        bloodStreamPool = new ObjectPool<BloodStream>
+        bloodStreamPool = new ObjectPool<BloodStreamParticle>
             (CreateBloodParticle, OnTakeBloodParticleFromPool, OnReturnBloodParticleToPool, OnDestroyBloodParticleStream, true, bloodParticleArraySize, bloodParticleMaxArraySize);
         bloodDecalPool = new ObjectPool<BloodDecal>
             (CreateBloodDecal, OnTakeBloodDecalFromPool, OnReturnBloodDecalToPool, OnDestroyBloodDecalStream, true, bloodDecalArraySize, bloodDecalMaxArraySize);
     }
-    private BloodStream CreateBloodParticle()
+    private BloodStreamParticle CreateBloodParticle()
     {
         Debug.Log("Creating VFX");
-        BloodStream _bloodStream = Instantiate(bloodStreamVFXPrefab, this.transform, true);
+        BloodStreamParticle _bloodStream = Instantiate(bloodStreamVFXPrefab, this.transform, true);
 
         _bloodStream.SetPool(bloodStreamPool);
 
         return _bloodStream;
     }
-    void OnTakeBloodParticleFromPool(BloodStream _bloodStream)
+    void OnTakeBloodParticleFromPool(BloodStreamParticle _bloodStream)
     {
         Debug.Log("Taking Pooled");
         _bloodStream.transform.position = Vector3.zero;
@@ -55,12 +55,12 @@ public class ObjectPoolManager : MonoBehaviour
 
         _bloodStream.gameObject.SetActive(true);
     }
-    void OnReturnBloodParticleToPool(BloodStream _bloodStream)
+    void OnReturnBloodParticleToPool(BloodStreamParticle _bloodStream)
     {
         Debug.Log("Returning pooled");
         _bloodStream.gameObject.SetActive(false);
     }
-    void OnDestroyBloodParticleStream(BloodStream _bloodStream)
+    void OnDestroyBloodParticleStream(BloodStreamParticle _bloodStream)
     {
         Debug.Log("Destroing Pooled");
         Destroy(_bloodStream);
