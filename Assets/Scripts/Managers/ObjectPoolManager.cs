@@ -95,4 +95,10 @@ public class ObjectPoolManager : MonoBehaviour
         Debug.Log("Destroing Pooled");
         Destroy(_bloodDecal);
     }
+
+    public void ClearPools()
+    {
+        bloodStreamPool.Clear();
+        bloodDecalPool.Clear();
+    }
 }

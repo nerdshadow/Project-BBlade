@@ -10,10 +10,6 @@ using UnityEngine.UI;
 public class GameplayMenuBehavior : MonoBehaviour
 {
     [SerializeField]
-    GameObject gameplayMenu;
-    [SerializeField]
-    string mainMenuSceneName = "Scene_MainMenu";
-    [SerializeField]
     MainControls playerControls;
     [SerializeField]
     MainControls.GameplayActions mainControlsMap;
@@ -21,6 +17,14 @@ public class GameplayMenuBehavior : MonoBehaviour
     MainControls.UIActions menuControlsMap;
     [SerializeField]
     GameManager gameManager;
+    [SerializeField]
+    GameObject gameplayMenu;
+    [SerializeField]
+    GameObject gameplayUI;
+    [SerializeField]
+    GameObject deathMenu;
+    [SerializeField]
+    string mainMenuSceneName = "Scene_MainMenu";
     private void Start()
     {
         if (playerControls == null)
@@ -36,6 +40,7 @@ public class GameplayMenuBehavior : MonoBehaviour
     {
         if (playerControls != null)
             EnableControls();
+        PlayerStats.playerDied.AddListener(PlayerDeath);
     }
     private void OnDisable()
     {
@@ -101,5 +106,11 @@ public class GameplayMenuBehavior : MonoBehaviour
     public void ExitGame()
     {
         gameManager.ExitGame();
+    }
+    public void PlayerDeath()
+    {
+        gameplayUI.SetActive(false);
+        InputManager.ChangeControlsMappingToMenu();
+        deathMenu.SetActive(true);
     }
 }
