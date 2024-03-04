@@ -63,6 +63,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (canAttack == false)
             return;
+        startPosOfDash = transform.position + new Vector3(0, attackPosition.transform.position.y, 0);
         //Debug.Log("Started atk");
         playerAttack.Invoke(true);
         startedAttack = true;
@@ -201,20 +202,46 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator TryAttackAfterDelay()
     {
         yield return new WaitForFixedUpdate();
+        bool hitOnTipTarget = TryDealDamageOnEndOfDash();
+        bool hitThroughTarget = TryDealDamageOnLengthOfDash();
+        if (hitOnTipTarget == true || hitThroughTarget == true)
+            ReloadAttack(hitAttackDelay);
+    }
+    bool TryDealDamageOnEndOfDash()
+    {
         bool hitTarget = false;
         Collider[] colliders = Physics.OverlapSphere(attackPosition.transform.position, 2f);
         foreach (Collider collider in colliders)
         {
-            if (collider.GetComponent<SimpleEnemy>() != null)
+            if (collider.GetComponent<SimpleEnemy>() != null
+                && collider.GetComponent<SimpleEnemy>().isDead != true)
             {
-                collider.GetComponent<SimpleEnemy>().Die();
                 hitTarget = true;
+                collider.GetComponent<SimpleEnemy>().Die();
                 //Play BloodVFX
                 Vfx_TryBloodsplash(collider);
             }
         }
-        if (hitTarget == true)
-            ReloadAttack(hitAttackDelay);
+        return hitTarget;
+    }
+    Vector3 startPosOfDash = Vector3.zero;
+    bool TryDealDamageOnLengthOfDash()
+    {
+        bool hitTarget = false;
+        Debug.DrawLine(startPosOfDash, attackPosition.transform.position, Color.blue, 3f);
+        Collider[] colliders = Physics.OverlapCapsule(startPosOfDash, attackPosition.transform.position, 1.5f);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.GetComponent<SimpleEnemy>() != null
+                && collider.GetComponent<SimpleEnemy>().isDead != true)
+            {
+                hitTarget = true;
+                collider.GetComponent<SimpleEnemy>().Die();
+                //Play BloodVFX
+                Vfx_TryBloodsplash(collider);
+            }
+        }
+        return hitTarget;
     }
     void Vfx_TryBloodsplash(Collider targetColl)
     {

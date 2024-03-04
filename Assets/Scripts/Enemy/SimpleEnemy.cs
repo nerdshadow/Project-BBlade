@@ -8,6 +8,7 @@ public class SimpleEnemy : MonoBehaviour
     Collider coll;
     Rigidbody rb;
     bool canRotate = true;
+    public bool isDead = false;
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();    
@@ -36,5 +37,6 @@ public class SimpleEnemy : MonoBehaviour
         rb.useGravity = false;
         rb.isKinematic = true;
         coll.enabled = false;
+        isDead = true;
     }
 }

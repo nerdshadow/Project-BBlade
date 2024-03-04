@@ -21,13 +21,16 @@ public class ObjectPoolManager : MonoBehaviour
     int bloodDecalArraySize = 1000;
     int bloodDecalMaxArraySize = 2000;
     #endregion BloodDecal
-    void Start()
+    void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else if (instance == this)
+        if (instance != null && instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
+        instance = this;
         DontDestroyOnLoad(gameObject);
+
         InitManager();
     }
     void InitManager()

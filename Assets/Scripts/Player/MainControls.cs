@@ -62,6 +62,15 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""6bda3d4d-b335-42aa-ae86-a6153b183bb2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""action"": ""CancelAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bbbadfbe-d77a-4d40-a7a1-f80d115dfc03"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""OpenMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -226,6 +246,15 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""name"": ""RightClick"",
                     ""type"": ""PassThrough"",
                     ""id"": ""fcb0c6d5-a0aa-4ce2-8617-be35e2ba08c8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CloseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""e79425c2-d0b4-4353-8926-f6bc024af75d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -346,7 +375,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""40987fe4-e378-4a73-9f09-b3051ddd1cfd"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Gamepad;Touch;Joystick;XR"",
@@ -408,6 +437,17 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b61d9f9-7e1a-4ecb-ae0b-ab9f443e017d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""CloseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -437,6 +477,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         m_Gameplay_Mouse = m_Gameplay.FindAction("Mouse", throwIfNotFound: true);
         m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
         m_Gameplay_CancelAttack = m_Gameplay.FindAction("CancelAttack", throwIfNotFound: true);
+        m_Gameplay_OpenMenu = m_Gameplay.FindAction("OpenMenu", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -447,6 +488,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
+        m_UI_CloseMenu = m_UI.FindAction("CloseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -512,6 +554,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Mouse;
     private readonly InputAction m_Gameplay_Attack;
     private readonly InputAction m_Gameplay_CancelAttack;
+    private readonly InputAction m_Gameplay_OpenMenu;
     public struct GameplayActions
     {
         private @MainControls m_Wrapper;
@@ -520,6 +563,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         public InputAction @Mouse => m_Wrapper.m_Gameplay_Mouse;
         public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
         public InputAction @CancelAttack => m_Wrapper.m_Gameplay_CancelAttack;
+        public InputAction @OpenMenu => m_Wrapper.m_Gameplay_OpenMenu;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -541,6 +585,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @CancelAttack.started += instance.OnCancelAttack;
             @CancelAttack.performed += instance.OnCancelAttack;
             @CancelAttack.canceled += instance.OnCancelAttack;
+            @OpenMenu.started += instance.OnOpenMenu;
+            @OpenMenu.performed += instance.OnOpenMenu;
+            @OpenMenu.canceled += instance.OnOpenMenu;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -557,6 +604,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @CancelAttack.started -= instance.OnCancelAttack;
             @CancelAttack.performed -= instance.OnCancelAttack;
             @CancelAttack.canceled -= instance.OnCancelAttack;
+            @OpenMenu.started -= instance.OnOpenMenu;
+            @OpenMenu.performed -= instance.OnOpenMenu;
+            @OpenMenu.canceled -= instance.OnOpenMenu;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -586,6 +636,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_ScrollWheel;
     private readonly InputAction m_UI_MiddleClick;
     private readonly InputAction m_UI_RightClick;
+    private readonly InputAction m_UI_CloseMenu;
     public struct UIActions
     {
         private @MainControls m_Wrapper;
@@ -598,6 +649,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
         public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
         public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
+        public InputAction @CloseMenu => m_Wrapper.m_UI_CloseMenu;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -631,6 +683,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
+            @CloseMenu.started += instance.OnCloseMenu;
+            @CloseMenu.performed += instance.OnCloseMenu;
+            @CloseMenu.canceled += instance.OnCloseMenu;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -659,6 +714,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
+            @CloseMenu.started -= instance.OnCloseMenu;
+            @CloseMenu.performed -= instance.OnCloseMenu;
+            @CloseMenu.canceled -= instance.OnCloseMenu;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -691,6 +749,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         void OnMouse(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnCancelAttack(InputAction.CallbackContext context);
+        void OnOpenMenu(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -702,5 +761,6 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         void OnScrollWheel(InputAction.CallbackContext context);
         void OnMiddleClick(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
+        void OnCloseMenu(InputAction.CallbackContext context);
     }
 }

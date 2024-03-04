@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenMenu",
+                    "type": "Button",
+                    "id": "6bda3d4d-b335-42aa-ae86-a6153b183bb2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -130,6 +139,17 @@
                     "action": "CancelAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bbbadfbe-d77a-4d40-a7a1-f80d115dfc03",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "OpenMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -204,6 +224,15 @@
                     "name": "RightClick",
                     "type": "PassThrough",
                     "id": "fcb0c6d5-a0aa-4ce2-8617-be35e2ba08c8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CloseMenu",
+                    "type": "Button",
+                    "id": "e79425c2-d0b4-4353-8926-f6bc024af75d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -324,7 +353,7 @@
                 {
                     "name": "",
                     "id": "40987fe4-e378-4a73-9f09-b3051ddd1cfd",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
@@ -384,6 +413,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse;Keyboard",
                     "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b61d9f9-7e1a-4ecb-ae0b-ab9f443e017d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "CloseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
