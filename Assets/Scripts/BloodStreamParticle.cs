@@ -36,7 +36,7 @@ public class BloodStreamParticle : MonoBehaviour
         {
             Vector3 pos = collisions[i].intersection;
             Quaternion rot = Quaternion.LookRotation(collisions[i].normal);
-            //Spawn Decals
+            //Pool Decals
             if (objectPoolManager != null &&(other.GetComponent<SimpleEnemy>() == null || other.GetComponent<PlayerStats>() == null))
             {
                 BloodDecal bloodDecal = objectPoolManager.bloodDecalPool.Get();

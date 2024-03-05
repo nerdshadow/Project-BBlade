@@ -118,7 +118,7 @@ public class PlayerCombat : MonoBehaviour
         AttackRechargeEvent.Invoke(_delay, currentDelay);
         canAttack = true;
     }
-    public void Slash()
+    public void SlashVFX()
     {
         GetComponentInChildren<VisualEffect>().Play();
     }
@@ -213,11 +213,11 @@ public class PlayerCombat : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(attackPosition.transform.position, 2f);
         foreach (Collider collider in colliders)
         {
-            if (collider.GetComponent<SimpleEnemy>() != null
-                && collider.GetComponent<SimpleEnemy>().isDead != true)
+            if (collider.tag != "Player" 
+                && collider.GetComponent<IKillable>() != null)
             {
+                collider.GetComponent<IKillable>().Die();
                 hitTarget = true;
-                collider.GetComponent<SimpleEnemy>().Die();
                 //Play BloodVFX
                 Vfx_TryBloodsplash(collider);
             }
@@ -232,11 +232,11 @@ public class PlayerCombat : MonoBehaviour
         Collider[] colliders = Physics.OverlapCapsule(startPosOfDash, attackPosition.transform.position, 1.5f);
         foreach (Collider collider in colliders)
         {
-            if (collider.GetComponent<SimpleEnemy>() != null
-                && collider.GetComponent<SimpleEnemy>().isDead != true)
+            if (collider.tag != "Player"
+                && collider.GetComponent<IKillable>() != null)
             {
+                collider.GetComponent<IKillable>().Die();
                 hitTarget = true;
-                collider.GetComponent<SimpleEnemy>().Die();
                 //Play BloodVFX
                 Vfx_TryBloodsplash(collider);
             }

@@ -113,4 +113,8 @@ public class GameplayMenuBehavior : MonoBehaviour
         InputManager.ChangeControlsMappingToMenu();
         deathMenu.SetActive(true);
     }
+    public void RestartCurrentLevel()
+    {
+        gameManager.LoadLevel(SceneManager.GetActiveScene().name);
+    }
 }

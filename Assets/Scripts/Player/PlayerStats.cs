@@ -11,6 +11,8 @@ public class PlayerStats : MonoBehaviour, IKillable
     [ContextMenu("Die")]
     public void Die()
     {
+        if(isDead == true)
+            return;
         Debug.Log("Player Died");
         playerDied.Invoke();
         isDead = true;
