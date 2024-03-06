@@ -17,6 +17,8 @@ public class Basic_State_Idle : AI_Base_State
         npcStateBeh.Change_Anim_MoveX_Weight(0f, 0.5f);
         agent.velocity = Vector3.zero;
         agent.isStopped = true;
+        npcMovement.canRotate = false;
+        npcMovement.canMove = false;
         base.Enter();
     }
 
@@ -24,14 +26,20 @@ public class Basic_State_Idle : AI_Base_State
     {
         if (npcStats.isDead == true)
         {
-            nextState = new Basic_State_Death(npc, agent, anim, target, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Death(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
         if (FindPlayer() == true
-                && CheckPath() == true)
+                && CheckPathToKillTarget() == true)
         {
-            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, target, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            stage = EVENT.EXIT;
+            return;
+        }
+        if (npcStateBeh.canPatrol == true)
+        {
+            nextState = new Basic_State_Patrol(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }

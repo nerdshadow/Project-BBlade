@@ -26,6 +26,9 @@ public class AI_StateBehaviour : MonoBehaviour
 
     protected Coroutine ChangeAnimMoveX;
 
+    public List<GameObject> wayPoints = null;
+    public bool canPatrol = false;
+
     private void Start()
     {
         Init();

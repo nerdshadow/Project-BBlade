@@ -13,6 +13,7 @@ public class Basic_State_PursueAndAttack : AI_Base_State
         //Debug.Log("EnterPursue");
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
         agent.isStopped = false;
+        npcMovement.canRotate = true;
         base.Enter();
     }
 
@@ -20,28 +21,28 @@ public class Basic_State_PursueAndAttack : AI_Base_State
     {
         if (npcStats.isDead == true)
         {
-            nextState = new Basic_State_Death(npc, agent, anim, target, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Death(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
-        if (TargetExist() == false
-                || CheckPath() == false)
+        if (PlayerTargetExist() == false
+                || CheckPathToKillTarget() == false)
         {
-            nextState = new Basic_State_Idle(npc, agent, anim, target, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Idle(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
 
-        if (DistanceToTarget() <= npcStats.currentAtkRange * 2)
+        if (DistanceToKillTarget() <= npcStats.currentAtkRange * 2)
         {
-            npcMovement.target = target;
+            npcMovement.target = killTarget;
         }
         else
         {
             npcMovement.target = null;
         }
 
-        if (DistanceToTarget() <= npcStats.currentAtkRange)
+        if (DistanceToKillTarget() <= npcStats.currentAtkRange)
         {
             npcMovement.canMove = false;
             if (AngleToTarget() <= 30)
@@ -57,7 +58,7 @@ public class Basic_State_PursueAndAttack : AI_Base_State
         }
         if (agent.enabled == true)
         {
-            agent.destination = target.transform.position;
+            agent.destination = killTarget.transform.position;
         }
     }
 
