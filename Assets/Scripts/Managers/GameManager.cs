@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject loadingScreen;
     public bool gameIsPaused = false;
+    public GameObject playerRef = null;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -71,5 +72,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("UnPausinggame");
         gameIsPaused = false;
         Time.timeScale = 1f;
+    }
+    public void ChangePlayer(GameObject _GO)
+    {
+        if (_GO == null)
+        {
+            Debug.LogError("Player GO is null");
+            return;
+        }
+        playerRef = _GO;
     }
 }

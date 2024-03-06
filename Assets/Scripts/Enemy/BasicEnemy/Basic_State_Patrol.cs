@@ -16,14 +16,14 @@ public class Basic_State_Patrol : AI_Base_State
     GameObject wayPointTarget = null;
     public override void Enter()
     {
-        Debug.Log("EnterPatrol");
+        //Debug.Log("EnterPatrol");
         //agent.velocity = Vector3.zero;
         int currentIndex = -1;
         lastDist = Mathf.Infinity;
         if (npcStateBeh.wayPoints.Count < 1 || npcStateBeh.canPatrol == false)
         {
             Debug.Log("No waypoints for " + npc.name + ", or cannot patrol. Returning to Idle");
-            nextState = new Basic_State_Idle(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
@@ -58,20 +58,20 @@ public class Basic_State_Patrol : AI_Base_State
     {
         if (npcStats.isDead == true)
         {
-            nextState = new Basic_State_Death(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Death(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
-        if (FindPlayer() == true
-                && CheckPathToKillTarget() == true)
+        if (DetectPlayer() == true
+                && CheckPathTo(playerGO) == true)
         {
-            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
         if (npcStateBeh.canPatrol == false)
         {
-            nextState = new Basic_State_Idle(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }

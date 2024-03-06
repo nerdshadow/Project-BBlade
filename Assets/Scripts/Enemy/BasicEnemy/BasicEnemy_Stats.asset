@@ -15,5 +15,8 @@ MonoBehaviour:
   npcName: Thug
   basicAtkRange: 1
   basicAtkRachargeTime: 5
+  basicDetectDistance: 5
+  basicDetectAngle: 30
+  basicDetectTime: 1
   basicSpeed: 2
   basicRotationSpeed: 10

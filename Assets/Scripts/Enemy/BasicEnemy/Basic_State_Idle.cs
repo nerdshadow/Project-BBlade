@@ -26,20 +26,20 @@ public class Basic_State_Idle : AI_Base_State
     {
         if (npcStats.isDead == true)
         {
-            nextState = new Basic_State_Death(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Death(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
-        if (FindPlayer() == true
-                && CheckPathToKillTarget() == true)
+        if (DetectPlayer() == true
+                && CheckPathTo(playerGO) == true)
         {
-            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
         if (npcStateBeh.canPatrol == true)
         {
-            nextState = new Basic_State_Patrol(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Patrol(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }

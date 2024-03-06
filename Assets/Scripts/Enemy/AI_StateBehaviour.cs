@@ -9,7 +9,7 @@ public class AI_StateBehaviour : MonoBehaviour
     [SerializeField]
     protected NavMeshAgent agent;
     [SerializeField]
-    protected GameObject target = null;
+    protected GameObject playerRef = null;
     [SerializeField]
     protected Animator anim;
     [SerializeField]
@@ -20,7 +20,7 @@ public class AI_StateBehaviour : MonoBehaviour
     protected AI_Movement npcMovement;
 
     [SerializeField]
-    Collider characterColl;
+    public Collider characterColl;
 
     public bool canMeleeAttack = true;
 
@@ -29,6 +29,7 @@ public class AI_StateBehaviour : MonoBehaviour
     public List<GameObject> wayPoints = null;
     public bool canPatrol = false;
 
+    public GameManager gameManager;
     private void Start()
     {
         Init();
@@ -47,6 +48,10 @@ public class AI_StateBehaviour : MonoBehaviour
 
         if(npcMovement == null)
             npcMovement = GetComponent<AI_Movement>();
+        if (gameManager == null)
+            gameManager = GameManager.instance;
+
+        playerRef = gameManager.playerRef;
 
         IgnoreCollider(characterColl);
     }
@@ -54,7 +59,6 @@ public class AI_StateBehaviour : MonoBehaviour
     {
         currentState = currentState.Process();
     }
-
     protected virtual void IgnoreCollider(Collider coll)
     {
         Collider[] colls = GetComponentsInChildren<Collider>();

@@ -12,6 +12,11 @@ public class CharacterStats : MonoBehaviour, IKillable
     public float currentAtkRechargeTine;
     public float currentSpeed;
     public float currentRotationSpeed;
+    public float currentDetectDistance;
+    public float currentDetectAngle;
+    public float currentDetectTime;
+
+    public Transform eyeLocation;
 
     public bool isDead = false;
     protected virtual void OnEnable()
@@ -25,6 +30,9 @@ public class CharacterStats : MonoBehaviour, IKillable
         currentAtkRechargeTine = baseStats.basicAtkRachargeTime;
         currentSpeed = baseStats.basicSpeed;
         currentRotationSpeed = baseStats.basicRotationSpeed;
+        currentDetectAngle = baseStats.basicDetectAngle;
+        currentDetectDistance = baseStats.basicDetectDistance;
+        currentDetectTime = baseStats.basicDetectTime;
     }
 
     public virtual void ChangeSpeed(float newSpeed)

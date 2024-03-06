@@ -21,31 +21,31 @@ public class Basic_State_PursueAndAttack : AI_Base_State
     {
         if (npcStats.isDead == true)
         {
-            nextState = new Basic_State_Death(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Death(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
-        if (PlayerTargetExist() == false
-                || CheckPathToKillTarget() == false)
+        if (PlayerExistAndAlive() == false
+                || CheckPathTo(playerGO) == false)
         {
-            nextState = new Basic_State_Idle(npc, agent, anim, killTarget, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
 
-        if (DistanceToKillTarget() <= npcStats.currentAtkRange * 2)
+        if (DistanceTo(playerGO) <= npcStats.currentAtkRange * 2)
         {
-            npcMovement.target = killTarget;
+            npcMovement.target = playerGO;
         }
         else
         {
             npcMovement.target = null;
         }
 
-        if (DistanceToKillTarget() <= npcStats.currentAtkRange)
+        if (DistanceTo(playerGO) <= npcStats.currentAtkRange)
         {
             npcMovement.canMove = false;
-            if (AngleToTarget() <= 30)
+            if (AngleTo(playerGO) <= 30)
             {
                 TryMeleeAttack();
                 return;
@@ -58,7 +58,7 @@ public class Basic_State_PursueAndAttack : AI_Base_State
         }
         if (agent.enabled == true)
         {
-            agent.destination = killTarget.transform.position;
+            agent.destination = playerGO.transform.position;
         }
     }
 

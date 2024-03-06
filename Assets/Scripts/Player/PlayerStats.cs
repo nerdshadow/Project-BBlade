@@ -8,6 +8,14 @@ public class PlayerStats : MonoBehaviour, IKillable
     public float currentMovSpeed = 2f;
     public bool isDead = false;
     public static UnityEvent playerDied = new UnityEvent();
+    [SerializeField]
+    GameManager gameManager;
+    private void Start()
+    {
+        if (gameManager == null)
+            gameManager = GameManager.instance;
+        gameManager.ChangePlayer(gameObject);
+    }
     [ContextMenu("Die")]
     public void Die()
     {

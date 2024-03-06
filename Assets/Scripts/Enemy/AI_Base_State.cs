@@ -22,7 +22,7 @@ public class AI_Base_State
     protected EVENT stage;
     protected GameObject npc;
     protected Animator anim;
-    protected GameObject killTarget;
+    protected GameObject playerGO;
     protected NavMeshAgent agent;
     protected CharacterStats npcStats = null;
     protected AI_StateBehaviour npcStateBeh = null;
@@ -35,7 +35,7 @@ public class AI_Base_State
         npc = _npc;
         agent = _agent;
         anim = _animator;
-        this.killTarget = _target;
+        this.playerGO = _target;
         npcStateBeh = _npcStateBeh;
         npcStats = _npcStats;
         npcMovement = _npcMovement;
@@ -56,101 +56,95 @@ public class AI_Base_State
         return this;
 
     }
-    public virtual bool PlayerTargetExist()
+    public virtual bool PlayerExistAndAlive()
     {
-        if (killTarget == null)
+        //Debug.Log("Checking player existance");
+        if (playerGO == null)
+        {
+            playerGO = npcStateBeh.gameManager.playerRef;
+            //Debug.Log("Checking player existance" + playerGO);
+        }
+        if (playerGO == null)
+        {
+            //Debug.Log("Checking player existance" + playerGO);
             return false;
-        if (killTarget.GetComponent<PlayerStats>().isDead == true)
+        }
+        if (playerGO.GetComponent<PlayerStats>().isDead == true)
+        {
+            //Debug.Log("Checking player existance" + playerGO);
             return false;
-
+        }
+        //Debug.Log("Checking player existance" + playerGO);
         return true;
-    }
-    public virtual float DistanceToKillTarget()
-    {
-        if (!PlayerTargetExist())
-        {
-            return 0;
-        }
-        if (killTarget.GetComponent<Collider>())
-        {
-            Debug.DrawLine(npc.GetComponent<Collider>().ClosestPointOnBounds(killTarget.GetComponent<Collider>().bounds.center),
-                killTarget.GetComponent<Collider>().ClosestPointOnBounds(npc.GetComponent<Collider>().bounds.center), Color.cyan, 0.01f);
-            return Vector3.Distance(npc.GetComponent<Collider>().ClosestPointOnBounds(killTarget.GetComponent<Collider>().bounds.center),
-                killTarget.GetComponent<Collider>().ClosestPointOnBounds(npc.GetComponent<Collider>().bounds.center));
-        }
-        else
-        {
-            Debug.DrawLine(npc.GetComponent<Collider>().ClosestPointOnBounds(killTarget.transform.position),
-               killTarget.transform.position, Color.cyan, 0.01f);
-            return Vector3.Distance(npc.GetComponent<Collider>().ClosestPointOnBounds(killTarget.transform.position),
-                killTarget.transform.position);
-        }
     }
     public virtual float DistanceTo(GameObject _target)
     {
         if (_target == null)
         {
+            Debug.LogError("Target is null");
             return 0;
         }
-        Debug.DrawLine(npc.GetComponent<Collider>().ClosestPointOnBounds(_target.transform.position),
-            _target.transform.position, Color.cyan, 0.01f);
-        return Vector3.Distance(npc.GetComponent<Collider>().ClosestPointOnBounds(_target.transform.position),
-            _target.transform.position);
-    }
-    public virtual float AngleToTarget()
-    {
-        if (!PlayerTargetExist())
+        if (_target.GetComponent<Collider>())
         {
+            Debug.DrawLine(npc.GetComponent<Collider>().ClosestPointOnBounds(_target.GetComponent<Collider>().bounds.center),
+                _target.GetComponent<Collider>().ClosestPointOnBounds(npc.GetComponent<Collider>().bounds.center), Color.cyan, 0.01f);
+            return Vector3.Distance(npc.GetComponent<Collider>().ClosestPointOnBounds(_target.GetComponent<Collider>().bounds.center),
+                _target.GetComponent<Collider>().ClosestPointOnBounds(npc.GetComponent<Collider>().bounds.center));
+        }
+        else
+        {
+            Debug.DrawLine(npc.GetComponent<Collider>().ClosestPointOnBounds(_target.transform.position),
+               _target.transform.position, Color.cyan, 0.01f);
+            return Vector3.Distance(npc.GetComponent<Collider>().ClosestPointOnBounds(_target.transform.position),
+                _target.transform.position);
+        }
+    }
+    public virtual float AngleTo(GameObject _target)
+    {
+        if (_target == null)
+        {
+            Debug.LogError("Target is null");
             return 0;
         }
-        Vector3 targetDir = killTarget.transform.position - npc.transform.position;
+        Vector3 targetDir = _target.transform.position - npc.transform.position;
         return Vector3.Angle(targetDir, npc.transform.forward);
     }
-
-    public virtual void RotateTowardsTarget()
+    public virtual void RotateTowards(GameObject _target)
     {
-        Vector3 lookPos = killTarget.transform.position - npc.transform.position;
+        if (_target == null)
+        {
+            Debug.LogError("Target is null");
+            return;
+        }
+        Vector3 lookPos = _target.transform.position - npc.transform.position;
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, rotation, 1f * Time.deltaTime);
     }
 
-    public virtual bool FindPlayer()
+    public virtual bool DetectPlayer()
     {
-        if (PlayerTargetExist() == false)
+        if(PlayerExistAndAlive() == false)
+            return false;
+
+        Vector3 dirToPlayer = playerGO.transform.position - npc.transform.position;
+        //Check distance, angles, time to detect
+        if(dirToPlayer.magnitude >= npcStats.currentDetectDistance)
+            return false;
+
+        if (Vector3.Dot(dirToPlayer.normalized, npc.transform.forward)
+            <= Mathf.Cos(npcStats.currentDetectAngle * Mathf.Deg2Rad))
+            return false;
+
+        RaycastHit hit;
+        if (Physics.Raycast(npcStats.eyeLocation.position, npcStats.eyeLocation.forward, out hit, npcStats.currentDetectDistance))
         {
-            Collider[] potTargets =
-            Physics.OverlapSphere(npc.transform.position, detectRadius, LayerMask.GetMask("CharacterLayer"));
-            for (int i = 0; i < potTargets.Length; i++)
+            if (hit.collider.tag == "Player")
             {
-                PlayerStats potStats = potTargets[i].GetComponent<PlayerStats>();
-                if (potStats != null && potStats.isDead == false)
-                {
-                    killTarget = potTargets[i].gameObject;
-                    return true;
-                }
+                return true;
             }
         }
-        else
-        {
-            return true;
-        }
         return false;
-    }
-
-    public bool CheckPathToKillTarget()
-    {
-        NavMeshPath path = new NavMeshPath();
-        NavMesh.CalculatePath(agent.transform.position, killTarget.transform.position, NavMesh.AllAreas, path);
-        if (path.status == NavMeshPathStatus.PathComplete)
-        {
-            agent.SetPath(path);
-            return true;        
-        }
-        else 
-        {
-            return false; 
-        }
     }
     public bool CheckPathTo(GameObject _target)
     {
