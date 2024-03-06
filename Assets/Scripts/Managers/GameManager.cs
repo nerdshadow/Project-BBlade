@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     GameObject loadingScreen;
     public bool gameIsPaused = false;
     public GameObject playerRef = null;
+    public Camera playerCameraRef = null;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     {
         //Debug test
         Application.targetFrameRate = 61;
+        playerCameraRef = Camera.main;
     }
     public void ExitGame()
     {

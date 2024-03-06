@@ -18,14 +18,10 @@ public class AI_StateBehaviour : MonoBehaviour
     protected CharacterStats characterStats;
     [SerializeField]
     protected AI_Movement npcMovement;
-
     [SerializeField]
     public Collider characterColl;
-
     public bool canMeleeAttack = true;
-
     protected Coroutine ChangeAnimMoveX;
-
     public List<GameObject> wayPoints = null;
     public bool canPatrol = false;
 

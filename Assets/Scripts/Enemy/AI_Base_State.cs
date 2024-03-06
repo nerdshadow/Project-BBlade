@@ -122,7 +122,6 @@ public class AI_Base_State
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, rotation, 1f * Time.deltaTime);
     }
-
     public virtual bool CheckPlayer()
     {
         if(PlayerExistAndAlive() == false)
