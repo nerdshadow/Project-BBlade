@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -29,7 +30,7 @@ public class AI_Base_State
     protected AI_Movement npcMovement = null;
     protected AI_Base_State nextState;
     public float detectRadius = 10f;
-
+    public bool playerDetected = false;
     public AI_Base_State(GameObject _npc, NavMeshAgent _agent, Animator _animator, GameObject _target, CharacterStats _npcStats, AI_StateBehaviour _npcStateBeh, AI_Movement _npcMovement)
     {
         npc = _npc;
@@ -122,29 +123,53 @@ public class AI_Base_State
         npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, rotation, 1f * Time.deltaTime);
     }
 
-    public virtual bool DetectPlayer()
+    public virtual bool CheckPlayer()
     {
         if(PlayerExistAndAlive() == false)
             return false;
 
         Vector3 dirToPlayer = playerGO.transform.position - npc.transform.position;
         //Check distance, angles, time to detect
-        if(dirToPlayer.magnitude >= npcStats.currentDetectDistance)
+        Debug.Log("Magni = " + (dirToPlayer.magnitude <= npcStats.currentDetectDistance));
+        if (dirToPlayer.magnitude >= npcStats.currentDetectDistance)
             return false;
 
-        if (Vector3.Dot(dirToPlayer.normalized, npc.transform.forward)
-            <= Mathf.Cos(npcStats.currentDetectAngle * Mathf.Deg2Rad))
+        //if (Vector3.Dot(dirToPlayer.normalized, npc.transform.forward)
+        //    <= Mathf.Cos(npcStats.currentDetectAngle * Mathf.Deg2Rad))
+        //    return false;
+        Debug.Log("Angle = " + (Vector3.Angle(dirToPlayer, npc.transform.forward)
+            <= npcStats.currentDetectAngle));
+        if (Vector3.Angle(dirToPlayer, npc.transform.forward)
+            >= npcStats.currentDetectAngle)
             return false;
-
+        Vector3 hitDir = playerGO.GetComponent<Collider>().bounds.center - npcStats.eyeLocation.position;
         RaycastHit hit;
-        if (Physics.Raycast(npcStats.eyeLocation.position, npcStats.eyeLocation.forward, out hit, npcStats.currentDetectDistance))
+        if (Physics.Raycast(npcStats.eyeLocation.position, hitDir, out hit, npcStats.currentDetectDistance, npcStats.layersToDetect))
         {
+            Debug.Log("Hit = " + (hit.collider.tag == "Player"));
             if (hit.collider.tag == "Player")
             {
                 return true;
             }
         }
         return false;
+    }
+    protected float currentDetectTime = 0f;
+    public virtual void DetectingPlayer()
+    {
+        //Debug.Log("Current detect " + currentDetectTime);
+        if (CheckPlayer() != true)
+        {
+            currentDetectTime = 0f;
+            return;
+        }
+        if (currentDetectTime >= npcStats.currentDetectTime)
+        {
+            playerDetected = true;
+            currentDetectTime = 0f;
+            return;
+        }
+        currentDetectTime += Time.deltaTime;
     }
     public bool CheckPathTo(GameObject _target)
     {

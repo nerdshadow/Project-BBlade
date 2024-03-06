@@ -62,8 +62,8 @@ public class Basic_State_Patrol : AI_Base_State
             stage = EVENT.EXIT;
             return;
         }
-        if (DetectPlayer() == true
-                && CheckPathTo(playerGO) == true)
+        DetectingPlayer();
+        if (playerDetected == true)
         {
             nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
@@ -75,25 +75,20 @@ public class Basic_State_Patrol : AI_Base_State
             stage = EVENT.EXIT;
             return;
         }
-        //Debug.Log("Distance " + DistanceTo(wayPointTarget));
         if (DistanceTo(wayPointTarget) <= 1)
         {
-            //Debug.Log("In changing index");
             if (currentIndex >= wayPoints.Count - 1)
             {
-                //Debug.Log("In changing index to 0");
                 currentIndex = 0;
             }
             else
             {
-                //Debug.Log("In changing index to ++");
                 currentIndex++;
             }
             wayPointTarget = wayPoints[currentIndex];
             if (CheckPathTo(wayPointTarget) == true && agent.enabled)
             {
                 //Debug.Log("Path is good");
-                //agent.destination = wayPointTarget.transform.position;
             }
         }
         //base.Update();

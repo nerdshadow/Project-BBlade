@@ -19,6 +19,8 @@ public class CharacterStats : MonoBehaviour, IKillable
     public Transform eyeLocation;
 
     public bool isDead = false;
+
+    public LayerMask layersToDetect;
     protected virtual void OnEnable()
     {
         InitializeStats();

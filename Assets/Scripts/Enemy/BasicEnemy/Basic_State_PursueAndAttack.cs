@@ -14,6 +14,7 @@ public class Basic_State_PursueAndAttack : AI_Base_State
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
         agent.isStopped = false;
         npcMovement.canRotate = true;
+        CheckPathTo(playerGO);
         base.Enter();
     }
 
@@ -25,14 +26,13 @@ public class Basic_State_PursueAndAttack : AI_Base_State
             stage = EVENT.EXIT;
             return;
         }
-        if (PlayerExistAndAlive() == false
-                || CheckPathTo(playerGO) == false)
+        if (PlayerExistAndAlive() == false)
         {
             nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
             return;
         }
-
+        CheckPathTo(playerGO);
         if (DistanceTo(playerGO) <= npcStats.currentAtkRange * 2)
         {
             npcMovement.target = playerGO;

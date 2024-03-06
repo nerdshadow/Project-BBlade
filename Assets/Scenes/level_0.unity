@@ -945,10 +945,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4071548856924685296, guid: e7a730f2c38b7d84fa1fc4b9380388a2,
+        type: 3}
+      propertyPath: layersToDetect.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 4777720407748232233, guid: e7a730f2c38b7d84fa1fc4b9380388a2,
         type: 3}
       propertyPath: m_Name
       value: Thug
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065334296604310554, guid: e7a730f2c38b7d84fa1fc4b9380388a2,
+        type: 3}
+      propertyPath: canPatrol
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5065334296604310554, guid: e7a730f2c38b7d84fa1fc4b9380388a2,
         type: 3}
@@ -18669,7 +18679,7 @@ PrefabInstance:
     - target: {fileID: 6276383125896262767, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.02
+      value: 0.27
       objectReference: {fileID: 0}
     - target: {fileID: 6276383125896262767, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}
@@ -18679,7 +18689,7 @@ PrefabInstance:
     - target: {fileID: 6276383125896262767, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 31.7
+      value: 33.67
       objectReference: {fileID: 0}
     - target: {fileID: 6276383125896262767, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}

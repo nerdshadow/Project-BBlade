@@ -30,8 +30,8 @@ public class Basic_State_Idle : AI_Base_State
             stage = EVENT.EXIT;
             return;
         }
-        if (DetectPlayer() == true
-                && CheckPathTo(playerGO) == true)
+        DetectingPlayer();
+        if (playerDetected == true)
         {
             nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
             stage = EVENT.EXIT;
