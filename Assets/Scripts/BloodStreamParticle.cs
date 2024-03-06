@@ -24,7 +24,7 @@ public class BloodStreamParticle : MonoBehaviour
     }
     private void OnParticleCollision(GameObject other)
     {
-        if (other.GetComponent<SimpleEnemy>() || other.GetComponent<PlayerStats>())
+        if (other.GetComponent<CharacterStats>() || other.GetComponent<PlayerStats>())
         {
             return;
         }
@@ -37,7 +37,7 @@ public class BloodStreamParticle : MonoBehaviour
             Vector3 pos = collisions[i].intersection;
             Quaternion rot = Quaternion.LookRotation(collisions[i].normal);
             //Pool Decals
-            if (objectPoolManager != null &&(other.GetComponent<SimpleEnemy>() == null || other.GetComponent<PlayerStats>() == null))
+            if (objectPoolManager != null &&(other.GetComponent<CharacterStats>() == null || other.GetComponent<PlayerStats>() == null))
             {
                 BloodDecal bloodDecal = objectPoolManager.bloodDecalPool.Get();
                 bloodDecal.ChangeDecalScale(0.1f, 0.1f, Random.Range(0.9f, 2.1f), Random.Range(0.9f, 2.1f), Random.Range(1f, 4f));

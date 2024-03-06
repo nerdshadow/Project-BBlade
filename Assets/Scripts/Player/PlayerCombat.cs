@@ -25,11 +25,16 @@ public class PlayerCombat : MonoBehaviour
 
         mainControlsMap.Enable();
         EnableControls();
+
+        if (objectPoolManager == null)
+            objectPoolManager = ObjectPoolManager.instance;
     }
     private void OnEnable()
     {
         if (playerControls != null)
             EnableControls();
+        if (objectPoolManager == null)
+            objectPoolManager = ObjectPoolManager.instance;
     }
     private void OnDisable()
     {
@@ -246,7 +251,7 @@ public class PlayerCombat : MonoBehaviour
     void Vfx_TryBloodsplash(Collider targetColl)
     {
         BloodStreamParticle currentBloodStram = objectPoolManager.bloodStreamPool.Get();
-        currentBloodStram.transform.position = targetColl.transform.position;
+        currentBloodStram.transform.position = targetColl.bounds.center;
         currentBloodStram.transform.rotation = Quaternion.LookRotation(transform.forward);
         currentBloodStram.PlayAndTryReturnToPool();
     }
