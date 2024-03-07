@@ -19,6 +19,8 @@ public class AI_StateBehaviour : MonoBehaviour
     [SerializeField]
     protected AI_Movement npcMovement;
     [SerializeField]
+    protected AI_Canvas npcCanvas;
+    [SerializeField]
     public Collider characterColl;
     public bool canMeleeAttack = true;
     protected Coroutine ChangeAnimMoveX;
@@ -48,6 +50,9 @@ public class AI_StateBehaviour : MonoBehaviour
             gameManager = GameManager.instance;
 
         playerRef = gameManager.playerRef;
+
+        if(npcCanvas == null)
+            npcCanvas = GetComponent<AI_Canvas>();
 
         IgnoreCollider(characterColl);
     }

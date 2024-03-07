@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 pos = transform.position;
         Vector3 dir = (target.transform.position - pos).normalized;
-        Debug.Log("Dashed for " + currentDashDistance);
+        //Debug.Log("Dashed for " + currentDashDistance);
         rigbody.MovePosition(pos + dir * currentDashDistance);
     }
     [SerializeField]

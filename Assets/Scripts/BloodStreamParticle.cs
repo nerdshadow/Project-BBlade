@@ -57,7 +57,7 @@ public class BloodStreamParticle : MonoBehaviour
         particleS.Play();
         Invoke("ReturnToPool", 10f);
     }
-    void ReturnToPool()
+    public void ReturnToPool()
     {
         bloodStreamParticlePool.Release(this);
     }

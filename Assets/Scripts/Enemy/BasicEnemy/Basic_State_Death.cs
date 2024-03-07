@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class Basic_State_Death : AI_Base_State
 {
-    public Basic_State_Death(GameObject _npc, NavMeshAgent _agent, Animator _animator, GameObject _target, CharacterStats _npcStats, AI_StateBehaviour _npcStateBeh, AI_Movement _npcMovement)
-           : base(_npc, _agent, _animator, _target, _npcStats, _npcStateBeh, _npcMovement)
+    public Basic_State_Death(GameObject _npc, NavMeshAgent _agent, Animator _animator, GameObject _target, CharacterStats _npcStats, AI_StateBehaviour _npcStateBeh, AI_Movement _npcMovement, AI_Canvas _npcCanvas)
+           : base(_npc, _agent, _animator, _target, _npcStats, _npcStateBeh, _npcMovement, _npcCanvas)
     {
         stateName = STATE.DEAD;
     }
@@ -28,7 +28,12 @@ public class Basic_State_Death : AI_Base_State
             npcMovement.canRotate = false;
             npcMovement.enabled = false;
         }
-
+        if (npcCanvas.enabled)
+        {
+            npcCanvas.ActivateAlert(false);
+            npcCanvas.ActivateDeathMark(false);
+            npcCanvas.ActivateVisionSlider(false);
+        }
         base.Enter();
     }
 

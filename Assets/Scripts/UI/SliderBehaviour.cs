@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SliderBehaviour : MonoBehaviour
 {
+    [SerializeField]
     Slider currentSlider;
     [SerializeField]
     float startValue = 0f;

@@ -69,7 +69,7 @@ public class GameplayMenuBehavior : MonoBehaviour
     }
     public void ChangeControlsMapping(InputAction.CallbackContext context)
     {
-        Debug.Log("Changing controls map");
+        //Debug.Log("Changing controls map");
         if (context.action == mainControlsMap.OpenMenu)
         {
             InputManager.ChangeControlsMappingToMenu();
@@ -81,19 +81,19 @@ public class GameplayMenuBehavior : MonoBehaviour
     }
     public void OpenMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("opening menu");
+        //Debug.Log("opening menu");
         gameManager.PauseGame();
         gameplayMenu.SetActive(true);
     }
     public void CloseMenu(InputAction.CallbackContext context)
     {
-        Debug.Log("closing menu");
+        //Debug.Log("closing menu");
         gameManager.ResumeGame();
         gameplayMenu.SetActive(false);
     }
     public void CloseMenu()
     {
-        Debug.Log("closing menu");
+        //Debug.Log("closing menu");
         gameManager.ResumeGame();
         gameplayMenu.SetActive(false);
         InputManager.ChangeControlsMappingToGameplay();

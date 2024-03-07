@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
     }
     public void ExitGame()
     {
-        Debug.Log("Trying exit game");
+        //Debug.Log("Trying exit game");
         Application.Quit();
     }
     public void LoadLevel(string levelName)
@@ -64,14 +65,14 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         //pause game
-        Debug.Log("Pausinggame");
+        //Debug.Log("Pausinggame");
         gameIsPaused = true;
         Time.timeScale = 0f;
     }
     public void ResumeGame()
     {
         //resume game
-        Debug.Log("UnPausinggame");
+        //Debug.Log("UnPausinggame");
         gameIsPaused = false;
         Time.timeScale = 1f;
     }
@@ -79,9 +80,14 @@ public class GameManager : MonoBehaviour
     {
         if (_GO == null)
         {
-            Debug.LogError("Player GO is null");
+            //Debug.LogError("Player GO is null");
             return;
         }
         playerRef = _GO;
+    }
+    public static UnityEvent Alerting = new UnityEvent();
+    public void AlertAll()
+    {
+        Alerting.Invoke();
     }
 }

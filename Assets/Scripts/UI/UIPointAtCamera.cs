@@ -8,8 +8,7 @@ public class UIPointAtCamera : MonoBehaviour
     Camera cam;
     [SerializeField]
     GameManager gameManager;
-    [SerializeField]
-    GameObject testLook;
+    public bool canLook = true;
     private void Start()
     {
         gameManager = GameManager.instance;
@@ -17,8 +16,12 @@ public class UIPointAtCamera : MonoBehaviour
     }
     private void LateUpdate()
     {
-        //transform.LookAt(testLook.transform.position);
+        LookAtCamera();
+    }
+    void LookAtCamera()
+    {
+        if (canLook != true)
+            return;
         transform.LookAt(cam.transform.position);
-        //transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
     }
 }

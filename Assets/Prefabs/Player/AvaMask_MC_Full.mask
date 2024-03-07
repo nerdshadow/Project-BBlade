@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AvaMask_MC_Full
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: MainCharacterArmature
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/ElbowIK.L
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/ElbowIK.R
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/HandIKTarget.L
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/HandIKTarget.R
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/HeadTarget
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/KneeIK.L
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/KneeIK.R
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/LegIKTarget.L
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/LegIKTarget.R
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.L
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.L/LegBone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.L/LegBone.L.001/LegBone.L.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.L/LegBone.L.001/LegBone.L.002/LegBone.L.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.L/LegBone.L.001/LegBone.L.002/LegBone.L.003/FeetBone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.L/LegBone.L.001/LegBone.L.002/LegBone.L.003/FeetBone.L.001/FeetBone.L.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.L/PelvisBone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.R
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.R/LegBone.R.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.R/LegBone.R.001/LegBone.R.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.R/LegBone.R.001/LegBone.R.002/LegBone.R.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.R/LegBone.R.001/LegBone.R.002/LegBone.R.003/FeetBone.R.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/PelvisBone.R/LegBone.R.001/LegBone.R.002/LegBone.R.003/FeetBone.R.001/FeetBone.R.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger1Bone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger1Bone.L.001/Finger1Bone.L.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger1Bone.L.001/Finger1Bone.L.002/Finger1Bone.L.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger2Bone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger2Bone.L.001/Finger2Bone.L.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger2Bone.L.001/Finger2Bone.L.002/Finger2Bone.L.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger3Bone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger3Bone.L.001/Finger3Bone.L.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger3Bone.L.001/Finger3Bone.L.002/Finger3Bone.L.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger4Bone.L.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger4Bone.L.001/Finger4Bone.L.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/Finger4Bone.L.001/Finger4Bone.L.002/Finger4Bone.L.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/HandBone.L.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/HandBone.L.002/HandBone.L.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.L.001/ArmBone.L.002/ArmBone.L.003/HandBone.L.001/HandBone.L.004
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger1Bone.R.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger1Bone.R.001/Finger1Bone.R.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger1Bone.R.001/Finger1Bone.R.002/Finger1Bone.R.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger2Bone.R.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger2Bone.R.001/Finger2Bone.R.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger2Bone.R.001/Finger2Bone.R.002/Finger2Bone.R.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger3Bone.R.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger3Bone.R.001/Finger3Bone.R.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger3Bone.R.001/Finger3Bone.R.002/Finger3Bone.R.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger4Bone.R.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger4Bone.R.001/Finger4Bone.R.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/Finger4Bone.R.001/Finger4Bone.R.002/Finger4Bone.R.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/HandBone.R.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/HandBone.R.002/HandBone.R.003
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/ArmBone.R.001/ArmBone.R.002/ArmBone.R.003/HandBone.R.001/WeaponHolder.R
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/HeadBone
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/HeadBone/HeadBone.001
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/HeadBone/HeadBone.001/HeadBone.002
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/UpSpine.L
+    m_Weight: 1
+  - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/UpSpine.R
+    m_Weight: 1
+  - m_Path: MCBody
+    m_Weight: 1

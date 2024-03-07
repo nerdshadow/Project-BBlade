@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerAnimRig : MonoBehaviour
 {
@@ -174,6 +175,10 @@ public class PlayerAnimRig : MonoBehaviour
             anim.CrossFade("PrepareAtk", 0.1f);
         }
     }
+    public void StartSheath()
+    {
+        anim.CrossFade("SheathFast", 0.1f);
+    }
     public void ReleaseAtk()
     {
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("PrepareAtk"))
@@ -201,6 +206,7 @@ public class PlayerAnimRig : MonoBehaviour
         SheathWeapon(0);
         attackAnimSlashed.Invoke();
     }
+    public UnityEvent sheathedIn = new UnityEvent();
     public void SheathWeapon(int toSheath)
     {
         //Debug.Log(toSheath);
@@ -208,11 +214,36 @@ public class PlayerAnimRig : MonoBehaviour
         {
             weapon.SetActive(false);
             sheath.SetActive(true);
+            ChangeRArmAnimLayerWeght(false);
+            sheathedIn.Invoke();
+
         }
         else
         {
             weapon.SetActive(true);
             sheath.SetActive(false);
+            ChangeRArmAnimLayerWeght(true);
         }
     }
+    //Coroutine changeAnimLayerWeight;
+    [ContextMenu("RArmLayer")]
+    void TestLayer()
+    {
+        ChangeRArmAnimLayerWeght(true);
+    }
+    public void ChangeRArmAnimLayerWeght(bool toChange)
+    {
+        if (toChange == true)
+        {
+            anim.SetLayerWeight(1, 1);
+        }
+        if (toChange == false)
+        {
+            anim.SetLayerWeight(1, 2);
+        }
+    }
+    //IEnumerator ChangingAnimLayerWeight(int layerIndex, float value)
+    //{
+
+    //}
 }

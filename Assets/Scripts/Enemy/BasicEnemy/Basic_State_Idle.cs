@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class Basic_State_Idle : AI_Base_State
 {
-    public Basic_State_Idle(GameObject _npc, NavMeshAgent _agent, Animator _animator, GameObject _target, CharacterStats _npcStats, AI_StateBehaviour _npcStateBeh, AI_Movement _npcMovement)
-        : base(_npc, _agent, _animator, _target, _npcStats, _npcStateBeh, _npcMovement)
+    public Basic_State_Idle(GameObject _npc, NavMeshAgent _agent, Animator _animator, GameObject _target, CharacterStats _npcStats, AI_StateBehaviour _npcStateBeh, AI_Movement _npcMovement, AI_Canvas _npcCanvas)
+        : base(_npc, _agent, _animator, _target, _npcStats, _npcStateBeh, _npcMovement, _npcCanvas)
     {
         stateName = STATE.IDLE;
     }
@@ -14,6 +14,7 @@ public class Basic_State_Idle : AI_Base_State
     public override void Enter()
     {
         //Debug.Log("EnterIdle");
+        GameManager.Alerting.AddListener(PlayerFound);
         npcStateBeh.Change_Anim_MoveX_Weight(0f, 0.5f);
         agent.velocity = Vector3.zero;
         agent.isStopped = true;
@@ -26,26 +27,34 @@ public class Basic_State_Idle : AI_Base_State
     {
         if (npcStats.isDead == true)
         {
-            nextState = new Basic_State_Death(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Death(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }
         DetectingPlayer();
         if (playerDetected == true)
         {
-            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }
         if (npcStateBeh.canPatrol == true)
         {
-            nextState = new Basic_State_Patrol(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Patrol(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }
         base.Update();
     }
-
+    protected override void PlayerFound()
+    {
+        playerDetected = true;
+        npcCanvas.StartCoroutine(FireAnAlert());
+        nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
+        stage = EVENT.EXIT;
+        base.PlayerFound();
+        return;
+    }
     public override void Exit()
     {
         base.Exit();

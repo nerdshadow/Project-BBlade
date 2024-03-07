@@ -14,7 +14,7 @@ public class CharacterStats : MonoBehaviour, IKillable
     public float currentRotationSpeed;
     public float currentDetectDistance;
     public float currentDetectAngle;
-    public float currentDetectTime;
+    public float maxDetectTime;
 
     public Transform eyeLocation;
 
@@ -34,7 +34,7 @@ public class CharacterStats : MonoBehaviour, IKillable
         currentRotationSpeed = baseStats.basicRotationSpeed;
         currentDetectAngle = baseStats.basicDetectAngle;
         currentDetectDistance = baseStats.basicDetectDistance;
-        currentDetectTime = baseStats.basicDetectTime;
+        maxDetectTime = baseStats.basicDetectTime;
     }
 
     public virtual void ChangeSpeed(float newSpeed)
@@ -49,24 +49,22 @@ public class CharacterStats : MonoBehaviour, IKillable
         //Death
         DisableComponents();
         isDead = true;
-        Debug.Log(currentName + " is dead");
+        //Debug.Log(currentName + " is dead");
     }
     public void DisableComponents()
     {
-        Rigidbody[] arrayOfRb = GetComponentsInChildren<Rigidbody>();
+        Rigidbody[] arrayOfRb = GetComponents<Rigidbody>();
         foreach (Rigidbody components in arrayOfRb)
         {
             components.freezeRotation = true;
+            components.useGravity = false;
+            components.isKinematic = true;
         }
 
-        Collider[] arrayOfColliders = GetComponentsInChildren<Collider>();
+        Collider[] arrayOfColliders = GetComponents<Collider>();
         foreach (Collider components in arrayOfColliders)
         {
-            if(components.gameObject.layer == 6)
-                components.enabled = false;
-            LayerMask layer = components.excludeLayers;
-            layer |= (1 << 10);
-            components.excludeLayers = layer;
+            components.enabled = false;
         }
         GetComponent<NavMeshAgent>().enabled = false;
     }

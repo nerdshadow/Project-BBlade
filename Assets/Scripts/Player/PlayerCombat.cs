@@ -53,6 +53,9 @@ public class PlayerCombat : MonoBehaviour
 
         mainControlsMap.CancelAttack.performed += CancelAttack;
         mainControlsMap.CancelAttack.Enable();
+
+        mainControlsMap.SheathSword.performed += StartSheath;
+        mainControlsMap.SheathSword.Enable();
     }
     void DisableControls()
     {
@@ -62,6 +65,9 @@ public class PlayerCombat : MonoBehaviour
 
         mainControlsMap.CancelAttack.performed -= CancelAttack;
         mainControlsMap.CancelAttack.Disable();
+
+        mainControlsMap.SheathSword.performed -= StartSheath;
+        mainControlsMap.SheathSword.Disable();
     }
     bool startedAttack = false;
     void StartChargingAttack(InputAction.CallbackContext context)
@@ -92,6 +98,13 @@ public class PlayerCombat : MonoBehaviour
         cancelAttack.Invoke();
         ReloadDash();
         ReloadAttack(cancelAttackDelay);
+    }
+    public UnityEvent startedSheath = new UnityEvent();
+    void StartSheath(InputAction.CallbackContext context)
+    {
+        //Debug.Log("Sheath weapon");
+        startedAttack = false;
+        startedSheath.Invoke();
     }
     [SerializeField]
     float cancelAttackDelay = 1f;
@@ -162,7 +175,7 @@ public class PlayerCombat : MonoBehaviour
     }
     IEnumerator ResetDashDistance()
     {
-        Debug.Log("Reseting Dash");
+        //Debug.Log("Reseting Dash");
         yield return new WaitForFixedUpdate();
         dashDistance = 0f;
         ChangeDashDistance.Invoke(dashDistance);
@@ -196,23 +209,24 @@ public class PlayerCombat : MonoBehaviour
             dashDistance = minDistance;
         }
     }
-
     [SerializeField]
     GameObject attackPosition;
-    public void TryAttack()
+    List<Collider> markedColliders = new List<Collider>();
+    public void TryMark()
     {
-        Debug.Log("tried to attack");
-        StartCoroutine(TryAttackAfterDelay());
+        //Debug.Log("tried to attack");
+        StartCoroutine(TryMarkAfterDelay());
     }
-    IEnumerator TryAttackAfterDelay()
+
+    IEnumerator TryMarkAfterDelay()
     {
         yield return new WaitForFixedUpdate();
-        bool hitOnTipTarget = TryDealDamageOnEndOfDash();
-        bool hitThroughTarget = TryDealDamageOnLengthOfDash();
+        bool hitOnTipTarget = TryMarkOnEndOfDash();
+        bool hitThroughTarget = TryMarkOnLengthOfDash();
         if (hitOnTipTarget == true || hitThroughTarget == true)
             ReloadAttack(hitAttackDelay);
     }
-    bool TryDealDamageOnEndOfDash()
+    bool TryMarkOnEndOfDash()
     {
         bool hitTarget = false;
         Collider[] colliders = Physics.OverlapSphere(attackPosition.transform.position, 2f);
@@ -221,16 +235,21 @@ public class PlayerCombat : MonoBehaviour
             if (collider.tag != "Player" 
                 && collider.GetComponent<IKillable>() != null)
             {
-                collider.GetComponent<IKillable>().Die();
+                if (markedColliders.Contains(collider) == true)
+                    markedColliders.Remove(collider);
+                markedColliders.Add(collider);
+                collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
+                Vfx_TryPoolBloodsplash(collider);
+                //collider.GetComponent<IKillable>().Die();
                 hitTarget = true;
-                //Play BloodVFX
-                Vfx_TryBloodsplash(collider);
+                ////Play BloodVFX
+                //Vfx_TryBloodsplash(collider);
             }
         }
         return hitTarget;
     }
     Vector3 startPosOfDash = Vector3.zero;
-    bool TryDealDamageOnLengthOfDash()
+    bool TryMarkOnLengthOfDash()
     {
         bool hitTarget = false;
         Debug.DrawLine(startPosOfDash, attackPosition.transform.position, Color.blue, 3f);
@@ -240,19 +259,43 @@ public class PlayerCombat : MonoBehaviour
             if (collider.tag != "Player"
                 && collider.GetComponent<IKillable>() != null)
             {
-                collider.GetComponent<IKillable>().Die();
+                if (markedColliders.Contains(collider) == true)
+                {
+                    collider.GetComponentInChildren<BloodStreamParticle>().ReturnToPool();
+                    markedColliders.Remove(collider);
+                }
+                markedColliders.Add(collider);
+                collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
+                Vfx_TryPoolBloodsplash(collider);
+                //collider.GetComponent<IKillable>().Die();
                 hitTarget = true;
-                //Play BloodVFX
-                Vfx_TryBloodsplash(collider);
+                ////Play BloodVFX
+                //Vfx_TryBloodsplash(collider);
             }
         }
         return hitTarget;
     }
-    void Vfx_TryBloodsplash(Collider targetColl)
+    public void TryBlowMarks()
+    {
+        if (markedColliders.Count == 0)
+            return;
+        foreach (Collider collider in markedColliders)
+        {
+            BloodStreamParticle vfx = collider.GetComponentInChildren<BloodStreamParticle>();
+            vfx.transform.SetParent(null);
+            vfx.PlayAndTryReturnToPool();
+            collider.GetComponent<AI_Canvas>().ActivateDeathMark(false);
+            collider.GetComponent<IKillable>().Die();
+        }
+        markedColliders.Clear();
+    }
+    void Vfx_TryPoolBloodsplash(Collider targetColl)
     {
         BloodStreamParticle currentBloodStram = objectPoolManager.bloodStreamPool.Get();
         currentBloodStram.transform.position = targetColl.bounds.center;
         currentBloodStram.transform.rotation = Quaternion.LookRotation(transform.forward);
-        currentBloodStram.PlayAndTryReturnToPool();
+        currentBloodStram.transform.parent = targetColl.transform;
+        //currentBloodStram.transform.rotation = Quaternion.LookRotation(-targetColl.transform.forward);
+        //currentBloodStram.PlayAndTryReturnToPool();
     }
 }

@@ -71,6 +71,15 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SheathSword"",
+                    ""type"": ""Button"",
+                    ""id"": ""7dff2399-65d3-4911-b751-ab00b7b6ec8a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -170,6 +179,17 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""OpenMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aab9cc04-4a84-45d8-a191-6e4bea600944"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SheathSword"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -478,6 +498,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
         m_Gameplay_CancelAttack = m_Gameplay.FindAction("CancelAttack", throwIfNotFound: true);
         m_Gameplay_OpenMenu = m_Gameplay.FindAction("OpenMenu", throwIfNotFound: true);
+        m_Gameplay_SheathSword = m_Gameplay.FindAction("SheathSword", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -555,6 +576,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Attack;
     private readonly InputAction m_Gameplay_CancelAttack;
     private readonly InputAction m_Gameplay_OpenMenu;
+    private readonly InputAction m_Gameplay_SheathSword;
     public struct GameplayActions
     {
         private @MainControls m_Wrapper;
@@ -564,6 +586,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
         public InputAction @CancelAttack => m_Wrapper.m_Gameplay_CancelAttack;
         public InputAction @OpenMenu => m_Wrapper.m_Gameplay_OpenMenu;
+        public InputAction @SheathSword => m_Wrapper.m_Gameplay_SheathSword;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -588,6 +611,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @OpenMenu.started += instance.OnOpenMenu;
             @OpenMenu.performed += instance.OnOpenMenu;
             @OpenMenu.canceled += instance.OnOpenMenu;
+            @SheathSword.started += instance.OnSheathSword;
+            @SheathSword.performed += instance.OnSheathSword;
+            @SheathSword.canceled += instance.OnSheathSword;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -607,6 +633,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @OpenMenu.started -= instance.OnOpenMenu;
             @OpenMenu.performed -= instance.OnOpenMenu;
             @OpenMenu.canceled -= instance.OnOpenMenu;
+            @SheathSword.started -= instance.OnSheathSword;
+            @SheathSword.performed -= instance.OnSheathSword;
+            @SheathSword.canceled -= instance.OnSheathSword;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -750,6 +779,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnCancelAttack(InputAction.CallbackContext context);
         void OnOpenMenu(InputAction.CallbackContext context);
+        void OnSheathSword(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class Basic_State_Patrol : AI_Base_State
 {
-    public Basic_State_Patrol(GameObject _npc, NavMeshAgent _agent, Animator _animator, GameObject _target, CharacterStats _npcStats, AI_StateBehaviour _npcStateBeh, AI_Movement _npcMovement) 
-        : base(_npc, _agent, _animator, _target, _npcStats, _npcStateBeh, _npcMovement)
+    public Basic_State_Patrol(GameObject _npc, NavMeshAgent _agent, Animator _animator, GameObject _target, CharacterStats _npcStats, AI_StateBehaviour _npcStateBeh, AI_Movement _npcMovement, AI_Canvas _npcCanvas) 
+        : base(_npc, _agent, _animator, _target, _npcStats, _npcStateBeh, _npcMovement, _npcCanvas)
     {
         stateName = STATE.PATROL;
     }
@@ -18,12 +18,13 @@ public class Basic_State_Patrol : AI_Base_State
     {
         //Debug.Log("EnterPatrol");
         //agent.velocity = Vector3.zero;
+        GameManager.Alerting.AddListener(PlayerFound);
         int currentIndex = -1;
         lastDist = Mathf.Infinity;
         if (npcStateBeh.wayPoints.Count < 1 || npcStateBeh.canPatrol == false)
         {
             Debug.Log("No waypoints for " + npc.name + ", or cannot patrol. Returning to Idle");
-            nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }
@@ -58,20 +59,20 @@ public class Basic_State_Patrol : AI_Base_State
     {
         if (npcStats.isDead == true)
         {
-            nextState = new Basic_State_Death(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Death(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }
         DetectingPlayer();
         if (playerDetected == true)
         {
-            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }
         if (npcStateBeh.canPatrol == false)
         {
-            nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement);
+            nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }

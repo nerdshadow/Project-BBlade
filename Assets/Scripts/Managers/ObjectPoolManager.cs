@@ -35,7 +35,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
     void InitManager()
     {
-        Debug.Log("Init manager");
+        //Debug.Log("Init manager");
         bloodStreamPool = new ObjectPool<BloodStreamParticle>
             (CreateBloodParticle, OnTakeBloodParticleFromPool, OnReturnBloodParticleToPool, OnDestroyBloodParticleStream, true, bloodParticleArraySize, bloodParticleMaxArraySize);
         bloodDecalPool = new ObjectPool<BloodDecal>
@@ -43,7 +43,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
     private BloodStreamParticle CreateBloodParticle()
     {
-        Debug.Log("Creating VFX");
+        //Debug.Log("Creating VFX");
         BloodStreamParticle _bloodStream = Instantiate(bloodStreamVFXPrefab, this.transform, true);
 
         _bloodStream.SetPool(bloodStreamPool);
@@ -52,7 +52,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
     void OnTakeBloodParticleFromPool(BloodStreamParticle _bloodStream)
     {
-        Debug.Log("Taking Pooled");
+        //Debug.Log("Taking Pooled");
         _bloodStream.transform.position = Vector3.zero;
         _bloodStream.transform.rotation = Quaternion.identity;
 
@@ -60,17 +60,17 @@ public class ObjectPoolManager : MonoBehaviour
     }
     void OnReturnBloodParticleToPool(BloodStreamParticle _bloodStream)
     {
-        Debug.Log("Returning pooled");
+        //Debug.Log("Returning pooled");
         _bloodStream.gameObject.SetActive(false);
     }
     void OnDestroyBloodParticleStream(BloodStreamParticle _bloodStream)
     {
-        Debug.Log("Destroing Pooled");
+        //Debug.Log("Destroing Pooled");
         Destroy(_bloodStream);
     }
     private BloodDecal CreateBloodDecal()
     {
-        Debug.Log("Creating VFX");
+        //Debug.Log("Creating VFX");
         BloodDecal _bloodDecal = Instantiate(bloodDecalPrefab, this.transform, true);
 
         _bloodDecal.SetPool(bloodDecalPool);
@@ -79,7 +79,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
     void OnTakeBloodDecalFromPool(BloodDecal _bloodDecal)
     {
-        Debug.Log("Taking Pooled");
+        //Debug.Log("Taking Pooled");
         _bloodDecal.transform.position = Vector3.zero;
         _bloodDecal.transform.rotation = Quaternion.identity;
 
@@ -87,12 +87,12 @@ public class ObjectPoolManager : MonoBehaviour
     }
     void OnReturnBloodDecalToPool(BloodDecal _bloodDecal)
     {
-        Debug.Log("Returning pooled");
+        //Debug.Log("Returning pooled");
         _bloodDecal.gameObject.SetActive(false);
     }
     void OnDestroyBloodDecalStream(BloodDecal _bloodDecal)
     {
-        Debug.Log("Destroing Pooled");
+        //Debug.Log("Destroing Pooled");
         Destroy(_bloodDecal);
     }
 
