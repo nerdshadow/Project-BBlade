@@ -22,11 +22,11 @@ public class AI_StateBehaviour : MonoBehaviour
     protected AI_Canvas npcCanvas;
     [SerializeField]
     public Collider characterColl;
-    public bool canMeleeAttack = true;
-    protected Coroutine ChangeAnimMoveX;
+    public bool canAttack = true;
+    public Transform meleeAtkPoint;
+    public Transform rangeAtkPoint;
     public List<GameObject> wayPoints = null;
     public bool canPatrol = false;
-
     public GameManager gameManager;
     private void Start()
     {
@@ -76,18 +76,7 @@ public class AI_StateBehaviour : MonoBehaviour
                 Physics.IgnoreCollision(coll, colls[i]);
         }
     }
-    protected virtual IEnumerator IEnum_Change_Anim_MoveX_Weight(float var_end, float duration)
-    {
-        float elapsed = 0.0f;
-        while (elapsed < duration)
-        {
-            anim.SetFloat("Move_X", Mathf.Lerp(anim.GetFloat("Move_X"), var_end, elapsed / duration));
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        anim.SetFloat("Move_X", var_end);
-        ChangeAnimMoveX = null;
-    }
+    protected Coroutine ChangeAnimMoveX;
     public void Change_Anim_MoveX_Weight(float var_end, float duration)
     {
         if (var_end == anim.GetFloat("Move_X"))
@@ -104,6 +93,47 @@ public class AI_StateBehaviour : MonoBehaviour
         }
         else return;
     }
+    protected virtual IEnumerator IEnum_Change_Anim_MoveX_Weight(float var_end, float duration)
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            anim.SetFloat("Move_X", Mathf.Lerp(anim.GetFloat("Move_X"), var_end, elapsed / duration));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        anim.SetFloat("Move_X", var_end);
+        ChangeAnimMoveX = null;
+    }
+    protected Coroutine ChangeAnimCombatValue;
+    public void Change_Anim_CombatValue(float var_end, float duration)
+    {
+        if (var_end == anim.GetFloat("CombatValue"))
+            return;
+        //Debug.Log(gameObject.name + " changing dir x");
+        if (ChangeAnimCombatValue != null)
+        {
+            StopCoroutine(ChangeAnimCombatValue);
+            ChangeAnimCombatValue = null;
+        }
+        if (anim.GetFloat("CombatValue") != var_end)
+        {
+            ChangeAnimCombatValue = StartCoroutine(IEnum_Change_Anim_CombatValue(var_end, duration));
+        }
+        else return;
+    }
+    protected virtual IEnumerator IEnum_Change_Anim_CombatValue(float var_end, float duration)
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            anim.SetFloat("CombatValue", Mathf.Lerp(anim.GetFloat("CombatValue"), var_end, elapsed / duration));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        anim.SetFloat("CombatValue", var_end);
+        ChangeAnimCombatValue = null;
+    }
     protected Coroutine ReloadCoroutine;
     IEnumerator ReloadCD(float reload)
     {
@@ -113,21 +143,21 @@ public class AI_StateBehaviour : MonoBehaviour
             x += Time.deltaTime;
             yield return null;
         }
-        canMeleeAttack = true;
+        canAttack = true;
         ReloadCoroutine = null;
     }
     public void ReloadAtk()
     {
         if (ReloadCoroutine == null)
         {
-            canMeleeAttack = false;
+            canAttack = false;
             ReloadCoroutine = StartCoroutine(ReloadCD(characterStats.currentAtkRechargeTine));
         }
         else return;
     }
-    public void DoAttack()
+    public void DoMeleeAttack()
     {
-        Collider[] colliders = Physics.OverlapSphere(/*attackPosition.*/transform.position, 2f);
+        Collider[] colliders = Physics.OverlapSphere(meleeAtkPoint.position, 1f);
         foreach (Collider collider in colliders)
         {
             if (collider.tag == "Player"
@@ -137,6 +167,44 @@ public class AI_StateBehaviour : MonoBehaviour
                 //Play BloodVFX
                 //Vfx_TryBloodsplash(collider);
             }
+        }
+    }
+
+    [SerializeField]
+    GameObject bulletTrailVFX;
+    GameObject currentBulletTrail;
+    [SerializeField]
+    float trailLifetime = 0.1f;
+    public void DoRangedAttack()
+    {
+        if(playerRef == null)
+            playerRef = gameManager.playerRef;
+        StartCoroutine(ShootOnNextUpdate());
+        
+    }
+    IEnumerator ShootOnNextUpdate()
+    {
+        yield return new WaitForFixedUpdate();
+        rangeAtkPoint.LookAt(playerRef.GetComponent<Collider>().bounds.center);
+        currentBulletTrail = Instantiate(bulletTrailVFX, rangeAtkPoint.position, rangeAtkPoint.rotation);
+        currentBulletTrail.GetComponent<BulletTrail>().lineLifetime = trailLifetime;
+        currentBulletTrail.GetComponent<LineRenderer>().SetPosition(0, rangeAtkPoint.position);
+        currentBulletTrail.GetComponent<BulletTrail>().StartTimer();
+        currentBulletTrail.SetActive(true);
+
+        Vector3 shootDir = rangeAtkPoint.forward + new Vector3(Random.Range(-0.1f, 0.1f),
+                                                        Random.Range(-0.1f, 0.1f),
+                                                        Random.Range(-0.1f, 0.1f));
+        shootDir.Normalize();
+        if (Physics.Raycast(rangeAtkPoint.position, shootDir, out RaycastHit hit, characterStats.currentRangeAtkRange * 2))
+        {
+            currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+
+            hit.collider.GetComponent<IKillable>()?.Die();
+        }
+        else
+        {
+            currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, rangeAtkPoint.position + (shootDir * characterStats.currentRangeAtkRange * 2));
         }
     }
 }

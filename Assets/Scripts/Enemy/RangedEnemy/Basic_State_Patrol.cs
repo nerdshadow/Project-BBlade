@@ -52,6 +52,8 @@ public class Basic_State_Patrol : AI_Base_State
         npcMovement.canRotate = true;
         npcMovement.canMove = true;
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
+        npcStateBeh.Change_Anim_CombatValue(0f, 1f);
+        npcStats.currentSpeed = npcStats.currentCalmSpeed;
         base.Enter();
     }
 
@@ -66,7 +68,7 @@ public class Basic_State_Patrol : AI_Base_State
         DetectingPlayer();
         if (playerDetected == true)
         {
-            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
+            nextState = new Basic_State_Pursue_Attack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcName: Thug
   basicAtkRange: 1
-  basicAtkRachargeTime: 5
+  basicAtkRachargeTime: 1
   basicDetectDistance: 8
   basicDetectAngle: 70
   basicDetectTime: 3

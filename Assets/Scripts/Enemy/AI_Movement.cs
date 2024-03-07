@@ -20,7 +20,7 @@ public class AI_Movement : MonoBehaviour
     float FinalForceMod = 8f;
     public bool canRotate = true;
     
-    public GameObject target = null;
+    public GameObject rotateTarget = null;
     private void Start()
     {
         if(agent == null)
@@ -67,10 +67,10 @@ public class AI_Movement : MonoBehaviour
         if (canRotate == false)
             return;
         Vector3 lookPos;
-        if (target != null)
+        if (rotateTarget != null)
         {
             //Debug.Log("Steering to target");
-            lookPos = target.transform.position - this.transform.position;
+            lookPos = rotateTarget.transform.position - this.transform.position;
         }
         else
         {

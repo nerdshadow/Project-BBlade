@@ -8,8 +8,11 @@ public class CharacterStats : MonoBehaviour, IKillable
     [SerializeField]
     protected BaseStats baseStats;
     public string currentName;
-    public float currentAtkRange;
+    public float currentMeleeAtkRange;
+    public float currentRangeAtkRange;
     public float currentAtkRechargeTine;
+    public float currentCalmSpeed;
+    public float currentCombatSpeed;
     public float currentSpeed;
     public float currentRotationSpeed;
     public float currentDetectDistance;
@@ -28,18 +31,21 @@ public class CharacterStats : MonoBehaviour, IKillable
     public virtual void InitializeStats()
     {
         currentName = baseStats.npcName;
-        currentAtkRange = baseStats.basicAtkRange;
+        currentMeleeAtkRange = baseStats.basicMeleeAtkRange;
+        currentRangeAtkRange = baseStats.basicRangeAtkRange;
         currentAtkRechargeTine = baseStats.basicAtkRachargeTime;
-        currentSpeed = baseStats.basicSpeed;
+        currentCalmSpeed = baseStats.basicCalmSpeed;
+        currentCombatSpeed = baseStats.basicCombatSpeed;
         currentRotationSpeed = baseStats.basicRotationSpeed;
         currentDetectAngle = baseStats.basicDetectAngle;
         currentDetectDistance = baseStats.basicDetectDistance;
         maxDetectTime = baseStats.basicDetectTime;
+        currentSpeed = currentCalmSpeed;
     }
 
     public virtual void ChangeSpeed(float newSpeed)
     {
-        currentSpeed = newSpeed;
+        currentCalmSpeed = newSpeed;
     }
     [ContextMenu("Die")]
     public void Die()

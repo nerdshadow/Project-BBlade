@@ -16,6 +16,8 @@ public class Basic_State_Idle : AI_Base_State
         //Debug.Log("EnterIdle");
         GameManager.Alerting.AddListener(PlayerFound);
         npcStateBeh.Change_Anim_MoveX_Weight(0f, 0.5f);
+        npcStateBeh.Change_Anim_CombatValue(0f, 1f);
+        npcStats.currentSpeed = npcStats.currentCalmSpeed;
         agent.velocity = Vector3.zero;
         agent.isStopped = true;
         npcMovement.canRotate = false;
@@ -34,7 +36,7 @@ public class Basic_State_Idle : AI_Base_State
         DetectingPlayer();
         if (playerDetected == true)
         {
-            nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
+            nextState = new Basic_State_Pursue_Attack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;
         }
@@ -50,7 +52,7 @@ public class Basic_State_Idle : AI_Base_State
     {
         playerDetected = true;
         npcCanvas.StartCoroutine(FireAnAlert());
-        nextState = new Basic_State_PursueAndAttack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
+        nextState = new Basic_State_Pursue_Attack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
         stage = EVENT.EXIT;
         base.PlayerFound();
         return;

@@ -147,7 +147,7 @@ public class AI_Base_State
             return false;
         Vector3 hitDir = playerGO.GetComponent<Collider>().bounds.center - npcStats.eyeLocation.position;
         RaycastHit hit;
-        if (Physics.Raycast(npcStats.eyeLocation.position, hitDir, out hit, npcStats.currentDetectDistance, npcStats.layersToDetect))
+        if (Physics.Raycast(npcStats.eyeLocation.position, hitDir, out hit, npcStats.currentDetectDistance))
         {
             //Debug.Log("Hit = " + (hit.collider.tag == "Player"));
             if (hit.collider.tag == "Player")
@@ -198,7 +198,7 @@ public class AI_Base_State
     }
     protected virtual void PlayerFound()
     {
-        //Debug.Log("Alert player found!");
+        Debug.Log("Alert player found!");
     }
     public bool CheckPathTo(GameObject _target)
     {
@@ -216,10 +216,18 @@ public class AI_Base_State
     }
     public virtual void TryMeleeAttack()
     {
-        if (npcStateBeh.canMeleeAttack == true)
+        if (npcStateBeh.canAttack == true)
         {
             npcStateBeh.ReloadAtk();
-            anim.CrossFade("Attack", 0.1f);
+            anim.CrossFade("MeleeAtk", 0.1f);
+        }
+    }
+    public virtual void TryRangeAttack()
+    {
+        if (npcStateBeh.canAttack == true)
+        {
+            npcStateBeh.ReloadAtk();
+            anim.CrossFade("RangeShoot", 0.1f);
         }
     }
 }
