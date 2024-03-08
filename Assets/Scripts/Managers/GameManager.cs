@@ -14,6 +14,13 @@ public class GameManager : MonoBehaviour
     public bool gameIsPaused = false;
     public GameObject playerRef = null;
     public Camera playerCameraRef = null;
+    #region Score
+    [SerializeField]
+    int finalScore = 0;
+    [SerializeField]
+    ScoreBehaviour scoreBeh;
+    
+    #endregion
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -31,6 +38,7 @@ public class GameManager : MonoBehaviour
         //Debug test
         Application.targetFrameRate = 61;
         playerCameraRef = Camera.main;
+        scoreBeh = FindObjectOfType<ScoreBehaviour>();
     }
     public void ExitGame()
     {
@@ -105,7 +113,16 @@ public class GameManager : MonoBehaviour
         if (!aliveEnemies.Contains(_enemy))
             return;
         aliveEnemies.Remove(_enemy);
-        if(aliveEnemies.Count == 0)
-            OpenExit.Invoke();
+        if (aliveEnemies.Count == 0)
+            OnAllEnemiesDead();
     }
+    void OnAllEnemiesDead()
+    {
+        OpenExit.Invoke();
+    }
+    public void AddScore(int score)
+    {
+        scoreBeh.AddScore(score);
+    }
+
 }

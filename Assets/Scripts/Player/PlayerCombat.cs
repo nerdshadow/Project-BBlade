@@ -17,6 +17,7 @@ public class PlayerCombat : MonoBehaviour
     public UnityEvent cancelAttack = new UnityEvent();
     [SerializeField]
     ObjectPoolManager objectPoolManager = ObjectPoolManager.instance;
+    GameManager gameManager;
     private void Start()
     {
         if (playerControls == null)
@@ -28,6 +29,9 @@ public class PlayerCombat : MonoBehaviour
 
         if (objectPoolManager == null)
             objectPoolManager = ObjectPoolManager.instance;
+        if(gameManager == null)
+            gameManager = GameManager.instance;
+
         PlayerStats.playerDied.AddListener(StopCombat);
     }
     private void OnEnable()
@@ -286,8 +290,13 @@ public class PlayerCombat : MonoBehaviour
             vfx.PlayAndTryReturnToPool();
             collider.GetComponent<AI_Canvas>().ActivateDeathMark(false);
             collider.GetComponent<IKillable>().Die();
+            AddScore();
         }
         markedColliders.Clear();
+    }
+    void AddScore()
+    {
+        gameManager.AddScore(100);
     }
     void StopCombat()
     {

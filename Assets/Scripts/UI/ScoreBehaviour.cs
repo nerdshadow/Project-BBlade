@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class ScoreBehaviour : MonoBehaviour
 {
-    TextMeshPro textMeshPro;
+    [SerializeField]
+    TMP_Text textMeshPro;
     int currentScore = 0;
     string currentText = "Score: ";
     void Start()
     {
         if(textMeshPro == null)
-            textMeshPro = GetComponent<TextMeshPro>();
+            textMeshPro = GetComponent<TMP_Text>();
         ChangeScore(0);
     }
 
@@ -22,7 +23,7 @@ public class ScoreBehaviour : MonoBehaviour
     }
     public void ChangeScore(int _score)
     {
-        textMeshPro.text = currentText + _score;
+        textMeshPro.text = "Score: " + _score;
     }
     public void AddScore(int _score)
     {
