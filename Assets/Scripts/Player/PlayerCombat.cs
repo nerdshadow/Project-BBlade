@@ -28,6 +28,7 @@ public class PlayerCombat : MonoBehaviour
 
         if (objectPoolManager == null)
             objectPoolManager = ObjectPoolManager.instance;
+        PlayerStats.playerDied.AddListener(StopCombat);
     }
     private void OnEnable()
     {
@@ -217,7 +218,6 @@ public class PlayerCombat : MonoBehaviour
         //Debug.Log("tried to attack");
         StartCoroutine(TryMarkAfterDelay());
     }
-
     IEnumerator TryMarkAfterDelay()
     {
         yield return new WaitForFixedUpdate();
@@ -288,6 +288,12 @@ public class PlayerCombat : MonoBehaviour
             collider.GetComponent<IKillable>().Die();
         }
         markedColliders.Clear();
+    }
+    void StopCombat()
+    {
+        StopAllCoroutines();
+        markedColliders.Clear();
+        canAttack = false;
     }
     void Vfx_TryPoolBloodsplash(Collider targetColl)
     {

@@ -19,7 +19,6 @@ public class AI_Movement : MonoBehaviour
     [SerializeField]
     float FinalForceMod = 8f;
     public bool canRotate = true;
-    
     public GameObject rotateTarget = null;
     private void Start()
     {
@@ -46,7 +45,7 @@ public class AI_Movement : MonoBehaviour
     protected virtual void StopAgent()
     {
         worldDeltaPosition = agent.nextPosition - transform.position;
-        if (worldDeltaPosition.magnitude > 2f)
+        if (worldDeltaPosition.magnitude > 1.1f)
             agent.isStopped = true;
         else
             agent.isStopped = false;
@@ -54,14 +53,13 @@ public class AI_Movement : MonoBehaviour
     protected virtual void SnapAgentToNPC()
     {
         worldDeltaPosition = agent.nextPosition - transform.position;
-        if (worldDeltaPosition.magnitude > 3f)
-            agent.nextPosition = transform.position + 0.5f * worldDeltaPosition;
+        if (worldDeltaPosition.magnitude > 0.5f)
+            agent.nextPosition = transform.position + 0.1f * worldDeltaPosition;
     }
     void ChangeDrag()
     {
         npcRigidbody.drag = groundDrag;
     }
-
     void Rotate()
     {
         if (canRotate == false)

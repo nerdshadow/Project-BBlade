@@ -36,52 +36,84 @@ public class Basic_State_Pursue_Attack : AI_Base_State
             return;
         }
         CheckPathTo(playerGO);
-        if (DistanceTo(playerGO) <= npcStats.currentMeleeAtkRange * 2)
-        {
-            npcMovement.rotateTarget = playerGO;
-        }
-        else
-        {
-            npcMovement.rotateTarget = null;
-        }
-
+        TryRotate();
         TryAttack();
+
         if (agent.enabled == true)
         {
             agent.destination = playerGO.transform.position;
         }
     }
+    void TryRotate()
+    {
+        float distanceToPlayer = DistanceTo(playerGO);
+        if (distanceToPlayer > npcStats.currentRangeAtkRange * 1.1f)
+        {
+            npcMovement.rotateTarget = null;
+            npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
+            Debug.Log("Changing move to 1");
+            npcMovement.canMove = true;
+            return;
+        }
+        else if (distanceToPlayer <= npcStats.currentMeleeAtkRange * 1.2f)
+        {
+            npcMovement.rotateTarget = playerGO;
+            return;
+        }
+        else if (distanceToPlayer <= npcStats.currentRangeAtkRange * 1.1f)
+        {
+            Vector3 hitDir = playerGO.GetComponent<Collider>().bounds.center - npcStateBeh.characterColl.bounds.center;
+            RaycastHit hit;
+            if (Physics.Raycast(npcStateBeh.characterColl.bounds.center, hitDir, out hit, npcStats.currentRangeAtkRange * 1.1f))
+            {
+                //Debug.Log("Hit = " + (hit.collider.tag == "Player"));
+                if (hit.collider.tag == "Player")
+                {
+                    npcMovement.rotateTarget = playerGO;
+                    return;
+                }
+            }
+        }
+        npcMovement.rotateTarget = null;
+        npcMovement.canMove = true;
+        npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
+        Debug.Log("Changing move to 1");
+    }
     void TryAttack()
     {
         float distanceToPlayer = DistanceTo(playerGO);
+
         if (distanceToPlayer <= npcStats.currentMeleeAtkRange)
         {
-            npcMovement.canMove = false;
-            if (AngleTo(playerGO) <= 30)
+            if (AngleTo(playerGO) <= 20)
             {
+                npcMovement.canMove = false;
+                npcStateBeh.Change_Anim_MoveX_Weight(0f, 0.5f);
                 TryMeleeAttack();
                 return;
             }
         }
         else if (distanceToPlayer <= npcStats.currentRangeAtkRange)
         {
-            Vector3 hitDir = playerGO.GetComponent<Collider>().bounds.center - npcStats.eyeLocation.position;
+            Vector3 hitDir = playerGO.GetComponent<Collider>().bounds.center - npcStateBeh.characterColl.bounds.center;
             RaycastHit hit;
-            if (Physics.Raycast(npcStats.eyeLocation.position, hitDir, out hit, npcStats.currentRangeAtkRange))
+            if (Physics.Raycast(npcStateBeh.characterColl.bounds.center, hitDir, out hit, npcStats.currentRangeAtkRange))
             {
                 //Debug.Log("Hit = " + (hit.collider.tag == "Player"));
                 if (hit.collider.tag == "Player")
                 {
+                    npcStateBeh.Change_Anim_MoveX_Weight(0f, 0.5f);
                     npcMovement.canMove = false;
-                    TryRangeAttack();
-                    return;
+                    if (AngleTo(playerGO) <= 5f)
+                    {
+                        TryRangeAttack();
+                        return;
+                    }
                 }
             }
         }
-        else
-        {
-            npcMovement.canMove = true;
-        }
+        npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
+        Debug.Log("Changing move to 1");
     }
     public override void Exit()
     {

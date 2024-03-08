@@ -12,6 +12,7 @@ public class BaseStats : ScriptableObject
     public float basicDetectDistance = 1;
     public float basicDetectAngle = 1;
     public float basicDetectTime = 1;
+    public float basicDetectSpeed = 1;
     public float basicCalmSpeed = 1;
     public float basicCombatSpeed = 2;
     public float basicRotationSpeed = 1;

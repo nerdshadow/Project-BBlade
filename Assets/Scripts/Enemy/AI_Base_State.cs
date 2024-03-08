@@ -187,7 +187,8 @@ public class AI_Base_State
             currentDetectTime = 0f;
             return;
         }
-        currentDetectTime += Time.deltaTime;
+        Vector3 dirToPlayer = playerGO.transform.position - npc.transform.position;
+        currentDetectTime += Time.deltaTime * npcStats.currentDetectSpeed * (1/ dirToPlayer.magnitude);
         npcCanvas.ChangeVisionValue(currentDetectTime / npcStats.maxDetectTime);
     }
     protected IEnumerator FireAnAlert()

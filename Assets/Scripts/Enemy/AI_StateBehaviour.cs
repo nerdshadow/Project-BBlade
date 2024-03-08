@@ -84,6 +84,8 @@ public class AI_StateBehaviour : MonoBehaviour
         //Debug.Log(gameObject.name + " changing dir x");
         if (ChangeAnimMoveX != null)
         {
+            if (ChangeAnimMoveX == StartCoroutine(IEnum_Change_Anim_MoveX_Weight(var_end, duration)))
+                return;
             StopCoroutine(ChangeAnimMoveX);
             ChangeAnimMoveX = null;
         }
@@ -199,7 +201,6 @@ public class AI_StateBehaviour : MonoBehaviour
         if (Physics.Raycast(rangeAtkPoint.position, shootDir, out RaycastHit hit, characterStats.currentRangeAtkRange * 2))
         {
             currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
-
             hit.collider.GetComponent<IKillable>()?.Die();
         }
         else

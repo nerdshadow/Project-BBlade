@@ -34,6 +34,7 @@ public class PlayerAnimRig : MonoBehaviour
     {
         if (anim == null)
             anim = GetComponent<Animator>();
+        PlayerStats.playerDied.AddListener(StopAnim);
     }
     private void Update()
     {
@@ -242,8 +243,9 @@ public class PlayerAnimRig : MonoBehaviour
             anim.SetLayerWeight(1, 2);
         }
     }
-    //IEnumerator ChangingAnimLayerWeight(int layerIndex, float value)
-    //{
-
-    //}
+    void StopAnim()
+    {
+        anim.CrossFade("Death", 1f);
+        canRotate = false;
+    }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -89,5 +90,22 @@ public class GameManager : MonoBehaviour
     public void AlertAll()
     {
         Alerting.Invoke();
+    }
+    [SerializeField]
+    List<GameObject> aliveEnemies = new List<GameObject>();
+    public void AddEnemyToList(GameObject _enemy)
+    {
+        if (aliveEnemies.Contains(_enemy))
+            return;
+        aliveEnemies.Add( _enemy );
+    }
+    public static UnityEvent OpenExit = new UnityEvent();
+    public void RemoveEnemyFromList(GameObject _enemy)
+    {
+        if (!aliveEnemies.Contains(_enemy))
+            return;
+        aliveEnemies.Remove(_enemy);
+        if(aliveEnemies.Count == 0)
+            OpenExit.Invoke();
     }
 }

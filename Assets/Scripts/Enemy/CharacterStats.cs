@@ -17,12 +17,17 @@ public class CharacterStats : MonoBehaviour, IKillable
     public float currentRotationSpeed;
     public float currentDetectDistance;
     public float currentDetectAngle;
+    public float currentDetectSpeed;
     public float maxDetectTime;
-
     public Transform eyeLocation;
-
     public bool isDead = false;
-
+    GameManager gameManager;
+    private void Start()
+    {
+        if (gameManager == null)
+            gameManager = GameManager.instance;
+        gameManager.AddEnemyToList(this.gameObject);
+    }
     public LayerMask layersToDetect;
     protected virtual void OnEnable()
     {
@@ -40,6 +45,7 @@ public class CharacterStats : MonoBehaviour, IKillable
         currentDetectAngle = baseStats.basicDetectAngle;
         currentDetectDistance = baseStats.basicDetectDistance;
         maxDetectTime = baseStats.basicDetectTime;
+        currentDetectSpeed = baseStats.basicDetectSpeed;
         currentSpeed = currentCalmSpeed;
     }
 
@@ -55,6 +61,7 @@ public class CharacterStats : MonoBehaviour, IKillable
         //Death
         DisableComponents();
         isDead = true;
+        gameManager.RemoveEnemyFromList(this.gameObject);
         //Debug.Log(currentName + " is dead");
     }
     public void DisableComponents()

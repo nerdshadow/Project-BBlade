@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using static AI_Base_State;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -55,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         mainControlsMap = playerControls.Gameplay;
         //Redo
         mainControlsMap.Enable();
+        PlayerStats.playerDied.AddListener(StopMovement);
         EnableControls();
 
     }
@@ -162,8 +164,11 @@ public class PlayerMovement : MonoBehaviour
     public void StopMovement()
     {
         groundDrag = 1f;
+        moveDir = Vector3.zero;
+        canMove = false;
+        canRotate = false;
         controlSpeed = false;
-        this.enabled = false;
+        //this.enabled = false;
     }
     public void ChangeAbilityToMove(bool isAttacking)
     {
