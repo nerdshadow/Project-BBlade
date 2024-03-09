@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -46,7 +45,7 @@ public class PlayerCombat : MonoBehaviour
         if (playerControls != null)
             DisableControls();
     }
-    private void Update()
+    private void FixedUpdate()
     {
         IncreasingDashDistance();
     }
@@ -98,7 +97,7 @@ public class PlayerCombat : MonoBehaviour
     }
     void CancelAttack(InputAction.CallbackContext context)
     {
-        Debug.Log("Cancel atk");
+        //Debug.Log("Cancel atk");
         startedAttack = false;
         cancelAttack.Invoke();
         ReloadDash();
@@ -161,8 +160,12 @@ public class PlayerCombat : MonoBehaviour
     {
         if (startedAttack == false || canIncreaseDashDistance == false)
             return;
-        CheckCollisionBeforeDashWithRaycasts();
-        if (dashDistance > maxDashDistance)
+        if (CheckCollisionBeforeDashWithRaycasts() == true)
+        {
+            ChangeDashDistance.Invoke(dashDistance);
+            return;
+        }
+        if (dashDistance >= maxDashDistance)
         {
             dashDistance = maxDashDistance;
             ChangeDashDistance.Invoke(dashDistance);
@@ -191,7 +194,7 @@ public class PlayerCombat : MonoBehaviour
     LayerMask collisionLayerMask = 0;
     [SerializeField]
     Transform[] raycastPositions;
-    void CheckCollisionBeforeDashWithRaycasts()
+    bool CheckCollisionBeforeDashWithRaycasts()
     {
         RaycastHit hit;
         float minDistance = Mathf.Infinity;
@@ -209,10 +212,12 @@ public class PlayerCombat : MonoBehaviour
                     minDistance = distance;
             }
         }
-        if (dashDistance > minDistance)
+        if (dashDistance >= minDistance)
         {
             dashDistance = minDistance;
+            return true;
         }
+        return false;
     }
     [SerializeField]
     GameObject attackPosition;
@@ -290,13 +295,27 @@ public class PlayerCombat : MonoBehaviour
             vfx.PlayAndTryReturnToPool();
             collider.GetComponent<AI_Canvas>().ActivateDeathMark(false);
             collider.GetComponent<IKillable>().Die();
-            AddScore();
         }
+        AddScore(markedColliders.Count);
         markedColliders.Clear();
     }
-    void AddScore()
+    void AddScore(int numberOfMarks)
     {
-        gameManager.AddScore(100);
+        int multiplier = 1;
+        switch (numberOfMarks)
+        {
+            case <= 2:
+                multiplier = 1;
+                break;
+            case < 5:
+                multiplier = 2;
+                break;
+            case >= 5:
+                multiplier = 5;
+                break;
+        }
+        int finalScore = 100 * numberOfMarks * multiplier;
+        gameManager.AddScore(finalScore);
     }
     void StopCombat()
     {

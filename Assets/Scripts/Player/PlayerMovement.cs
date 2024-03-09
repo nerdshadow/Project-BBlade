@@ -186,6 +186,8 @@ public class PlayerMovement : MonoBehaviour
     }
     public void DashForward()
     {
+        if (currentDashDistance <= 1.5f)
+            return;
         Vector3 pos = transform.position;
         Vector3 dir = (target.transform.position - pos).normalized;
         //Debug.Log("Dashed for " + currentDashDistance);
@@ -200,4 +202,5 @@ public class PlayerMovement : MonoBehaviour
         dir = new Vector3(dir.x, pos.y, dir.z);
         distanceIdicator.transform.position = pos + dir * currentDashDistance;
     }
+
 }

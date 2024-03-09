@@ -96,7 +96,15 @@ public class Basic_State_Patrol : AI_Base_State
         }
         //base.Update();
     }
-
+    protected override void PlayerFound()
+    {
+        playerDetected = true;
+        npcCanvas.StartCoroutine(FireAnAlert());
+        nextState = new Basic_State_Pursue_Attack(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
+        stage = EVENT.EXIT;
+        base.PlayerFound();
+        return;
+    }
     public override void Exit()
     {
         base.Exit();

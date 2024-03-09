@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System;
+using System.Runtime.ConstrainedExecution;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     public bool gameIsPaused = false;
     public GameObject playerRef = null;
     public Camera playerCameraRef = null;
+    bool playerFound = false;
     #region Score
     [SerializeField]
     int finalScore = 0;
@@ -98,6 +100,7 @@ public class GameManager : MonoBehaviour
     public void AlertAll()
     {
         Alerting.Invoke();
+        playerFound = true;
     }
     [SerializeField]
     List<GameObject> aliveEnemies = new List<GameObject>();
@@ -114,15 +117,26 @@ public class GameManager : MonoBehaviour
             return;
         aliveEnemies.Remove(_enemy);
         if (aliveEnemies.Count == 0)
-            OnAllEnemiesDead();
+        {
+           Invoke("OnAllEnemiesDead", 1f);
+        }
     }
     void OnAllEnemiesDead()
     {
+        Debug.Log("All enemies dead");
         OpenExit.Invoke();
+        FinalizeScore();
     }
     public void AddScore(int score)
     {
         scoreBeh.AddScore(score);
+        finalScore += score;
     }
-
+    void FinalizeScore()
+    {
+        if (!playerFound)
+        {
+            scoreBeh.ChangeScore((int)Mathf.Round( finalScore * 1.5f));
+        }
+    }
 }

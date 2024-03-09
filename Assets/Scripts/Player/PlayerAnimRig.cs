@@ -154,7 +154,7 @@ public class PlayerAnimRig : MonoBehaviour
         anim.SetFloat(name, value, setFloatDamp, setFloatSpeed * Time.deltaTime);
     }
     [SerializeField]
-    float normAnimTimeForAttack = 0.7f;
+    float normAnimTimeForAttack = 0.3f;
     public void Attack(bool isAttacking)
     {
         if (isAttacking == false)

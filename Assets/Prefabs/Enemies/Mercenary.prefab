@@ -210,8 +210,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
+  uiCam: {fileID: 0}
   gameManager: {fileID: 0}
   canLook: 1
+  beInBounds: 1
+  targetTransform: {fileID: 1063423223346633946}
+  borderSize: 100
 --- !u!114 &3818766437395651259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,7 +373,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.367}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7626473537399274366
@@ -423,8 +427,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
+  uiCam: {fileID: 0}
   gameManager: {fileID: 0}
   canLook: 1
+  beInBounds: 1
+  targetTransform: {fileID: 1063423223346633946}
+  borderSize: 100
 --- !u!1 &4777720407748232233
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,15 +519,7 @@ MonoBehaviour:
   canAttack: 1
   meleeAtkPoint: {fileID: 5182972053126280596}
   rangeAtkPoint: {fileID: 7224806838160685001}
-  wayPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  wayPoints: []
   canPatrol: 0
   gameManager: {fileID: 0}
   bulletTrailVFX: {fileID: 7058473021608462539, guid: c548523d20b36004e8ecd2fc132724e5,
@@ -548,6 +548,7 @@ MonoBehaviour:
   currentRotationSpeed: 0
   currentDetectDistance: 0
   currentDetectAngle: 0
+  currentDetectSpeed: 0
   maxDetectTime: 0
   eyeLocation: {fileID: 1063423223346633946}
   isDead: 0
@@ -791,8 +792,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
+  uiCam: {fileID: 0}
   gameManager: {fileID: 0}
   canLook: 1
+  beInBounds: 1
+  targetTransform: {fileID: 1063423223346633946}
+  borderSize: 100
 --- !u!1 &7258904049105102760
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +824,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7258904049105102760}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

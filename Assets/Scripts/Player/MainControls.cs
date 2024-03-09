@@ -142,7 +142,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""ccd443cd-8301-45fd-a5ca-ad7f83e71635"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold(duration=0.4)"",
+                    ""interactions"": ""Hold(duration=0.2)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Attack"",

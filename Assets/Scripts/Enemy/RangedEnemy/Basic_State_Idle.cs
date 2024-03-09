@@ -19,7 +19,8 @@ public class Basic_State_Idle : AI_Base_State
         npcStateBeh.Change_Anim_CombatValue(0f, 1f);
         npcStats.currentSpeed = npcStats.currentCalmSpeed;
         agent.velocity = Vector3.zero;
-        agent.isStopped = true;
+        if(agent.isActiveAndEnabled)
+            agent.isStopped = true;
         npcMovement.canRotate = false;
         npcMovement.canMove = false;
         base.Enter();
@@ -40,7 +41,7 @@ public class Basic_State_Idle : AI_Base_State
             stage = EVENT.EXIT;
             return;
         }
-        if (npcStateBeh.canPatrol == true)
+        if (npcStateBeh.canPatrol == true && npcStateBeh.wayPoints.Count > 0)
         {
             nextState = new Basic_State_Patrol(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;

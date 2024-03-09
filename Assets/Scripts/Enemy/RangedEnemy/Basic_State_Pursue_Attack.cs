@@ -51,7 +51,7 @@ public class Basic_State_Pursue_Attack : AI_Base_State
         {
             npcMovement.rotateTarget = null;
             npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
-            Debug.Log("Changing move to 1");
+            //Debug.Log("Changing move to 1");
             npcMovement.canMove = true;
             return;
         }
@@ -77,7 +77,7 @@ public class Basic_State_Pursue_Attack : AI_Base_State
         npcMovement.rotateTarget = null;
         npcMovement.canMove = true;
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
-        Debug.Log("Changing move to 1");
+        //Debug.Log("Changing move to 1");
     }
     void TryAttack()
     {
@@ -113,7 +113,7 @@ public class Basic_State_Pursue_Attack : AI_Base_State
             }
         }
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
-        Debug.Log("Changing move to 1");
+        //Debug.Log("Changing move to 1");
     }
     public override void Exit()
     {

@@ -132,7 +132,7 @@ public class AI_Base_State
             return false;
 
         Vector3 dirToPlayer = playerGO.transform.position - npc.transform.position;
-        //Check distance, angles, time to detect
+        //Check distance, angles, timePassed to detect
         //Debug.Log("Magni = " + (dirToPlayer.magnitude <= npcStats.currentDetectDistance));
         if (dirToPlayer.magnitude >= npcStats.currentDetectDistance)
             return false;
@@ -179,8 +179,6 @@ public class AI_Base_State
         npcCanvas.ActivateVisionSlider(true);
         if (currentDetectTime >= npcStats.maxDetectTime)
         {
-            npcCanvas.ChangeVisionValue(npcStats.maxDetectTime);
-            npcCanvas.ActivateVisionSlider(false);
             playerDetected = true;
             npcCanvas.StartCoroutine(FireAnAlert());
             npcStateBeh.gameManager.AlertAll();
@@ -193,6 +191,8 @@ public class AI_Base_State
     }
     protected IEnumerator FireAnAlert()
     {
+        npcCanvas.ChangeVisionValue(npcStats.maxDetectTime);
+        npcCanvas.ActivateVisionSlider(false);
         npcCanvas.ActivateAlert(true);
         yield return new WaitForSeconds(1f);
         npcCanvas.ActivateAlert(false);

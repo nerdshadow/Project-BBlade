@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: BasicEnemy_Stats
   m_EditorClassIdentifier: 
   npcName: Thug
-  basicAtkRange: 1
+  basicMeleeAtkRange: 1
+  basicRangeAtkRange: 10
   basicAtkRachargeTime: 1
   basicDetectDistance: 8
   basicDetectAngle: 70
   basicDetectTime: 3
-  basicSpeed: 2
+  basicDetectSpeed: 5
+  basicCalmSpeed: 1
+  basicCombatSpeed: 2
   basicRotationSpeed: 10
