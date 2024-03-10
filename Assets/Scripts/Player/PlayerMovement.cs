@@ -200,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 pos = transform.position + new Vector3(0, 0.05f, 0);
         Vector3 dir = (target.transform.position - pos).normalized;
         dir = new Vector3(dir.x, pos.y, dir.z);
+        
         distanceIdicator.transform.position = pos + dir * currentDashDistance;
     }
 

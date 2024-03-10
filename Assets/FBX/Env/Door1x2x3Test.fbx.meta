@@ -3,7 +3,17 @@ guid: 300551656bf250b4fa3b246d98e076bf
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arch2x2x3.001
+    second: {fileID: 2100000, guid: f93f24d3fe84a394ca79b294fb22c8aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SubDoor
+    second: {fileID: 2100000, guid: 210c2a0d426e9f04bafaf9f1bdee89bb, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

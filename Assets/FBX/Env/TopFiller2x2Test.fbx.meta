@@ -3,7 +3,12 @@ guid: 7c2fd73fe10b9c647a0b45bfe3a9fbe2
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TopFillerTest
+    second: {fileID: 2100000, guid: 450ccc3d04d92f345ad146773c9bb8ae, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

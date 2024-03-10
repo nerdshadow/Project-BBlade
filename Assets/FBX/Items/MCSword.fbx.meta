@@ -3,7 +3,12 @@ guid: 0a882a40d47b0db4789f625319b900af
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: MCSword
+    second: {fileID: 2800000, guid: 56e207d85c37af14788b73a2f8481024, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,32 @@ guid: 28bdf9b86186804439a0960da434b983
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: MCBootsText
+    second: {fileID: 2800000, guid: d660c1b5cb32e3742ac5bf8def70c0b2, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: MCCoatText
+    second: {fileID: 2800000, guid: 1f336b1662daeae49af0226d522bb984, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: MCHandsText
+    second: {fileID: 2800000, guid: acf82b45ddf11e549bfc2dca15acfd9d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: MCHeadText
+    second: {fileID: 2800000, guid: 636e4f15d68c2de4ca838aa72847318b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: MCPantsText
+    second: {fileID: 2800000, guid: dc79a05417e60094b85ef2b180c827f5, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

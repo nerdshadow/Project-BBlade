@@ -3,7 +3,12 @@ guid: aaab556223c17344fba748f98ece2832
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bumper
+    second: {fileID: 2100000, guid: 931fa3bcdb3a1654abc63929d429a1e9, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

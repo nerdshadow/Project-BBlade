@@ -17,6 +17,8 @@ public class PlayerCamera : MonoBehaviour
     Quaternion rotation;
     [SerializeField]
     GameObject aimTarget;
+    [SerializeField]
+    LayerMask layerMask;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
@@ -40,7 +42,7 @@ public class PlayerCamera : MonoBehaviour
             return;
         Ray ray = GetComponent<Camera>().ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Ground")))
+        if (Physics.Raycast(ray, out hit, 100f, layerMask))
         {
             aimTarget.transform.position = hit.point;
         }

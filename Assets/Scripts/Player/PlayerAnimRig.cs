@@ -14,7 +14,7 @@ public class PlayerAnimRig : MonoBehaviour
     public float moveX = 0f, moveZ = 0f;
     float playerMagnitude = 0f;
     [SerializeField]
-    float animationSpeedMod = 1f;
+    float expectedAnimationSpeed = 4f;
     [SerializeField]
     float setFloatSpeed = 1f;
     [SerializeField]
@@ -139,7 +139,7 @@ public class PlayerAnimRig : MonoBehaviour
 
         if (playerMagnitude < 0)
             playerMagnitude = 0f;
-        anim.SetFloat("MovementSpeedMulti", playerMagnitude * animationSpeedMod);
+        anim.SetFloat("MovementSpeedMulti", playerMagnitude / expectedAnimationSpeed);
         ChangeAnimValue("MoveX", moveDir.x);
         ChangeAnimValue("MoveZ", moveDir.z);
     }
@@ -154,7 +154,7 @@ public class PlayerAnimRig : MonoBehaviour
         anim.SetFloat(name, value, setFloatDamp, setFloatSpeed * Time.deltaTime);
     }
     [SerializeField]
-    float normAnimTimeForAttack = 0.3f;
+    float normAnimTimeForAttack = 0.1f;
     public void Attack(bool isAttacking)
     {
         if (isAttacking == false)
