@@ -111,7 +111,25 @@ public class GameplayMenuBehavior : MonoBehaviour
     {
         gameplayUI.SetActive(false);
         InputManager.ChangeControlsMappingToMenu();
+        DisableControls();
+        gameManager.playerCameraRef.GetComponent<PlayerCamera>().ChangeAberration();
+        gameManager.playerCameraRef.GetComponent<PlayerCamera>().ChangeVignette();
+        gameManager.ChangeGameSpeed(0.1f, 2f);
+        CanvasGroup deathGroup = deathMenu.GetComponent<CanvasGroup>();
+        deathGroup.alpha = 0f;    
         deathMenu.SetActive(true);
+        StartCoroutine(ShowCanvasGroup(deathGroup, 2f));
+    }
+    IEnumerator ShowCanvasGroup(CanvasGroup canvasgroup, float timeToShow)
+    {
+        float timePassed = 0f;
+        while (timePassed < timeToShow)
+        {
+            canvasgroup.alpha = Mathf.Lerp(0, 1, timePassed / timeToShow);
+            timePassed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        canvasgroup.alpha = 1f;
     }
     public void RestartCurrentLevel()
     {

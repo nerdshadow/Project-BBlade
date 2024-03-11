@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class InputManager : MonoBehaviour
     public static event Action RebindCanceled;
     public static event Action<InputAction, int> rebindStarted;
     public PlayerInput playerInput;
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += InitManager;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= InitManager;
+    }
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -33,6 +42,9 @@ public class InputManager : MonoBehaviour
         TryFindUIInputModule();
     }
     void InitManager()
+    {
+    }
+    void InitManager(Scene _scene, LoadSceneMode _mode)
     {
     }
     bool TryFindUIInputModule()

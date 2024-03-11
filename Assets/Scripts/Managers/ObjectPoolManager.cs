@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.SceneManagement;
 
 public class ObjectPoolManager : MonoBehaviour
 {
@@ -21,6 +22,14 @@ public class ObjectPoolManager : MonoBehaviour
     int bloodDecalArraySize = 1000;
     int bloodDecalMaxArraySize = 2000;
     #endregion BloodDecal
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += InitManager;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= InitManager;
+    }
     void Awake()
     {
         if (instance != null && instance != this)
@@ -40,6 +49,10 @@ public class ObjectPoolManager : MonoBehaviour
             (CreateBloodParticle, OnTakeBloodParticleFromPool, OnReturnBloodParticleToPool, OnDestroyBloodParticleStream, true, bloodParticleArraySize, bloodParticleMaxArraySize);
         bloodDecalPool = new ObjectPool<BloodDecal>
             (CreateBloodDecal, OnTakeBloodDecalFromPool, OnReturnBloodDecalToPool, OnDestroyBloodDecalStream, true, bloodDecalArraySize, bloodDecalMaxArraySize);
+    }
+    void InitManager(Scene _scene, LoadSceneMode _mode)
+    {
+        
     }
     private BloodStreamParticle CreateBloodParticle()
     {

@@ -5,6 +5,16 @@ ModelImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MCSword
+    second: {fileID: 2100000, guid: 413421d60413b5a41a0a6afdfb836ae7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MCSwordAlt
+    second: {fileID: 2100000, guid: 63a476986b7d45e48984a2312fa311a1, type: 2}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: MCSword

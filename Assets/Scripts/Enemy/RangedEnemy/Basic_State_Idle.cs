@@ -18,6 +18,7 @@ public class Basic_State_Idle : AI_Base_State
         npcStateBeh.Change_Anim_MoveX_Weight(0f, 0.5f);
         npcStateBeh.Change_Anim_CombatValue(0f, 1f);
         npcStats.currentSpeed = npcStats.currentCalmSpeed;
+        ChangeMovementMultiplier();
         agent.velocity = Vector3.zero;
         if(agent.isActiveAndEnabled)
             agent.isStopped = true;

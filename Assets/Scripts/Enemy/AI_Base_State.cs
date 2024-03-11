@@ -10,6 +10,7 @@ public class AI_Base_State
         PATROL,
         PURSUE,
         BATTLE,
+        STUN,
         DEAD
     }
     public enum EVENT
@@ -130,18 +131,16 @@ public class AI_Base_State
     {
         if(PlayerExistAndAlive() == false)
             return false;
-
+        Vector3 boundDir = playerGO.GetComponent<Collider>().bounds.center
+                            - npcStateBeh.characterColl.bounds.center;
+        if (boundDir.magnitude < 1f)
+        {
+            InstantPlayerDetect();
+            return true;
+        }
         Vector3 dirToPlayer = playerGO.transform.position - npc.transform.position;
-        //Check distance, angles, timePassed to detect
-        //Debug.Log("Magni = " + (dirToPlayer.magnitude <= npcStats.currentDetectDistance));
         if (dirToPlayer.magnitude >= npcStats.currentDetectDistance)
             return false;
-
-        //if (Vector3.Dot(dirToPlayer.normalized, npc.transform.forward)
-        //    <= Mathf.Cos(npcStats.currentDetectAngle * Mathf.Deg2Rad))
-        //    return false;
-        //Debug.Log("Angle = " + (Vector3.Angle(dirToPlayer, npc.transform.forward)
-            //<= npcStats.currentDetectAngle));
         if (Vector3.Angle(dirToPlayer, npc.transform.forward)
             >= npcStats.currentDetectAngle)
             return false;
@@ -156,6 +155,14 @@ public class AI_Base_State
             }
         }
         return false;
+    }
+    void InstantPlayerDetect()
+    {
+        playerDetected = true;
+        npcCanvas.StartCoroutine(FireAnAlert());
+        npcStateBeh.gameManager.AlertAll();
+        currentDetectTime = 0f;
+        return;
     }
     protected float currentDetectTime = 0f;
     public virtual void DetectingPlayer()
@@ -230,5 +237,23 @@ public class AI_Base_State
             npcStateBeh.ReloadAtk();
             anim.CrossFade("RangeShoot", 0.1f);
         }
+    }
+    public void ChangeMovementMultiplier()
+    {
+        float multiplier = 1;
+        if (npcMovement.npcRigidbody.velocity.magnitude < 1)
+        {
+            multiplier = 1;
+            anim.SetFloat("MovementMultiplier", multiplier);
+            return;
+        }
+        multiplier = npcMovement.npcRigidbody.velocity.magnitude / npcStats.currentSpeed;
+        anim.SetFloat("MovementMultiplier", multiplier);
+    }
+    public void ForceStun(STATE _stateName)
+    {
+        nextState = new Basic_State_Stunned(_stateName, npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
+        stage = EVENT.EXIT;
+        return;
     }
 }

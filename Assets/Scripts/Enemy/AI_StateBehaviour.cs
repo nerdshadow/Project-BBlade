@@ -28,6 +28,10 @@ public class AI_StateBehaviour : MonoBehaviour
     public List<GameObject> wayPoints = null;
     public bool canPatrol = false;
     public GameManager gameManager;
+    [SerializeField]
+    AI_Base_State.STATE state;
+    [SerializeField]
+    ObjectPoolManager objectPoolManager = ObjectPoolManager.instance;
     private void Start()
     {
         Init();
@@ -51,7 +55,10 @@ public class AI_StateBehaviour : MonoBehaviour
 
         playerRef = gameManager.playerRef;
 
-        if(npcCanvas == null)
+        if (objectPoolManager == null)
+            objectPoolManager = ObjectPoolManager.instance;
+
+        if (npcCanvas == null)
             npcCanvas = GetComponent<AI_Canvas>();
 
         IgnoreCollider(characterColl);
@@ -59,6 +66,7 @@ public class AI_StateBehaviour : MonoBehaviour
     protected virtual void Update()
     {
         currentState = currentState.Process();
+        state = currentState.stateName;
     }
     protected virtual void IgnoreCollider(Collider coll)
     {
@@ -165,9 +173,8 @@ public class AI_StateBehaviour : MonoBehaviour
             if (collider.tag == "Player"
                 && collider.GetComponent<IKillable>() != null)
             {
+                collider.GetComponent<PlayerStats>().TurnPlayerModelTo(this.transform);
                 collider.GetComponent<IKillable>().Die();
-                //Play BloodVFX
-                //Vfx_TryBloodsplash(collider);
             }
         }
     }
@@ -201,11 +208,36 @@ public class AI_StateBehaviour : MonoBehaviour
         if (Physics.Raycast(rangeAtkPoint.position, shootDir, out RaycastHit hit, characterStats.currentRangeAtkRange * 2))
         {
             currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
-            hit.collider.GetComponent<IKillable>()?.Die();
+            if (hit.collider.GetComponent<IKillable>() != null)
+            {
+                Vfx_TryPoolBloodsplash(hit.collider);
+                hit.collider.GetComponent<IKillable>()?.Die();
+                if (hit.collider.GetComponent<PlayerStats>() != null)
+                {
+                    hit.collider.GetComponent<PlayerStats>().TurnPlayerModelTo(this.transform);
+                }
+            }
         }
         else
         {
             currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, rangeAtkPoint.position + (shootDir * characterStats.currentRangeAtkRange * 2));
         }
+    }
+    void Vfx_TryPoolBloodsplash(Collider targetColl)
+    {
+        BloodStreamParticle currentBloodStream = objectPoolManager.bloodStreamPool.Get();
+        currentBloodStream.transform.position = targetColl.bounds.center;
+        currentBloodStream.transform.rotation = Quaternion.LookRotation(transform.forward);
+        currentBloodStream.transform.parent = targetColl.transform;
+        currentBloodStream.PlayAndTryReturnToPool();
+        //currentBloodStream.transform.rotation = Quaternion.LookRotation(-targetColl.transform.forward);
+        //currentBloodStream.PlayAndTryReturnToPool();
+    }
+    [ContextMenu("Stun")]
+    public void GetStunned()
+    {
+        if(currentState.stateName != AI_Base_State.STATE.STUN 
+            || currentState.stateName != AI_Base_State.STATE.DEAD)
+        currentState.ForceStun(currentState.stateName);
     }
 }

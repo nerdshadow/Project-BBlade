@@ -9,6 +9,7 @@ public class PlayerStats : MonoBehaviour, IKillable
     public bool isDead = false;
     public bool isMortal = true;
     public static UnityEvent playerDied = new UnityEvent();
+    public static UnityEvent<Transform> turnPlayerToKiller = new UnityEvent<Transform>();
     [SerializeField]
     GameManager gameManager;
     private void Start()
@@ -20,11 +21,15 @@ public class PlayerStats : MonoBehaviour, IKillable
     [ContextMenu("Die")]
     public void Die()
     {
-        if(isDead == true || isMortal == false)
+        if (isDead == true || isMortal == false)
             return;
         Debug.Log("Player Died");
         currentMovSpeed = 0f;
         playerDied.Invoke();
         isDead = true;
+    }
+    public void TurnPlayerModelTo(Transform _killerTransform)
+    {
+        turnPlayerToKiller.Invoke(_killerTransform);
     }
 }

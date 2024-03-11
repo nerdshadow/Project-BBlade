@@ -168,6 +168,9 @@ public class PlayerMovement : MonoBehaviour
         canMove = false;
         canRotate = false;
         controlSpeed = false;
+        rigbody.useGravity = false;
+        rigbody.isKinematic = true;
+        characterColl.enabled = false;
         //this.enabled = false;
     }
     public void ChangeAbilityToMove(bool isAttacking)

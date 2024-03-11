@@ -15,6 +15,7 @@ public class Basic_State_Pursue_Attack : AI_Base_State
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
         npcStateBeh.Change_Anim_CombatValue(1f, 0.5f);
         npcStats.currentSpeed = npcStats.currentCombatSpeed;
+        ChangeMovementMultiplier();
         agent.isStopped = false;
         npcMovement.canRotate = true;
         CheckPathTo(playerGO);
@@ -43,6 +44,7 @@ public class Basic_State_Pursue_Attack : AI_Base_State
         {
             agent.destination = playerGO.transform.position;
         }
+        ChangeMovementMultiplier();
     }
     void TryRotate()
     {
@@ -79,10 +81,12 @@ public class Basic_State_Pursue_Attack : AI_Base_State
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
         //Debug.Log("Changing move to 1");
     }
+    [SerializeField]
+    static float buffAtk = 1f;
+    float time = buffAtk;
     void TryAttack()
     {
         float distanceToPlayer = DistanceTo(playerGO);
-
         if (distanceToPlayer <= npcStats.currentMeleeAtkRange)
         {
             if (AngleTo(playerGO) <= 20)
@@ -106,11 +110,21 @@ public class Basic_State_Pursue_Attack : AI_Base_State
                     npcMovement.canMove = false;
                     if (AngleTo(playerGO) <= 5f)
                     {
-                        TryRangeAttack();
-                        return;
+                        if (time <= 0)
+                        {
+                            TryRangeAttack();
+                            time = buffAtk;
+                            return;
+                        }
+                        else
+                        {
+                            time -= Time.deltaTime;
+                            return;
+                        }
                     }
                 }
             }
+            time = buffAtk;
         }
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
         //Debug.Log("Changing move to 1");

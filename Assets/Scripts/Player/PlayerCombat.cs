@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -241,19 +242,20 @@ public class PlayerCombat : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(attackPosition.transform.position, 2f);
         foreach (Collider collider in colliders)
         {
-            if (collider.tag != "Player" 
-                && collider.GetComponent<IKillable>() != null)
-            {
-                if (markedColliders.Contains(collider) == true)
-                    markedColliders.Remove(collider);
-                markedColliders.Add(collider);
-                collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
-                Vfx_TryPoolBloodsplash(collider);
-                //collider.GetComponent<IKillable>().Die();
-                hitTarget = true;
-                ////Play BloodVFX
-                //Vfx_TryBloodsplash(collider);
-            }
+            //if (collider.tag != "Player" 
+            //    && collider.GetComponent<IKillable>() != null)
+            //{
+            //    if (markedColliders.Contains(collider) == true)
+            //        markedColliders.Remove(collider);
+            //    markedColliders.Add(collider);
+            //    if (collider.GetComponent<AI_Canvas>() != null)
+            //        collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
+            //    Vfx_TryPoolBloodsplash(collider);
+            //    hitTarget = true;
+            //}
+            //if (collider.GetComponent<AI_StateBehaviour>() != null)
+            //    collider.GetComponent<AI_StateBehaviour>().GetStunned();
+            CheckColliderForMarking(collider);
         }
         return hitTarget;
     }
@@ -265,24 +267,60 @@ public class PlayerCombat : MonoBehaviour
         Collider[] colliders = Physics.OverlapCapsule(startPosOfDash, attackPosition.transform.position, 1.5f);
         foreach (Collider collider in colliders)
         {
-            if (collider.tag != "Player"
-                && collider.GetComponent<IKillable>() != null)
-            {
-                if (markedColliders.Contains(collider) == true)
-                {
-                    collider.GetComponentInChildren<BloodStreamParticle>().ReturnToPool();
-                    markedColliders.Remove(collider);
-                }
-                markedColliders.Add(collider);
-                collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
-                Vfx_TryPoolBloodsplash(collider);
-                //collider.GetComponent<IKillable>().Die();
-                hitTarget = true;
-                ////Play BloodVFX
-                //Vfx_TryBloodsplash(collider);
-            }
+            //if (collider.tag != "Player"
+            //    && collider.gameObject.layer == LayerMask.NameToLayer("CharacterLayer")
+            //    && collider.GetComponent<IKillable>() != null)
+            //{
+            //    if (markedColliders.Contains(collider) == true)
+            //    {
+            //        collider.GetComponentInChildren<BloodStreamParticle>().ReturnToPool();
+            //        markedColliders.Remove(collider);
+            //    }
+            //    markedColliders.Add(collider);
+            //    collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
+            //    Vfx_TryPoolBloodsplash(collider);
+            //    hitTarget = true;
+            //    if (collider.GetComponent<AI_StateBehaviour>() != null)
+            //        collider.GetComponent<AI_StateBehaviour>().GetStunned();
+            //}
+            CheckColliderForMarking(collider);
+
         }
         return hitTarget;
+    }
+    [SerializeField]
+    GameObject deathMarkCanvas;
+    bool CheckColliderForMarking(Collider collider)
+    {
+        if (collider.tag != "Player"
+                && collider.gameObject.layer == LayerMask.NameToLayer("CharacterLayer")
+                && collider.GetComponent<IKillable>() != null)
+        {
+            if (markedColliders.Contains(collider) == true)
+            {
+                collider.GetComponentInChildren<BloodStreamParticle>().ReturnToPool();
+                markedColliders.Remove(collider);
+            }
+            markedColliders.Add(collider);
+            collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
+            Vfx_TryPoolBloodsplash(collider);
+            if (collider.GetComponent<AI_StateBehaviour>() != null)
+                collider.GetComponent<AI_StateBehaviour>().GetStunned();
+            return true;
+        }
+        if (collider.tag != "Player"
+            && collider.GetComponent<IKillable>() != null)
+        {
+            if (markedColliders.Contains(collider) == true)
+            {
+                return false;
+            }
+            GameObject tempCanvas = Instantiate(deathMarkCanvas, collider.transform);
+            tempCanvas.transform.position = collider.bounds.center;
+            markedColliders.Add(collider);
+            return true;
+        }
+        return false;
     }
     public void TryBlowMarks()
     {
@@ -290,32 +328,28 @@ public class PlayerCombat : MonoBehaviour
             return;
         foreach (Collider collider in markedColliders)
         {
-            BloodStreamParticle vfx = collider.GetComponentInChildren<BloodStreamParticle>();
-            vfx.transform.SetParent(null);
-            vfx.PlayAndTryReturnToPool();
-            collider.GetComponent<AI_Canvas>().ActivateDeathMark(false);
-            collider.GetComponent<IKillable>().Die();
+            //BloodStreamParticle vfx = collider.GetComponentInChildren<BloodStreamParticle>();
+            //vfx.transform.SetParent(null);
+            //vfx.PlayAndTryReturnToPool();
+            //collider.GetComponent<AI_Canvas>().ActivateDeathMark(false);
+            //collider.GetComponent<IKillable>().Die();
+            CheckMarkedColliders(collider);
         }
-        AddScore(markedColliders.Count);
         markedColliders.Clear();
     }
-    void AddScore(int numberOfMarks)
+    void CheckMarkedColliders(Collider collider) 
     {
-        int multiplier = 1;
-        switch (numberOfMarks)
+        BloodStreamParticle vfx = collider.GetComponentInChildren<BloodStreamParticle>();
+        if (vfx != null)
         {
-            case <= 2:
-                multiplier = 1;
-                break;
-            case < 5:
-                multiplier = 2;
-                break;
-            case >= 5:
-                multiplier = 5;
-                break;
+            vfx.transform.SetParent(null);
+            vfx.PlayAndTryReturnToPool();
         }
-        int finalScore = 100 * numberOfMarks * multiplier;
-        gameManager.AddScore(finalScore);
+        if (collider.GetComponent<AI_Canvas>() != null)
+            collider.GetComponent<AI_Canvas>().ActivateDeathMark(false);
+        else
+            collider.GetComponentInChildren<Canvas>().enabled = false;
+        collider.GetComponent<IKillable>().Die();
     }
     void StopCombat()
     {

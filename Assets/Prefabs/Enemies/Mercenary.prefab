@@ -522,6 +522,8 @@ MonoBehaviour:
   wayPoints: []
   canPatrol: 0
   gameManager: {fileID: 0}
+  state: 0
+  objectPoolManager: {fileID: 0}
   bulletTrailVFX: {fileID: 7058473021608462539, guid: c548523d20b36004e8ecd2fc132724e5,
     type: 3}
   trailLifetime: 0.1
@@ -572,7 +574,7 @@ MonoBehaviour:
   npcStats: {fileID: 4071548856924685296}
   canMove: 1
   groundDrag: 5
-  FinalForceMod: 8
+  FinalForceMod: 11
   canRotate: 1
   rotateTarget: {fileID: 0}
 --- !u!114 &2601833984467393892
@@ -600,8 +602,8 @@ Rigidbody:
   m_GameObject: {fileID: 4777720407748232233}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 1
+  m_AngularDrag: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -960,10 +962,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4899510733395478723, guid: f1b69aac1d2492e42be83997617f7dce,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -3203132487594510761, guid: f1b69aac1d2492e42be83997617f7dce,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f1b69aac1d2492e42be83997617f7dce,
         type: 3}
       propertyPath: m_Name
       value: EnemyRange
+      objectReference: {fileID: 0}
+    - target: {fileID: 1465564160608131280, guid: f1b69aac1d2492e42be83997617f7dce,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653779738380452872, guid: f1b69aac1d2492e42be83997617f7dce,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: f1b69aac1d2492e42be83997617f7dce,
         type: 3}
@@ -974,6 +996,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9127240613891755242, guid: f1b69aac1d2492e42be83997617f7dce,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

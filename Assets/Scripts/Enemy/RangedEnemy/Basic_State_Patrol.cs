@@ -54,6 +54,7 @@ public class Basic_State_Patrol : AI_Base_State
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
         npcStateBeh.Change_Anim_CombatValue(0f, 1f);
         npcStats.currentSpeed = npcStats.currentCalmSpeed;
+        ChangeMovementMultiplier();
         base.Enter();
     }
 
@@ -92,8 +93,10 @@ public class Basic_State_Patrol : AI_Base_State
             if (CheckPathTo(wayPointTarget) == true && agent.enabled)
             {
                 //Debug.Log("Path is good");
+                //agent.destination = wayPointTarget.transform.position;
             }
         }
+        ChangeMovementMultiplier();
         //base.Update();
     }
     protected override void PlayerFound()

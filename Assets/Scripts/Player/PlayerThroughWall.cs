@@ -25,8 +25,10 @@ public class PlayerThroughWall : MonoBehaviour
     void CutOut2()
     {
         Vector3 dir = playerCamera.transform.position - playerCollRef.bounds.center;
+        Vector3 startPoint = playerCollRef.bounds.center + dir.normalized * 1f;
         //RaycastHit[] hits = Physics.RaycastAll(playerCollRef.bounds.center, dir, 100, collisionMasks);
-        Collider[] hits = Physics.OverlapCapsule(playerCollRef.bounds.center, dir * 100, 1f, collisionMasks);
+        //Collider[] hits = Physics.OverlapCapsule(playerCollRef.bounds.center, dir * 100, 1f, collisionMasks);
+        Collider[] hits = Physics.OverlapCapsule(startPoint, dir * 100, 0.5f, collisionMasks);
         Vector3 viewPos = playerCamera.WorldToViewportPoint(playerCollRef.bounds.center);
 
         for (int i = 0; i < hits.Length; i++)

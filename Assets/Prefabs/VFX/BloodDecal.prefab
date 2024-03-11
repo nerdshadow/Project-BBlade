@@ -48,6 +48,7 @@ MonoBehaviour:
   decalMaterials:
   - {fileID: 2100000, guid: 86d00548fa1cd354a893418c2e612919, type: 2}
   - {fileID: 2100000, guid: f0695e5f6dd1f3a44bd5216af6cf8d7a, type: 2}
+  timeToChange: 1
 --- !u!1 &7508323512326451886
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +102,6 @@ MonoBehaviour:
   m_UVBias: {x: 0, y: 0}
   m_DecalLayerMask: 3
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.1}
-  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Offset: {x: 0, y: 0, z: 0.2}
+  m_Size: {x: 1, y: 1, z: 0.4}
   m_FadeFactor: 1

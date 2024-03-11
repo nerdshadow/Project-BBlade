@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -19,9 +21,12 @@ public class PlayerCamera : MonoBehaviour
     GameObject aimTarget;
     [SerializeField]
     LayerMask layerMask;
+    public Volume cameraVolume;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
+        if(cameraVolume == null)
+            cameraVolume = GetComponentInChildren<Volume>();
     }
 
     private void Update()
@@ -51,7 +56,37 @@ public class PlayerCamera : MonoBehaviour
             aimTarget.transform.position = ray.direction * 30;
         }
     }
-
+    [ContextMenu("try access chAb")]
+    public void ChangeAberration()
+    {
+        cameraVolume.profile.TryGet(out ChromaticAberration chAb);
+        StartCoroutine(ChAb(chAb));
+    }
+    IEnumerator ChAb(ChromaticAberration _chAb)
+    {
+        _chAb.active = true;
+        while (_chAb.intensity.value < 0.9f)
+        {
+            _chAb.intensity.value += Time.deltaTime;
+            yield return null;
+        }
+        _chAb.intensity.value = 1f;
+    }
+    public void ChangeVignette()
+    {
+        cameraVolume.profile.TryGet(out Vignette chAb);
+        StartCoroutine(Vign(chAb));
+    }
+    IEnumerator Vign(Vignette _chAb)
+    {
+        _chAb.active = true;
+        while (_chAb.intensity.value < 0.48f)
+        {
+            _chAb.intensity.value += Time.deltaTime;
+            yield return null;
+        }
+        _chAb.intensity.value = 0.5f;
+    }
     [ContextMenu("RefreshCamera")]
     void RefreshCameraEdit()
     {

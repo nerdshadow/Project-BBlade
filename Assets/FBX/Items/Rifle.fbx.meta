@@ -3,7 +3,12 @@ guid: f1dfa2f174573cf41a318929a75d9225
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: RifleText
+    second: {fileID: 2800000, guid: 1fcd353f6799da447936ffbd588254d3, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,32 @@ guid: f1b69aac1d2492e42be83997617f7dce
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: EnemyBoots
+    second: {fileID: 2800000, guid: 3ca4ec2ed250e8b438d574c633d5d6c0, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: EnemyHeadText
+    second: {fileID: 2800000, guid: 0b37a98ba4f978942b1959229327d6f3, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: EnemyPantsTest
+    second: {fileID: 2800000, guid: 1527db026c2c59441a35716f3df5b298, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: EnemyShirtText
+    second: {fileID: 2800000, guid: 954a3ae7a1e89ff40b1e627a994b6257, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Enemyhands
+    second: {fileID: 2800000, guid: 09f5b3ae1312f7444a0cf58825daf583, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -11,10 +11,18 @@ AvatarMask:
   m_Elements:
   - m_Path: 
     m_Weight: 1
+  - m_Path: Boots
+    m_Weight: 1
+  - m_Path: Coat
+    m_Weight: 1
+  - m_Path: Hands
+    m_Weight: 1
+  - m_Path: Head
+    m_Weight: 1
   - m_Path: MainCharacterArmature
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: MainCharacterArmature/_RootBone
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: MainCharacterArmature/_RootBone/ElbowIK.L
     m_Weight: 0
   - m_Path: MainCharacterArmature/_RootBone/ElbowIK.R
@@ -22,7 +30,7 @@ AvatarMask:
   - m_Path: MainCharacterArmature/_RootBone/HandIKTarget.L
     m_Weight: 0
   - m_Path: MainCharacterArmature/_RootBone/HandIKTarget.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: MainCharacterArmature/_RootBone/HeadTarget
     m_Weight: 0
   - m_Path: MainCharacterArmature/_RootBone/KneeIK.L
@@ -151,5 +159,5 @@ AvatarMask:
     m_Weight: 0
   - m_Path: MainCharacterArmature/_RootBone/SpineBone.001/SpineBone.002/SpineBone.003/UpSpine.R
     m_Weight: 0
-  - m_Path: MCBody
+  - m_Path: Pants
     m_Weight: 1

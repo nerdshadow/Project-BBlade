@@ -9,7 +9,7 @@ public class AI_Movement : MonoBehaviour
     NavMeshAgent agent;
     Vector3 worldDeltaPosition = Vector3.zero;
     [SerializeField]
-    Rigidbody npcRigidbody;
+    public Rigidbody npcRigidbody;
     [SerializeField]
     CharacterStats npcStats;
     public bool canMove = true;
@@ -29,8 +29,9 @@ public class AI_Movement : MonoBehaviour
 
         if (npcRigidbody == null)
             npcRigidbody = GetComponent<Rigidbody>();
-        npcRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
-        if(npcStats == null)
+        npcRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+
+        if (npcStats == null)
             npcStats = GetComponent<CharacterStats>();
         ChangeDrag();
     }
@@ -84,5 +85,6 @@ public class AI_Movement : MonoBehaviour
             return;
         moveDir = this.transform.forward * 1f;
         npcRigidbody.AddForce(FinalForceMod * npcStats.currentSpeed * npcRigidbody.mass * moveDir, ForceMode.Force);
+        //Debug.Log(npcRigidbody.velocity.magnitude);
     }
 }

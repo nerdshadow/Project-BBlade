@@ -35,6 +35,7 @@ public class PlayerAnimRig : MonoBehaviour
         if (anim == null)
             anim = GetComponent<Animator>();
         PlayerStats.playerDied.AddListener(StopAnim);
+        PlayerStats.turnPlayerToKiller.AddListener(ForceRotate);
     }
     private void Update()
     {
@@ -106,6 +107,14 @@ public class PlayerAnimRig : MonoBehaviour
         }
 
     }
+    void ForceRotate(Transform rotateTo)
+    {
+        Vector3 forward = transform.forward;
+        Vector3 toTarget = rotateTo.position - transform.position;
+        toTarget.y = 0 + heightMod;
+        Quaternion rotation = Quaternion.LookRotation(toTarget);
+        transform.rotation = rotation;
+    }
     void RotateInMove(GameObject _aimTarget)
     {
         Vector3 toTarget = _aimTarget.transform.position - transform.position;
@@ -164,16 +173,19 @@ public class PlayerAnimRig : MonoBehaviour
             float nTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
             if (nTime >= normAnimTimeForAttack)
             {
-                anim.Play("EndAtk");
+                anim.Play("EndAtk", 0);
+                anim.Play("EndAtk", 1);
             }
             else
             {
-                anim.CrossFade("MovementTree", 0.2f);
+                anim.CrossFade("MovementTree", 0.2f, 0);
+                anim.CrossFade("MovementTree", 0.2f, 1);
             }
         }
         else
         {
-            anim.CrossFade("PrepareAtk", 0.1f);
+            anim.CrossFade("PrepareAtk", 0.1f, 0);
+            anim.CrossFade("PrepareAtk", 0.1f, 1);
         }
     }
     public void StartSheath()
@@ -184,7 +196,8 @@ public class PlayerAnimRig : MonoBehaviour
     {
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("PrepareAtk"))
             return;
-        anim.CrossFade("MovementTree", 0.2f);
+        anim.CrossFade("MovementTree", 0.2f, 0);
+        anim.CrossFade("MovementTree", 0.2f, 1);
     }
     public UnityEvent<bool> ReadyToDashEvent = new UnityEvent<bool>();
     public void ReadyToDash()
@@ -240,12 +253,12 @@ public class PlayerAnimRig : MonoBehaviour
         }
         if (toChange == false)
         {
-            anim.SetLayerWeight(1, 2);
+            anim.SetLayerWeight(1, 0);
         }
     }
     void StopAnim()
     {
-        anim.CrossFade("Death", 1f);
+        anim.Play("Death");
         canRotate = false;
     }
 }

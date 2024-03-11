@@ -62,6 +62,7 @@ public class CharacterStats : MonoBehaviour, IKillable
         DisableComponents();
         isDead = true;
         gameManager.RemoveEnemyFromList(this.gameObject);
+        gameManager.AddScore(100);
         //Debug.Log(currentName + " is dead");
     }
     public void DisableComponents()

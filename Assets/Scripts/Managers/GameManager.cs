@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using System;
 using System.Runtime.ConstrainedExecution;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +22,14 @@ public class GameManager : MonoBehaviour
     int finalScore = 0;
     [SerializeField]
     ScoreBehaviour scoreBeh;
-    
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += InitManager;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= InitManager;
+    }
     #endregion
     private void Awake()
     {
@@ -41,6 +49,15 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 61;
         playerCameraRef = Camera.main;
         scoreBeh = FindObjectOfType<ScoreBehaviour>();
+        Alerting.RemoveAllListeners();
+    }
+    void InitManager(Scene _scene, LoadSceneMode _mode)
+    {
+        //Debug test
+        Application.targetFrameRate = 61;
+        playerCameraRef = Camera.main;
+        scoreBeh = FindObjectOfType<ScoreBehaviour>();
+        Alerting.RemoveAllListeners();
     }
     public void ExitGame()
     {
@@ -49,7 +66,12 @@ public class GameManager : MonoBehaviour
     }
     public void LoadLevel(string levelName)
     {
-        GameObject currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<Canvas>().transform);
+        StopAllCoroutines();
+        GameObject currentLoadingScreen;
+        if(playerRef != null)
+            currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<GameplayMenuBehavior>().transform);
+        else
+            currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<Canvas>().transform);
         Slider currentSlider = currentLoadingScreen.GetComponentInChildren<Slider>();
         StartCoroutine(LoadLevelAsync(levelName, currentSlider));
     }
@@ -87,6 +109,26 @@ public class GameManager : MonoBehaviour
         gameIsPaused = false;
         Time.timeScale = 1f;
     }
+    public void ChangeGameSpeed(float _gameSpeed)
+    {
+        Time.timeScale = _gameSpeed;
+    }
+    public void ChangeGameSpeed(float _endGameSpeed, float _timeToChange)
+    {
+        StartCoroutine(TimeChanging(_endGameSpeed, _timeToChange));
+    }
+    IEnumerator TimeChanging(float _endGameSpeed, float _timeToChange)
+    {
+        float timeElapsed = 0f;
+        while (timeElapsed < _timeToChange)
+        {
+            Time.timeScale = Mathf.Lerp(1, _endGameSpeed, timeElapsed / _timeToChange);
+            //Debug.Log(Time.timeScale);
+            timeElapsed += Time.unscaledDeltaTime;
+            yield return null; 
+        }
+        Time.timeScale = _endGameSpeed;
+    }
     public void ChangePlayer(GameObject _GO)
     {
         if (_GO == null)
@@ -101,6 +143,7 @@ public class GameManager : MonoBehaviour
     {
         Alerting.Invoke();
         playerFound = true;
+        Alerting.RemoveAllListeners();
     }
     [SerializeField]
     List<GameObject> aliveEnemies = new List<GameObject>();
