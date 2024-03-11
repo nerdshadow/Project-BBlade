@@ -261,4 +261,16 @@ public class PlayerAnimRig : MonoBehaviour
         anim.Play("Death");
         canRotate = false;
     }
+    [SerializeField]
+    AudioClip swordSheathSFX;
+    public void SheathSwordSFX()
+    {
+        AudioManager.instance.PlayOneShotSoundFXClip(swordSheathSFX, transform, 1f);
+    }
+    [SerializeField]
+    AudioClip[] footStepDirt;
+    public void FootStepSFX()
+    {
+        AudioManager.instance.PlayRandomOneShotSoundFXClip(footStepDirt, transform, 0.8f);
+    }
 }

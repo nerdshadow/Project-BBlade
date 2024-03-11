@@ -223,9 +223,12 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     GameObject attackPosition;
     List<Collider> markedColliders = new List<Collider>();
+    [SerializeField]
+    AudioClip[] attackFX;
     public void TryMark()
     {
         //Debug.Log("tried to attack");
+        AudioManager.instance.PlayRandomOneShotSoundFXClip(attackFX, transform, 1f);
         StartCoroutine(TryMarkAfterDelay());
     }
     IEnumerator TryMarkAfterDelay()
@@ -289,6 +292,8 @@ public class PlayerCombat : MonoBehaviour
         return hitTarget;
     }
     [SerializeField]
+    AudioClip MarkExplSound;
+    [SerializeField]
     GameObject deathMarkCanvas;
     bool CheckColliderForMarking(Collider collider)
     {
@@ -343,6 +348,7 @@ public class PlayerCombat : MonoBehaviour
         if (vfx != null)
         {
             vfx.transform.SetParent(null);
+            AudioManager.instance.PlayOneShotSoundFXClip(MarkExplSound, collider.transform, 1f);
             vfx.PlayAndTryReturnToPool();
         }
         if (collider.GetComponent<AI_Canvas>() != null)
