@@ -137,7 +137,7 @@ public class PlayerAnimRig : MonoBehaviour
             return;
         }
 
-        Vector3 moveDir = new(moveX, 0, moveZ);
+        Vector3 moveDir = new(Mathf.Round(moveX), 0, Mathf.Round(moveZ));
 
         if (moveDir.magnitude > 1.0f)
         {
@@ -269,8 +269,20 @@ public class PlayerAnimRig : MonoBehaviour
     }
     [SerializeField]
     AudioClip[] footStepDirt;
+    bool canFootStep = true;
     public void FootStepSFX()
     {
-        AudioManager.instance.PlayRandomOneShotSoundFXClip(footStepDirt, transform, 0.8f);
+        if (canFootStep == true)
+        {
+            AudioManager.instance.PlayRandomOneShotSoundFXClip(footStepDirt, transform, 0.8f);
+            canFootStep = false;
+            StartCoroutine(WaitFootStep());
+            //Debug.Log("Step");
+        }
+    }
+    IEnumerator WaitFootStep()
+    {
+        yield return new WaitForSeconds(0.1f);
+        canFootStep = true;
     }
 }

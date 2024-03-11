@@ -45,6 +45,24 @@ public class AudioManager : MonoBehaviour
 
         audioSource.clip = _audioclip;
         audioSource.volume = _volume;
+        Vector3 dirToListener = GameManager.instance.playerRef.transform.position - audioSource.transform.position;
+        if (dirToListener.magnitude <= 1.1f)
+            audioSource.spatialBlend = 0f;
+        audioSource.Play();
+        float clipLength = _audioclip.length;
+
+        Destroy(audioSource.gameObject, clipLength);
+    }
+    public void PlayOneShotSoundFXClip(AudioClip _audioclip, Transform _spawnTransform, float _volume, float falloffDistance)
+    {
+        AudioSource audioSource = Instantiate(audioSourceObj, _spawnTransform.position, Quaternion.identity);
+
+        audioSource.clip = _audioclip;
+        audioSource.volume = _volume;
+        Vector3 dirToListener = GameManager.instance.playerRef.transform.position - audioSource.transform.position;
+        if (dirToListener.magnitude <= 1.1f)
+            audioSource.spatialBlend = 0f;
+        audioSource.maxDistance = falloffDistance;
         audioSource.Play();
         float clipLength = _audioclip.length;
 
@@ -55,6 +73,9 @@ public class AudioManager : MonoBehaviour
         int randI = Random.Range(0, _audioclips.Length);
         AudioSource audioSource = Instantiate(audioSourceObj, _spawnTransform.position, Quaternion.identity);
         audioSource.clip = _audioclips[randI];
+        Vector3 dirToListener = GameManager.instance.playerRef.transform.position - audioSource.transform.position;
+        if (dirToListener.magnitude <= 1.1f)
+            audioSource.spatialBlend = 0f;
         audioSource.volume = _volume;
         audioSource.Play();
         float clipLength = audioSource.clip.length;

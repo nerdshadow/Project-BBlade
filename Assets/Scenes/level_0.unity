@@ -18677,11 +18677,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3508388193044851168, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
-        type: 3}
-      propertyPath: swordSheathSFX
-      value: 
-      objectReference: {fileID: 8300000, guid: 6c51b4f5dc1f2a34cbbc782adb325b39, type: 3}
     - target: {fileID: 5637303900609263330, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -18695,7 +18690,7 @@ PrefabInstance:
     - target: {fileID: 6276383125896262767, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.48
+      value: -5.452
       objectReference: {fileID: 0}
     - target: {fileID: 6276383125896262767, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}
@@ -18705,7 +18700,7 @@ PrefabInstance:
     - target: {fileID: 6276383125896262767, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 30.92
+      value: 22.453
       objectReference: {fileID: 0}
     - target: {fileID: 6276383125896262767, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
         type: 3}
@@ -18757,41 +18752,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerHolder
       objectReference: {fileID: 0}
-    - target: {fileID: 8503795846263214315, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
-        type: 3}
-      propertyPath: MarkExplSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 51f45b07763ed3943b0e65248373e0e6, type: 3}
-    - target: {fileID: 8503795846263214315, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
-        type: 3}
-      propertyPath: attackFX.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8503795846263214315, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
-        type: 3}
-      propertyPath: attackFX.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 7f8c140c2b3960e44b0c31ab80da87ba, type: 3}
-    - target: {fileID: 8503795846263214315, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
-        type: 3}
-      propertyPath: attackFX.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: e9a103dea7353e9409beb3bffc710988, type: 3}
-    - target: {fileID: 8503795846263214315, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
-        type: 3}
-      propertyPath: attackFX.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: 58c277b39e748bd4988042fc789454a8, type: 3}
-    - target: {fileID: 8503795846263214315, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
-        type: 3}
-      propertyPath: attackFX.Array.data[3]
-      value: 
-      objectReference: {fileID: 8300000, guid: dd82282c5cf1a2c46a40b7e7ed05c1af, type: 3}
-    - target: {fileID: 8503795846263214315, guid: 2e1a087c9ae49cd4fa2f8a4599cae3d7,
-        type: 3}
-      propertyPath: attackFX.Array.data[4]
-      value: 
-      objectReference: {fileID: 8300000, guid: 04dba2432cddec944b7fc1bec4de6921, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

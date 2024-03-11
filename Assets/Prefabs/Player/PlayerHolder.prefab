@@ -1789,6 +1789,13 @@ MonoBehaviour:
   - {fileID: 580407960033570915}
   - {fileID: 6215282841015886675}
   attackPosition: {fileID: 2095600791541286911}
+  attackFX:
+  - {fileID: 8300000, guid: 7f8c140c2b3960e44b0c31ab80da87ba, type: 3}
+  - {fileID: 8300000, guid: e9a103dea7353e9409beb3bffc710988, type: 3}
+  - {fileID: 8300000, guid: 58c277b39e748bd4988042fc789454a8, type: 3}
+  - {fileID: 8300000, guid: dd82282c5cf1a2c46a40b7e7ed05c1af, type: 3}
+  - {fileID: 8300000, guid: 04dba2432cddec944b7fc1bec4de6921, type: 3}
+  MarkExplSound: {fileID: 8300000, guid: 51f45b07763ed3943b0e65248373e0e6, type: 3}
   deathMarkCanvas: {fileID: 3453106741083950917, guid: 7e5882416d6d20b4aa2a3ef55b7b93b4,
     type: 3}
 --- !u!114 &4267660683392636570
@@ -5155,6 +5162,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  swordSheathSFX: {fileID: 8300000, guid: 6c51b4f5dc1f2a34cbbc782adb325b39, type: 3}
+  footStepDirt:
+  - {fileID: 8300000, guid: e38d5dc725b9a7141a6535733892d77e, type: 3}
+  - {fileID: 8300000, guid: 39594d99d70741f43943078b9fc93e5e, type: 3}
+  - {fileID: 8300000, guid: 52f8ec52d98e36a429f88878c2ddda71, type: 3}
+  - {fileID: 8300000, guid: 01a421e5b62d23549a9293d1273145a9, type: 3}
+  - {fileID: 8300000, guid: 7f74ed462f523014ea5356482f8975fe, type: 3}
 --- !u!4 &3433260230461022835 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28bdf9b86186804439a0960da434b983,

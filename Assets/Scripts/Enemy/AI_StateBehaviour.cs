@@ -178,7 +178,8 @@ public class AI_StateBehaviour : MonoBehaviour
             }
         }
     }
-
+    [SerializeField]
+    AudioClip gunShot;
     [SerializeField]
     GameObject bulletTrailVFX;
     GameObject currentBulletTrail;
@@ -196,18 +197,19 @@ public class AI_StateBehaviour : MonoBehaviour
         yield return new WaitForFixedUpdate();
         rangeAtkPoint.LookAt(playerRef.GetComponent<Collider>().bounds.center);
         currentBulletTrail = Instantiate(bulletTrailVFX, rangeAtkPoint.position, rangeAtkPoint.rotation);
-        currentBulletTrail.GetComponent<BulletTrail>().lineLifetime = trailLifetime;
-        currentBulletTrail.GetComponent<LineRenderer>().SetPosition(0, rangeAtkPoint.position);
-        currentBulletTrail.GetComponent<BulletTrail>().StartTimer();
-        currentBulletTrail.SetActive(true);
+        currentBulletTrail.GetComponent<BulletTrail>().trailLifetime = trailLifetime;
+        //currentBulletTrail.SetActive(true);
+
 
         Vector3 shootDir = rangeAtkPoint.forward + new Vector3(Random.Range(-0.1f, 0.1f),
                                                         Random.Range(-0.1f, 0.1f),
                                                         Random.Range(-0.1f, 0.1f));
         shootDir.Normalize();
+        AudioManager.instance.PlayOneShotSoundFXClip(gunShot, rangeAtkPoint, 1f, 50f);
         if (Physics.Raycast(rangeAtkPoint.position, shootDir, out RaycastHit hit, characterStats.currentRangeAtkRange * 2))
         {
-            currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+            //currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+            currentBulletTrail.GetComponent<BulletTrail>().StartMovingTo(hit.point);
             if (hit.collider.GetComponent<IKillable>() != null)
             {
                 Vfx_TryPoolBloodsplash(hit.collider);
@@ -220,7 +222,8 @@ public class AI_StateBehaviour : MonoBehaviour
         }
         else
         {
-            currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, rangeAtkPoint.position + (shootDir * characterStats.currentRangeAtkRange * 2));
+            //currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, rangeAtkPoint.position + (shootDir * characterStats.currentRangeAtkRange * 2));
+            currentBulletTrail.GetComponent<BulletTrail>().StartMovingTo(rangeAtkPoint.position + (shootDir * characterStats.currentRangeAtkRange * 2));
         }
     }
     void Vfx_TryPoolBloodsplash(Collider targetColl)

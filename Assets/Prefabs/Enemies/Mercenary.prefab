@@ -524,7 +524,8 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   state: 0
   objectPoolManager: {fileID: 0}
-  bulletTrailVFX: {fileID: 7058473021608462539, guid: c548523d20b36004e8ecd2fc132724e5,
+  gunShot: {fileID: 8300000, guid: c14d0697820fa414b805efde3c6da2ee, type: 3}
+  bulletTrailVFX: {fileID: 509326307418077242, guid: 7c2b7de05ce303a448e26cee44ab570c,
     type: 3}
   trailLifetime: 0.1
 --- !u!114 &4071548856924685296
@@ -1046,6 +1047,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateBeh: {fileID: 5065334296604310554}
+  footStepDirt:
+  - {fileID: 8300000, guid: e38d5dc725b9a7141a6535733892d77e, type: 3}
+  - {fileID: 8300000, guid: 39594d99d70741f43943078b9fc93e5e, type: 3}
+  - {fileID: 8300000, guid: 52f8ec52d98e36a429f88878c2ddda71, type: 3}
+  - {fileID: 8300000, guid: 01a421e5b62d23549a9293d1273145a9, type: 3}
+  - {fileID: 8300000, guid: 7f74ed462f523014ea5356482f8975fe, type: 3}
 --- !u!1001 &8118516501194759208
 PrefabInstance:
   m_ObjectHideFlags: 0
