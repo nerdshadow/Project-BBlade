@@ -19,6 +19,8 @@ public class DestructableObject : MonoBehaviour, IKillable
     float pieceDestroyDelay = 5f;
     [SerializeField]
     float pieceSleepCheckDelay = 0.5f;
+    [SerializeField]
+    AudioClip[] breakSounds;
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -38,6 +40,7 @@ public class DestructableObject : MonoBehaviour, IKillable
             renderer.enabled = false;
         GameObject brokenInstance = Instantiate(fracturedPrefab, transform.position, transform.rotation);
         Rigidbody[] rigBodies = brokenInstance.GetComponentsInChildren<Rigidbody>();
+        AudioManager.instance.PlayRandomOneShotSoundFXClip(breakSounds, transform, 1f, 25f);
         foreach (Rigidbody rbody in rigBodies)
         {
             rbody.AddExplosionForce(explosiveForce, transform.position, explosiveRad);

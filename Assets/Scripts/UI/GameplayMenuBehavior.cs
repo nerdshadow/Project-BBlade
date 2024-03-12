@@ -24,7 +24,7 @@ public class GameplayMenuBehavior : MonoBehaviour
     [SerializeField]
     GameObject deathMenu;
     [SerializeField]
-    string mainMenuSceneName = "Scene_MainMenu";
+    SceneField mainMenuScene;
     private void Start()
     {
         if (playerControls == null)
@@ -101,15 +101,18 @@ public class GameplayMenuBehavior : MonoBehaviour
     public void ReturnToMainMenu()
     {
         gameplayMenu.SetActive(false);
-        gameManager.LoadLevel(mainMenuSceneName);
+        gameManager.LoadLevel(mainMenuScene);
     }
     public void ExitGame()
     {
         gameManager.ExitGame();
     }
+    [SerializeField]
+    AudioClip deathAudioClip;
     public void PlayerDeath()
     {
         gameplayUI.SetActive(false);
+        AudioManager.instance.PlayMusicForced(deathAudioClip, true);
         InputManager.ChangeControlsMappingToMenu();
         DisableControls();
         gameManager.playerCameraRef.GetComponent<PlayerCamera>().ChangeAberration();
@@ -134,5 +137,23 @@ public class GameplayMenuBehavior : MonoBehaviour
     public void RestartCurrentLevel()
     {
         gameManager.LoadLevel(SceneManager.GetActiveScene().name);
+    }
+    public void ChangeMasterVolume(float _volume)
+    {
+        AudioManager.instance.SetMasterVolume(_volume);
+    }
+    public void ChangeSFXVolume(float _volume)
+    {
+        AudioManager.instance.SetSFXVolume(_volume);
+    }
+    public void ChangeMusicVolume(float _volume)
+    {
+        AudioManager.instance.SetMusicVolume(_volume);
+    }
+    [SerializeField]
+    GameObject settingsWindow;
+    public void OpenSettings()
+    {
+        settingsWindow.SetActive(!settingsWindow.activeSelf);
     }
 }

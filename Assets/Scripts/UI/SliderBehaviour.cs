@@ -21,12 +21,12 @@ public class SliderBehaviour : MonoBehaviour
         if (currentSlider.value != _currentV)
             currentSlider.value = _currentV;
     }
-    public void ChangeSliderValues(float _maxV, float _currentV)
+    public void ChangeSliderValues(float _currentV, float _maxV)
     { 
-        if(currentSlider.maxValue != _maxV)
-            currentSlider.maxValue = _maxV;
         if(currentSlider.value != _currentV)
             currentSlider.value = _currentV;
+        if(currentSlider.maxValue != _maxV)
+            currentSlider.maxValue = _maxV;
     }
     public void ChangeSliderValues(float _minV, float _maxV, float _currentV)
     {

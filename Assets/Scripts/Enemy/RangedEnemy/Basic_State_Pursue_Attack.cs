@@ -12,13 +12,16 @@ public class Basic_State_Pursue_Attack : AI_Base_State
     public override void Enter()
     {
         //Debug.Log("EnterPursue");
+        GameManager.Alerting.RemoveListener(PlayerFound);
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
         npcStateBeh.Change_Anim_CombatValue(1f, 0.5f);
         npcStats.currentSpeed = npcStats.currentCombatSpeed;
         ChangeMovementMultiplier();
-        agent.isStopped = false;
+        if(agent.isActiveAndEnabled)
+            agent.isStopped = false;
         npcMovement.canRotate = true;
-        CheckPathTo(playerGO);
+        if(agent.isActiveAndEnabled)
+            CheckPathTo(playerGO);
         base.Enter();
     }
 

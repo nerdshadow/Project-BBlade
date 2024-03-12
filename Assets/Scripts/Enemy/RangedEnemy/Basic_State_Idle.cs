@@ -35,6 +35,7 @@ public class Basic_State_Idle : AI_Base_State
             stage = EVENT.EXIT;
             return;
         }
+        CheckDeadBody();
         DetectingPlayer();
         if (playerDetected == true)
         {
@@ -61,6 +62,7 @@ public class Basic_State_Idle : AI_Base_State
     }
     public override void Exit()
     {
+        GameManager.Alerting.RemoveListener(PlayerFound);
         base.Exit();
     }
 }

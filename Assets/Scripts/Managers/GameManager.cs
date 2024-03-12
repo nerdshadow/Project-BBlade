@@ -64,20 +64,29 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Trying exit game");
         Application.Quit();
     }
-    public void LoadLevel(string levelName)
+    public void LoadLevel(SceneField scene)
     {
+
         StopAllCoroutines();
+        if(AudioManager.instance != null)
+            AudioManager.instance.StopAllCoroutines();
+        if(InputManager.instance != null)
+            InputManager.instance.StopAllCoroutines();
+        if(ObjectPoolManager.instance != null)
+            ObjectPoolManager.instance.StopAllCoroutines();
+
         GameObject currentLoadingScreen;
         if(playerRef != null)
             currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<GameplayMenuBehavior>().transform);
         else
             currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<Canvas>().transform);
         Slider currentSlider = currentLoadingScreen.GetComponentInChildren<Slider>();
-        StartCoroutine(LoadLevelAsync(levelName, currentSlider));
+        StartCoroutine(LoadLevelAsync(scene, currentSlider));
     }
-    IEnumerator LoadLevelAsync(string _levelName, Slider _loadingSlider)
+
+    IEnumerator LoadLevelAsync(SceneField _scene, Slider _loadingSlider)
     {
-        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(_levelName);
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(_scene);
         while (!loadOperation.isDone)
         {
             float progress = Mathf.Clamp01(loadOperation.progress / 0.9f);
@@ -89,12 +98,49 @@ public class GameManager : MonoBehaviour
             DoOnLoadingScene();
         }
     }
+    public void LoadLevel(string sceneName)
+    {
+
+        StopAllCoroutines();
+        if (AudioManager.instance != null)
+            AudioManager.instance.StopAllCoroutines();
+        if (InputManager.instance != null)
+            InputManager.instance.StopAllCoroutines();
+        if (ObjectPoolManager.instance != null)
+            ObjectPoolManager.instance.StopAllCoroutines();
+
+        GameObject currentLoadingScreen;
+        if (playerRef != null)
+            currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<GameplayMenuBehavior>().transform);
+        else
+            currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<Canvas>().transform);
+        Slider currentSlider = currentLoadingScreen.GetComponentInChildren<Slider>();
+        StartCoroutine(LoadLevelAsync(sceneName, currentSlider));
+    }
+    IEnumerator LoadLevelAsync(string _sceneName, Slider _loadingSlider)
+    {
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(_sceneName);
+        while (!loadOperation.isDone)
+        {
+            float progress = Mathf.Clamp01(loadOperation.progress / 0.9f);
+            _loadingSlider.value = progress;
+            yield return null;
+        }
+        if (loadOperation.isDone)
+        {
+            DoOnLoadingScene();
+        }
+    }
+    [SerializeField]
+    AudioClip menuMusic;
     void DoOnLoadingScene()
     {
         Time.timeScale = 1f;
         InputManager.ChangeControlsMappingToGameplay();
         ObjectPoolManager.instance.ClearPools();
+        AudioManager.instance.PlayMusicForced(menuMusic, true);
     }
+
     public void PauseGame()
     {
         //pause game
@@ -139,9 +185,14 @@ public class GameManager : MonoBehaviour
         playerRef = _GO;
     }
     public static UnityEvent Alerting = new UnityEvent();
+    [SerializeField]
+    AudioClip battleMusicClip;
+    [SerializeField]
+    AudioClip endBattleMusicClip;
     public void AlertAll()
     {
         Alerting.Invoke();
+        AudioManager.instance.PlayMusicForced(battleMusicClip, true);
         playerFound = true;
         Alerting.RemoveAllListeners();
     }
@@ -168,6 +219,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("All enemies dead");
         OpenExit.Invoke();
+        AudioManager.instance.PlayMusicForced(endBattleMusicClip, false);
         FinalizeScore();
     }
     public void AddScore(int score)

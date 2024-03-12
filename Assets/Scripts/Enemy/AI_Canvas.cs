@@ -23,6 +23,7 @@ public class AI_Canvas : MonoBehaviour
     }
     public void ActivateAlert(bool _activate)
     {
+        ActivateVisionSlider(false);
         alertGO.SetActive(_activate);
     }
     public void ActivateVisionSlider(bool _activate)

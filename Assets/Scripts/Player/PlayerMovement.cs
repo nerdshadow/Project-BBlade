@@ -183,9 +183,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     GameObject target;
     public float currentDashDistance = 0;
-    public void ChangeDashDistance(float distance)
+    public float currentMaxDashDistance = 1;
+    public void ChangeDashDistance(float _distance, float _maxDistance)
     {
-        currentDashDistance = distance;
+        currentDashDistance = _distance;
+        currentMaxDashDistance = _maxDistance;
     }
     public void DashForward()
     {
@@ -198,13 +200,15 @@ public class PlayerMovement : MonoBehaviour
     }
     [SerializeField]
     GameObject distanceIdicator;
+    Vector3 initIndScale = new Vector3(1, 1, 1);
+    Vector3 maxIndScale = new Vector3(2, 1, 2);
     void ShowDashDistance()
     {
         Vector3 pos = transform.position + new Vector3(0, 0.05f, 0);
         Vector3 dir = (target.transform.position - pos).normalized;
         dir = new Vector3(dir.x, pos.y, dir.z);
-        
         distanceIdicator.transform.position = pos + dir * currentDashDistance;
+        distanceIdicator.transform.localScale = Vector3.Lerp(initIndScale, maxIndScale, currentDashDistance / currentMaxDashDistance);
     }
 
 }

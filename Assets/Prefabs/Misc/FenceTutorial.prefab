@@ -107,6 +107,9 @@ MonoBehaviour:
   pieceFadeSpeed: 0.25
   pieceDestroyDelay: 5
   pieceSleepCheckDelay: 0.5
+  breakSounds:
+  - {fileID: 8300000, guid: 49667ce2a51e50742b75978b3bd95569, type: 3}
+  - {fileID: 8300000, guid: a06df87d7f66cfe4d843913cbbc3dc7e, type: 3}
 --- !u!65 &6378255781156777009
 BoxCollider:
   m_ObjectHideFlags: 0

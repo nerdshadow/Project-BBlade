@@ -127,13 +127,40 @@ public class AI_Base_State
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, rotation, 1f * Time.deltaTime);
     }
+    public virtual void CheckDeadBody()
+    {
+        Collider[] bodies = Physics.OverlapSphere(npc.transform.position, npcStats.currentDetectDistance, npcStateBeh.deadBodyMask);
+        if (bodies.Length == 0)
+            return;
+        foreach (Collider b in bodies)
+        {
+            Vector3 dirToBody = b.transform.position - npc.transform.position;
+            if (Vector3.Angle(dirToBody, npc.transform.forward)
+            >= npcStats.currentDetectAngle)
+                return;
+            Vector3 hitDir = b.GetComponent<Collider>().bounds.center - npcStats.eyeLocation.position;
+            RaycastHit hit;
+            if (Physics.Raycast(npcStats.eyeLocation.position, hitDir, out hit, npcStats.currentDetectDistance))
+            {
+                if (hit.collider.GetComponent<CharacterStats>())
+                {
+                    Debug.Log("Found dead body");
+                    playerDetected = true;
+                    npcCanvas.StartCoroutine(FireAnAlert());
+                    GameManager.Alerting.RemoveListener(PlayerFound);
+                    npcStateBeh.gameManager.AlertAll();
+                    currentDetectTime = 0f;
+                }
+            }
+        }
+    }
     public virtual bool CheckPlayer()
     {
         if(PlayerExistAndAlive() == false)
             return false;
         Vector3 boundDir = playerGO.GetComponent<Collider>().bounds.center
                             - npcStateBeh.characterColl.bounds.center;
-        if (boundDir.magnitude < 1f)
+        if (boundDir.magnitude < 1.5f)
         {
             InstantPlayerDetect();
             return true;
@@ -156,9 +183,10 @@ public class AI_Base_State
         }
         return false;
     }
-    void InstantPlayerDetect()
+    public void InstantPlayerDetect()
     {
         playerDetected = true;
+        GameManager.Alerting.RemoveListener(PlayerFound);
         npcCanvas.StartCoroutine(FireAnAlert());
         npcStateBeh.gameManager.AlertAll();
         currentDetectTime = 0f;
@@ -168,6 +196,8 @@ public class AI_Base_State
     public virtual void DetectingPlayer()
     {
         //Debug.Log("Current detect " + currentDetectTime);
+        if (playerDetected == true)
+            return;
         if (CheckPlayer() != true)
         {
             if (currentDetectTime > 0f)
@@ -188,6 +218,7 @@ public class AI_Base_State
         {
             playerDetected = true;
             npcCanvas.StartCoroutine(FireAnAlert());
+            GameManager.Alerting.RemoveListener(PlayerFound);
             npcStateBeh.gameManager.AlertAll();
             currentDetectTime = 0f;
             return;
@@ -200,6 +231,7 @@ public class AI_Base_State
     {
         npcCanvas.ChangeVisionValue(npcStats.maxDetectTime);
         npcCanvas.ActivateVisionSlider(false);
+        AudioManager.instance.PlayOneShotSoundFXClip(npcStats.alertSound, npc.transform, 1f, 20);
         npcCanvas.ActivateAlert(true);
         yield return new WaitForSeconds(1f);
         npcCanvas.ActivateAlert(false);

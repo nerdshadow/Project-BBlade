@@ -130,15 +130,15 @@ public class PlayerCombat : MonoBehaviour
     {
         canAttack = false;
         float currentDelay = 0;
-        AttackRechargeEvent.Invoke(_delay, currentDelay);
+        AttackRechargeEvent.Invoke(currentDelay, _delay);
         while (currentDelay < _delay)
         {
             currentDelay += Time.deltaTime;
-            AttackRechargeEvent.Invoke(_delay, currentDelay);
+            AttackRechargeEvent.Invoke(currentDelay, _delay);
             yield return null;
         }
         currentDelay = _delay;
-        AttackRechargeEvent.Invoke(_delay, currentDelay);
+        AttackRechargeEvent.Invoke(currentDelay, _delay);
         canAttack = true;
     }
     public void SlashVFX()
@@ -148,10 +148,10 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     float dashDistance = 0f;
     [SerializeField]
-    float maxDashDistance = 10f;
+    public float maxDashDistance = 10f;
     [SerializeField]
     float dashIncreaseMod = 3f;
-    public UnityEvent<float> ChangeDashDistance = new UnityEvent<float>();
+    public UnityEvent<float, float> ChangeDashDistance = new UnityEvent<float, float>();
     bool canIncreaseDashDistance = false;
     public void ChangeCanIncreaseDashDistance(bool _can)
     {
@@ -163,17 +163,17 @@ public class PlayerCombat : MonoBehaviour
             return;
         if (CheckCollisionBeforeDashWithRaycasts() == true)
         {
-            ChangeDashDistance.Invoke(dashDistance);
+            ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
             return;
         }
         if (dashDistance >= maxDashDistance)
         {
             dashDistance = maxDashDistance;
-            ChangeDashDistance.Invoke(dashDistance);
+            ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
             return;
         }
         dashDistance += dashIncreaseMod * Time.deltaTime;
-        ChangeDashDistance.Invoke(dashDistance);
+        ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
     }
     Coroutine reloadDash = null;
     void ReloadDash()
@@ -187,7 +187,7 @@ public class PlayerCombat : MonoBehaviour
         //Debug.Log("Reseting Dash");
         yield return new WaitForFixedUpdate();
         dashDistance = 0f;
-        ChangeDashDistance.Invoke(dashDistance);
+        ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
     }
     [SerializeField]
     GameObject target;
@@ -245,19 +245,6 @@ public class PlayerCombat : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(attackPosition.transform.position, 2f);
         foreach (Collider collider in colliders)
         {
-            //if (collider.tag != "Player" 
-            //    && collider.GetComponent<IKillable>() != null)
-            //{
-            //    if (markedColliders.Contains(collider) == true)
-            //        markedColliders.Remove(collider);
-            //    markedColliders.Add(collider);
-            //    if (collider.GetComponent<AI_Canvas>() != null)
-            //        collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
-            //    Vfx_TryPoolBloodsplash(collider);
-            //    hitTarget = true;
-            //}
-            //if (collider.GetComponent<AI_StateBehaviour>() != null)
-            //    collider.GetComponent<AI_StateBehaviour>().GetStunned();
             CheckColliderForMarking(collider);
         }
         return hitTarget;
@@ -270,24 +257,7 @@ public class PlayerCombat : MonoBehaviour
         Collider[] colliders = Physics.OverlapCapsule(startPosOfDash, attackPosition.transform.position, 1.5f);
         foreach (Collider collider in colliders)
         {
-            //if (collider.tag != "Player"
-            //    && collider.gameObject.layer == LayerMask.NameToLayer("CharacterLayer")
-            //    && collider.GetComponent<IKillable>() != null)
-            //{
-            //    if (markedColliders.Contains(collider) == true)
-            //    {
-            //        collider.GetComponentInChildren<BloodStreamParticle>().ReturnToPool();
-            //        markedColliders.Remove(collider);
-            //    }
-            //    markedColliders.Add(collider);
-            //    collider.GetComponent<AI_Canvas>().ActivateDeathMark(true);
-            //    Vfx_TryPoolBloodsplash(collider);
-            //    hitTarget = true;
-            //    if (collider.GetComponent<AI_StateBehaviour>() != null)
-            //        collider.GetComponent<AI_StateBehaviour>().GetStunned();
-            //}
             CheckColliderForMarking(collider);
-
         }
         return hitTarget;
     }
@@ -333,11 +303,6 @@ public class PlayerCombat : MonoBehaviour
             return;
         foreach (Collider collider in markedColliders)
         {
-            //BloodStreamParticle vfx = collider.GetComponentInChildren<BloodStreamParticle>();
-            //vfx.transform.SetParent(null);
-            //vfx.PlayAndTryReturnToPool();
-            //collider.GetComponent<AI_Canvas>().ActivateDeathMark(false);
-            //collider.GetComponent<IKillable>().Die();
             CheckMarkedColliders(collider);
         }
         markedColliders.Clear();
@@ -348,7 +313,7 @@ public class PlayerCombat : MonoBehaviour
         if (vfx != null)
         {
             vfx.transform.SetParent(null);
-            AudioManager.instance.PlayOneShotSoundFXClip(MarkExplSound, collider.transform, 1f);
+            AudioManager.instance.PlayOneShotSoundFXClip(MarkExplSound, collider.transform, 1f, 25f);
             vfx.PlayAndTryReturnToPool();
         }
         if (collider.GetComponent<AI_Canvas>() != null)
@@ -369,7 +334,5 @@ public class PlayerCombat : MonoBehaviour
         currentBloodStram.transform.position = targetColl.bounds.center;
         currentBloodStram.transform.rotation = Quaternion.LookRotation(transform.forward);
         currentBloodStram.transform.parent = targetColl.transform;
-        //currentBloodStram.transform.rotation = Quaternion.LookRotation(-targetColl.transform.forward);
-        //currentBloodStram.PlayAndTryReturnToPool();
     }
 }

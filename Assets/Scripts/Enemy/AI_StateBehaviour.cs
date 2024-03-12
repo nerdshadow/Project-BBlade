@@ -198,8 +198,6 @@ public class AI_StateBehaviour : MonoBehaviour
         rangeAtkPoint.LookAt(playerRef.GetComponent<Collider>().bounds.center);
         currentBulletTrail = Instantiate(bulletTrailVFX, rangeAtkPoint.position, rangeAtkPoint.rotation);
         currentBulletTrail.GetComponent<BulletTrail>().trailLifetime = trailLifetime;
-        //currentBulletTrail.SetActive(true);
-
 
         Vector3 shootDir = rangeAtkPoint.forward + new Vector3(Random.Range(-0.1f, 0.1f),
                                                         Random.Range(-0.1f, 0.1f),
@@ -208,7 +206,6 @@ public class AI_StateBehaviour : MonoBehaviour
         AudioManager.instance.PlayOneShotSoundFXClip(gunShot, rangeAtkPoint, 1f, 50f);
         if (Physics.Raycast(rangeAtkPoint.position, shootDir, out RaycastHit hit, characterStats.currentRangeAtkRange * 2))
         {
-            //currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, hit.point);
             currentBulletTrail.GetComponent<BulletTrail>().StartMovingTo(hit.point);
             if (hit.collider.GetComponent<IKillable>() != null)
             {
@@ -222,7 +219,6 @@ public class AI_StateBehaviour : MonoBehaviour
         }
         else
         {
-            //currentBulletTrail.GetComponent<LineRenderer>().SetPosition(1, rangeAtkPoint.position + (shootDir * characterStats.currentRangeAtkRange * 2));
             currentBulletTrail.GetComponent<BulletTrail>().StartMovingTo(rangeAtkPoint.position + (shootDir * characterStats.currentRangeAtkRange * 2));
         }
     }
@@ -233,8 +229,6 @@ public class AI_StateBehaviour : MonoBehaviour
         currentBloodStream.transform.rotation = Quaternion.LookRotation(transform.forward);
         currentBloodStream.transform.parent = targetColl.transform;
         currentBloodStream.PlayAndTryReturnToPool();
-        //currentBloodStream.transform.rotation = Quaternion.LookRotation(-targetColl.transform.forward);
-        //currentBloodStream.PlayAndTryReturnToPool();
     }
     [ContextMenu("Stun")]
     public void GetStunned()
@@ -243,4 +237,6 @@ public class AI_StateBehaviour : MonoBehaviour
             || currentState.stateName != AI_Base_State.STATE.DEAD)
         currentState.ForceStun(currentState.stateName);
     }
+    [SerializeField]
+    public LayerMask deadBodyMask = 0;
 }

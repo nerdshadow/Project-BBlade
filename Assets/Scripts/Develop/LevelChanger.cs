@@ -6,7 +6,7 @@ public class LevelChanger : MonoBehaviour
 {
     GameManager gameManager;
     public bool canLoadLevel = false;
-    public string levelName = "level_0";
+    public SceneField scene;
     private void Start()
     {
         if (gameManager == null)
@@ -22,7 +22,7 @@ public class LevelChanger : MonoBehaviour
         PlayerStats stats = other.GetComponent<PlayerStats>();
         if (stats != null && stats.isDead == false && canLoadLevel == true)
         {
-            gameManager.LoadLevel(levelName);
+            gameManager.LoadLevel(scene);
         }
     }
 

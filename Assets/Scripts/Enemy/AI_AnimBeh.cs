@@ -27,7 +27,7 @@ public class AI_AnimBeh : MonoBehaviour
     {
         if (canFootStep == true)
         {
-            AudioManager.instance.PlayRandomOneShotSoundFXClip(footStepDirt, transform, 0.8f);
+            AudioManager.instance.PlayRandomOneShotSoundFXClip(footStepDirt, transform, 0.5f, 20f);
             canFootStep = false;
             StartCoroutine(WaitFootStep());
             //Debug.Log("Step");

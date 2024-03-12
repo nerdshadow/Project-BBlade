@@ -21,7 +21,9 @@ public class Basic_State_Patrol : AI_Base_State
         GameManager.Alerting.AddListener(PlayerFound);
         int currentIndex = -1;
         lastDist = Mathf.Infinity;
-        if (npcStateBeh.wayPoints.Count < 1 || npcStateBeh.canPatrol == false)
+        if (npcStateBeh.wayPoints.Count < 1 
+            || npcStateBeh.wayPoints[0] == null
+            || npcStateBeh.canPatrol == false)
         {
             Debug.Log("No waypoints for " + npc.name + ", or cannot patrol. Returning to Idle");
             nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
@@ -66,6 +68,7 @@ public class Basic_State_Patrol : AI_Base_State
             stage = EVENT.EXIT;
             return;
         }
+        CheckDeadBody();
         DetectingPlayer();
         if (playerDetected == true)
         {
@@ -110,6 +113,7 @@ public class Basic_State_Patrol : AI_Base_State
     }
     public override void Exit()
     {
+        GameManager.Alerting.RemoveListener(PlayerFound);
         base.Exit();
     }
 }

@@ -22,6 +22,10 @@ public class CharacterStats : MonoBehaviour, IKillable
     public Transform eyeLocation;
     public bool isDead = false;
     GameManager gameManager;
+    [SerializeField]
+    AudioClip[] deathSounds;
+    [SerializeField]
+    public AudioClip alertSound;
     private void Start()
     {
         if (gameManager == null)
@@ -61,8 +65,11 @@ public class CharacterStats : MonoBehaviour, IKillable
         //Death
         DisableComponents();
         isDead = true;
+        AlertOthers();
+        AudioManager.instance.PlayRandomOneShotSoundFXClip(deathSounds, transform, 1f, 30f);
         gameManager.RemoveEnemyFromList(this.gameObject);
         gameManager.AddScore(100);
+
         //Debug.Log(currentName + " is dead");
     }
     public void DisableComponents()
@@ -78,8 +85,27 @@ public class CharacterStats : MonoBehaviour, IKillable
         Collider[] arrayOfColliders = GetComponents<Collider>();
         foreach (Collider components in arrayOfColliders)
         {
-            components.enabled = false;
+            components.gameObject.layer = 30;
         }
         GetComponent<NavMeshAgent>().enabled = false;
+    }
+    void AlertOthers()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 10f, layersToDetect);
+        if (colliders.Length == 0)
+            return;
+        foreach (Collider collider in colliders)
+        {
+            if (collider.tag == "Player")
+                return;
+            Vector3 hitDir = collider.GetComponent<Collider>().bounds.center - this.GetComponent<Collider>().bounds.center;
+            RaycastHit hit;
+            if (Physics.Raycast(this.GetComponent<Collider>().bounds.center, hitDir, out hit, 10f))
+            {
+                if (hit.collider.GetComponent<AI_StateBehaviour>()
+                    && hit.collider.GetComponent<CharacterStats>().isDead != true)
+                    hit.collider.GetComponent<AI_StateBehaviour>().currentState.InstantPlayerDetect();
+            }
+        }
     }
 }

@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7338481208960614450}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,5 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb74d69cf33a564f901522b81a90b34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingScreen: {fileID: 4704534689430459997, guid: a6e3f40eb95070846ae5e416dac3ca57,
+  loadingScreen: {fileID: 5649588635751794294, guid: 61345650cbda1104a985e5511d7bc488,
     type: 3}
+  gameIsPaused: 0
+  playerRef: {fileID: 0}
+  playerCameraRef: {fileID: 0}
+  finalScore: 0
+  scoreBeh: {fileID: 0}
+  menuMusic: {fileID: 8300000, guid: b8fd8ea7e7601144998686f4cd390ee8, type: 3}
+  battleMusicClip: {fileID: 8300000, guid: d805186987ea62c4fa1dc4272d6e8c20, type: 3}
+  endBattleMusicClip: {fileID: 8300000, guid: 51f676d48ab4582488f784cca7041138, type: 3}
+  aliveEnemies: []

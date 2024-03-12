@@ -274,7 +274,7 @@ public class PlayerAnimRig : MonoBehaviour
     {
         if (canFootStep == true)
         {
-            AudioManager.instance.PlayRandomOneShotSoundFXClip(footStepDirt, transform, 0.8f);
+            AudioManager.instance.PlayRandomOneShotSoundFXClip(footStepDirt, transform, 0.5f);
             canFootStep = false;
             StartCoroutine(WaitFootStep());
             //Debug.Log("Step");
