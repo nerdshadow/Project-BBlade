@@ -16,6 +16,7 @@ public class LevelChanger : MonoBehaviour
     void OpenChanger()
     {
         canLoadLevel = true;
+        GetComponent<Collider>().enabled = true;
     }
     private void OnTriggerEnter(Collider other)
     {
