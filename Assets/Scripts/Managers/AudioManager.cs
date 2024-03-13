@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -188,17 +187,22 @@ public class AudioManager : MonoBehaviour
         _audioSource2.volume = 0;
         _audioSource2.Stop();
     }
+    [SerializeField]
+    AudioSettingsSO audioSettingsSO;
     //Set slider values to 0.0001 -> 1
     public void SetMasterVolume(float volume)
     {
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(volume) * 20);
-    }
-    public void SetSFXVolume(float volume)
-    {
-        audioMixer.SetFloat("SFXVolume", Mathf.Log10(volume) * 20);
+        audioSettingsSO.masterVolume = volume;
     }
     public void SetMusicVolume(float volume)
     {
         audioMixer.SetFloat("MusicVolume", Mathf.Log10(volume) * 20);
+        audioSettingsSO.musicVolume = volume;
+    }
+    public void SetSFXVolume(float volume)
+    {
+        audioMixer.SetFloat("SFXVolume", Mathf.Log10(volume) * 20);
+        audioSettingsSO.sfxVolume = volume;
     }
 }

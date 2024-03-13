@@ -129,6 +129,10 @@ public class AI_Base_State
     }
     public virtual void CheckDeadBody()
     {
+        if (playerDetected == true
+            || npcStats.isDead == true
+            || PlayerExistAndAlive() == false)
+            return;
         Collider[] bodies = Physics.OverlapSphere(npc.transform.position, npcStats.currentDetectDistance, npcStateBeh.deadBodyMask);
         if (bodies.Length == 0)
             return;
@@ -144,7 +148,7 @@ public class AI_Base_State
             {
                 if (hit.collider.GetComponent<CharacterStats>())
                 {
-                    Debug.Log("Found dead body");
+                    Debug.Log("BodyPlayerDetected");
                     playerDetected = true;
                     npcCanvas.StartCoroutine(FireAnAlert());
                     GameManager.Alerting.RemoveListener(PlayerFound);
@@ -185,6 +189,9 @@ public class AI_Base_State
     }
     public void InstantPlayerDetect()
     {
+        if (playerDetected == true)
+            return;
+        Debug.Log("InstantPlayerDetected");
         playerDetected = true;
         GameManager.Alerting.RemoveListener(PlayerFound);
         npcCanvas.StartCoroutine(FireAnAlert());
@@ -196,7 +203,8 @@ public class AI_Base_State
     public virtual void DetectingPlayer()
     {
         //Debug.Log("Current detect " + currentDetectTime);
-        if (playerDetected == true)
+        if (playerDetected == true
+            || npcStats.isDead)
             return;
         if (CheckPlayer() != true)
         {
@@ -216,6 +224,7 @@ public class AI_Base_State
         npcCanvas.ActivateVisionSlider(true);
         if (currentDetectTime >= npcStats.maxDetectTime)
         {
+            Debug.Log("DetectingPlayerDetected");
             playerDetected = true;
             npcCanvas.StartCoroutine(FireAnAlert());
             GameManager.Alerting.RemoveListener(PlayerFound);
@@ -233,7 +242,7 @@ public class AI_Base_State
         npcCanvas.ActivateVisionSlider(false);
         AudioManager.instance.PlayOneShotSoundFXClip(npcStats.alertSound, npc.transform, 1f, 20);
         npcCanvas.ActivateAlert(true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
         npcCanvas.ActivateAlert(false);
     }
     protected virtual void PlayerFound()

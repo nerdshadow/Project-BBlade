@@ -26,6 +26,7 @@ public class Basic_State_Patrol : AI_Base_State
             || npcStateBeh.canPatrol == false)
         {
             Debug.Log("No waypoints for " + npc.name + ", or cannot patrol. Returning to Idle");
+            npcStateBeh.canPatrol = false;
             nextState = new Basic_State_Idle(npc, agent, anim, playerGO, npcStats, npcStateBeh, npcMovement, npcCanvas);
             stage = EVENT.EXIT;
             return;

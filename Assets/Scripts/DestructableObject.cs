@@ -21,6 +21,9 @@ public class DestructableObject : MonoBehaviour, IKillable
     float pieceSleepCheckDelay = 0.5f;
     [SerializeField]
     AudioClip[] breakSounds;
+    bool isDead = false;
+    public bool IsDead { get => isDead; set => isDead = value; }
+
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -32,6 +35,7 @@ public class DestructableObject : MonoBehaviour, IKillable
     }
     void Explode()
     {
+        isDead = true;
         if(rigidBody != null)
             Destroy(rigidBody);
         if(TryGetComponent<Collider>(out Collider collider))

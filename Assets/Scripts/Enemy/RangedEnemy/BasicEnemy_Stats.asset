@@ -18,8 +18,8 @@ MonoBehaviour:
   basicAtkRachargeTime: 1
   basicDetectDistance: 8
   basicDetectAngle: 70
-  basicDetectTime: 3
-  basicDetectSpeed: 5
+  basicDetectTime: 1
+  basicDetectSpeed: 8
   basicCalmSpeed: 1
   basicCombatSpeed: 2
   basicRotationSpeed: 10

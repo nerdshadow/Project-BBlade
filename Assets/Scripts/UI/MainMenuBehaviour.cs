@@ -13,15 +13,20 @@ public class MainMenuBehaviour : MonoBehaviour
     [SerializeField]
     SceneField levelScene;
     [SerializeField]
+    SceneField menuLevelScene;
+    [SerializeField]
     GameObject mainMenu;
     [SerializeField]
     GameManager gameManager;
     [SerializeField]
     AudioClip menuMusic;
+    [SerializeField]
+    AudioClip battleMusic;
     private void Start()
     {
         gameManager = GameManager.instance;
         AudioManager.instance.PlayMusicForced(menuMusic, true);
+        CheckAudio();
         CheckGraphics();
     }
     public void StartNewGame()
@@ -32,27 +37,53 @@ public class MainMenuBehaviour : MonoBehaviour
     {
         gameManager.ExitGame();
     }
+    public void ExitToMainMenuGame()
+    {
+        gameManager.LoadLevel(menuLevelScene);
+    }
     public void LoadLevel()
     {
         gameManager.LoadLevel(levelScene);
+    }
+    public void PlayMenuMusic()
+    {
+        AudioManager.instance.PlayMusicForced(menuMusic, true);
+    }
+    public void PlayBattleMusic()
+    {
+        AudioManager.instance.PlayMusicForced(battleMusic, true);
     }
     public void ChangeMasterVolume(float _volume)
     {
         AudioManager.instance.SetMasterVolume(_volume);
     }
-    public void ChangeSFXVolume(float _volume)
-    {
-        AudioManager.instance.SetSFXVolume(_volume);
-    }
     public void ChangeMusicVolume(float _volume)
     {
         AudioManager.instance.SetMusicVolume(_volume);
+    }
+    public void ChangeSFXVolume(float _volume)
+    {
+        AudioManager.instance.SetSFXVolume(_volume);
     }
     [SerializeField]
     GameObject settingsWindow;
     public void OpenSettings()
     {
         settingsWindow.SetActive(!settingsWindow.activeSelf);
+    }
+    [SerializeField]
+    AudioSettingsSO audioSettingsSO;
+    [SerializeField]
+    Slider masterSlider;
+    [SerializeField]
+    Slider musicSlider;
+    [SerializeField]
+    Slider sfxSlider;
+    void CheckAudio()
+    {
+        masterSlider.value = audioSettingsSO.masterVolume;
+        musicSlider.value = audioSettingsSO.musicVolume;
+        sfxSlider.value = audioSettingsSO.sfxVolume;
     }
     #region "Graphics"
     [Header("Graphics")]

@@ -157,22 +157,34 @@ public class PlayerCombat : MonoBehaviour
     {
         canIncreaseDashDistance = _can;
     }
+    float posMaxDistance = 0;
     void IncreasingDashDistance()
     {
         if (startedAttack == false || canIncreaseDashDistance == false)
             return;
+        if (posMaxDistance < maxDashDistance)
+            posMaxDistance += dashIncreaseMod * Time.deltaTime;
+        else
+            posMaxDistance = maxDashDistance;
+        Vector3 dirToCursor = gameManager.playerCameraRef.GetComponent<PlayerCamera>().aimTarget.transform.position - transform.position;
+        dashDistance = dirToCursor.magnitude;
         if (CheckCollisionBeforeDashWithRaycasts() == true)
         {
             ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
             return;
         }
-        if (dashDistance >= maxDashDistance)
+        if (dashDistance >= posMaxDistance)
         {
-            dashDistance = maxDashDistance;
+            dashDistance = posMaxDistance;
             ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
             return;
         }
-        dashDistance += dashIncreaseMod * Time.deltaTime;
+        //if (dashDistance >= dirToCursor.magnitude)
+        //{
+        //    dashDistance = dirToCursor.magnitude;
+        //    ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
+        //    return;
+        //}
         ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
     }
     Coroutine reloadDash = null;
@@ -187,6 +199,7 @@ public class PlayerCombat : MonoBehaviour
         //Debug.Log("Reseting Dash");
         yield return new WaitForFixedUpdate();
         dashDistance = 0f;
+        posMaxDistance = 0f;
         ChangeDashDistance.Invoke(dashDistance, maxDashDistance);
     }
     [SerializeField]
@@ -195,6 +208,7 @@ public class PlayerCombat : MonoBehaviour
     LayerMask collisionLayerMask = 0;
     [SerializeField]
     Transform[] raycastPositions;
+    float collisionDistance;
     bool CheckCollisionBeforeDashWithRaycasts()
     {
         RaycastHit hit;
@@ -202,8 +216,8 @@ public class PlayerCombat : MonoBehaviour
         for (int i = 0; i < raycastPositions.Length; i++)
         {
             Vector3 dir = raycastPositions[i].forward;
-            //Debug.DrawRay(raycastPositions[i].position, dir * maxDashDistance);
-            if (Physics.Raycast(raycastPositions[i].position, dir, out hit, maxDashDistance, collisionLayerMask))
+            Debug.DrawRay(raycastPositions[i].position, dir * posMaxDistance);
+            if (Physics.Raycast(raycastPositions[i].position, dir, out hit, posMaxDistance, collisionLayerMask))
             {
                 Vector3 direction = hit.point -raycastPositions[i].position;
                 Debug.DrawRay(raycastPositions[i].position, direction, Color.red);
@@ -269,7 +283,8 @@ public class PlayerCombat : MonoBehaviour
     {
         if (collider.tag != "Player"
                 && collider.gameObject.layer == LayerMask.NameToLayer("CharacterLayer")
-                && collider.GetComponent<IKillable>() != null)
+                && collider.GetComponent<IKillable>() != null
+                && collider.GetComponent<IKillable>().IsDead != true)
         {
             if (markedColliders.Contains(collider) == true)
             {
@@ -283,8 +298,10 @@ public class PlayerCombat : MonoBehaviour
                 collider.GetComponent<AI_StateBehaviour>().GetStunned();
             return true;
         }
+
         if (collider.tag != "Player"
-            && collider.GetComponent<IKillable>() != null)
+            && collider.GetComponent<IKillable>() != null
+            && collider.GetComponent<IKillable>().IsDead != true)
         {
             if (markedColliders.Contains(collider) == true)
             {

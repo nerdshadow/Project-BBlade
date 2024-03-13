@@ -18,7 +18,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField]
     Quaternion rotation;
     [SerializeField]
-    GameObject aimTarget;
+    public GameObject aimTarget;
     [SerializeField]
     LayerMask layerMask;
     public Volume cameraVolume;

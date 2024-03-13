@@ -84,6 +84,7 @@ public class GameplayMenuBehavior : MonoBehaviour
         //Debug.Log("opening menu");
         gameManager.PauseGame();
         gameplayMenu.SetActive(true);
+        CheckAudio();
     }
     public void CloseMenu(InputAction.CallbackContext context)
     {
@@ -155,5 +156,19 @@ public class GameplayMenuBehavior : MonoBehaviour
     public void OpenSettings()
     {
         settingsWindow.SetActive(!settingsWindow.activeSelf);
+    }
+    [SerializeField]
+    AudioSettingsSO audioSettingsSO;
+    [SerializeField]
+    Slider masterSlider;
+    [SerializeField]
+    Slider musicSlider;
+    [SerializeField]
+    Slider sfxSlider;
+    void CheckAudio()
+    {
+        masterSlider.value = audioSettingsSO.masterVolume;
+        musicSlider.value = audioSettingsSO.musicVolume;
+        sfxSlider.value = audioSettingsSO.sfxVolume;
     }
 }

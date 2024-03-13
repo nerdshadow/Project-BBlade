@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public bool gameIsPaused = false;
     public GameObject playerRef = null;
     public Camera playerCameraRef = null;
-    bool playerFound = false;
+    public bool playerFound = false;
     #region Score
     [SerializeField]
     int finalScore = 0;
@@ -74,7 +74,8 @@ public class GameManager : MonoBehaviour
             InputManager.instance.StopAllCoroutines();
         if(ObjectPoolManager.instance != null)
             ObjectPoolManager.instance.StopAllCoroutines();
-
+        aliveEnemies.Clear();
+        Alerting.RemoveAllListeners();
         GameObject currentLoadingScreen;
         if(playerRef != null)
             currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<GameplayMenuBehavior>().transform);
@@ -108,7 +109,8 @@ public class GameManager : MonoBehaviour
             InputManager.instance.StopAllCoroutines();
         if (ObjectPoolManager.instance != null)
             ObjectPoolManager.instance.StopAllCoroutines();
-
+        aliveEnemies.Clear();
+        Alerting.RemoveAllListeners();
         GameObject currentLoadingScreen;
         if (playerRef != null)
             currentLoadingScreen = Instantiate(loadingScreen, FindObjectOfType<GameplayMenuBehavior>().transform);
@@ -137,7 +139,8 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         InputManager.ChangeControlsMappingToGameplay();
-        ObjectPoolManager.instance.ClearPools();
+        if(ObjectPoolManager.instance != null)
+            ObjectPoolManager.instance.ClearPools();
         AudioManager.instance.PlayMusicForced(menuMusic, true);
     }
 
@@ -219,19 +222,23 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("All enemies dead");
         OpenExit.Invoke();
+        OpenExit.RemoveAllListeners();
+        aliveEnemies.Clear();
         AudioManager.instance.PlayMusicForced(endBattleMusicClip, false);
         FinalizeScore();
     }
     public void AddScore(int score)
     {
-        scoreBeh.AddScore(score);
+        if(scoreBeh != null)
+            scoreBeh.AddScore(score);
         finalScore += score;
     }
     void FinalizeScore()
     {
         if (!playerFound)
         {
-            scoreBeh.ChangeScore((int)Mathf.Round( finalScore * 1.5f));
+            if(scoreBeh != null)
+                scoreBeh.ChangeScore((int)Mathf.Round( finalScore * 1.5f));
         }
     }
 }

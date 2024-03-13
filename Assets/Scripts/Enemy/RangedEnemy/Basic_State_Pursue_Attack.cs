@@ -22,6 +22,7 @@ public class Basic_State_Pursue_Attack : AI_Base_State
         npcMovement.canRotate = true;
         if(agent.isActiveAndEnabled)
             CheckPathTo(playerGO);
+        //TurnLaser(true);
         base.Enter();
     }
 
@@ -42,7 +43,7 @@ public class Basic_State_Pursue_Attack : AI_Base_State
         CheckPathTo(playerGO);
         TryRotate();
         TryAttack();
-
+        //ProccessLaser();
         if (agent.enabled == true)
         {
             agent.destination = playerGO.transform.position;
@@ -111,7 +112,7 @@ public class Basic_State_Pursue_Attack : AI_Base_State
                 {
                     npcStateBeh.Change_Anim_MoveX_Weight(0f, 0.5f);
                     npcMovement.canMove = false;
-                    if (AngleTo(playerGO) <= 5f)
+                    if (AngleTo(playerGO) <= 10f)
                     {
                         if (time <= 0)
                         {
@@ -132,8 +133,30 @@ public class Basic_State_Pursue_Attack : AI_Base_State
         npcStateBeh.Change_Anim_MoveX_Weight(1f, 0.5f);
         //Debug.Log("Changing move to 1");
     }
+    //void TurnLaser(bool turn)
+    //{
+    //    if (turn == false)
+    //    {
+    //        npcStateBeh.laserAim.GetComponent<LineRenderer>().enabled = false;
+    //    }
+    //    else
+    //    {
+    //        npcStateBeh.laserAim.GetComponent<LineRenderer>().enabled = true;
+    //    }
+    //}
+    //void ProccessLaser()
+    //{
+    //    //npcStateBeh.laserAim.GetComponent<LineRenderer>().SetPosition(0, npcStateBeh.rangeAtkPoint.position);
+    //    Vector3 laserDir = npcStateBeh.transform.forward - npcStateBeh.laserAim.transform.position;
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(npcStateBeh.laserAim.transform.position, laserDir, out hit, 100f))
+    //    {
+    //        npcStateBeh.laserAim.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+    //    }
+    //}
     public override void Exit()
     {
+        //TurnLaser(false);
         base.Exit();
     }
 }

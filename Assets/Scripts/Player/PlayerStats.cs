@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +13,9 @@ public class PlayerStats : MonoBehaviour, IKillable
     public static UnityEvent<Transform> turnPlayerToKiller = new UnityEvent<Transform>();
     [SerializeField]
     GameManager gameManager;
+
+    public bool IsDead { get => isDead; set => isDead = value; }
+
     private void Start()
     {
         if (gameManager == null)

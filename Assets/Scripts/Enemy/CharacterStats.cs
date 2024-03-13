@@ -33,6 +33,15 @@ public class CharacterStats : MonoBehaviour, IKillable
         gameManager.AddEnemyToList(this.gameObject);
     }
     public LayerMask layersToDetect;
+
+    public bool IsDead 
+    {
+        get 
+        { return isDead; }
+        set 
+        { isDead = value; } 
+    }
+
     protected virtual void OnEnable()
     {
         InitializeStats();
@@ -91,13 +100,17 @@ public class CharacterStats : MonoBehaviour, IKillable
     }
     void AlertOthers()
     {
+        if (GetComponent<AI_StateBehaviour>().currentState.playerDetected == true
+            || GameManager.instance.playerFound == true)
+            return;
         Collider[] colliders = Physics.OverlapSphere(transform.position, 10f, layersToDetect);
         if (colliders.Length == 0)
             return;
         foreach (Collider collider in colliders)
         {
-            if (collider.tag == "Player")
-                return;
+            if (collider.tag == "Player"
+                || collider.GetComponent<CharacterStats>().isDead == true)
+                continue;
             Vector3 hitDir = collider.GetComponent<Collider>().bounds.center - this.GetComponent<Collider>().bounds.center;
             RaycastHit hit;
             if (Physics.Raycast(this.GetComponent<Collider>().bounds.center, hitDir, out hit, 10f))

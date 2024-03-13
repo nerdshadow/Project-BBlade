@@ -184,6 +184,8 @@ public class AI_StateBehaviour : MonoBehaviour
     GameObject bulletTrailVFX;
     GameObject currentBulletTrail;
     [SerializeField]
+    public GameObject laserAim;
+    [SerializeField]
     float trailLifetime = 0.1f;
     public void DoRangedAttack()
     {
@@ -204,6 +206,7 @@ public class AI_StateBehaviour : MonoBehaviour
                                                         Random.Range(-0.1f, 0.1f));
         shootDir.Normalize();
         AudioManager.instance.PlayOneShotSoundFXClip(gunShot, rangeAtkPoint, 1f, 50f);
+        rangeAtkPoint.GetComponentInChildren<Light>().enabled = true;
         if (Physics.Raycast(rangeAtkPoint.position, shootDir, out RaycastHit hit, characterStats.currentRangeAtkRange * 2))
         {
             currentBulletTrail.GetComponent<BulletTrail>().StartMovingTo(hit.point);
@@ -221,6 +224,8 @@ public class AI_StateBehaviour : MonoBehaviour
         {
             currentBulletTrail.GetComponent<BulletTrail>().StartMovingTo(rangeAtkPoint.position + (shootDir * characterStats.currentRangeAtkRange * 2));
         }
+        yield return new WaitForSeconds(0.1f);
+        rangeAtkPoint.GetComponentInChildren<Light>().enabled = false;
     }
     void Vfx_TryPoolBloodsplash(Collider targetColl)
     {

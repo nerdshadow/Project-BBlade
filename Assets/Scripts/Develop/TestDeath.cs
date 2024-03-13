@@ -7,6 +7,9 @@ public class TestDeath : MonoBehaviour, IKillable
     bool isDead = false;
     [SerializeField]
     Collider testCollider;
+
+    public bool IsDead { get => isDead; set => isDead = value; }
+
     [ContextMenu("TestKill")]
     void Kill()
     {
