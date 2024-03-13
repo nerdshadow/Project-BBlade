@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     int finalScore = 0;
     [SerializeField]
     ScoreBehaviour scoreBeh;
+    [SerializeField]
+    List<LevelsSO> levelsSO;
     private void OnEnable()
     {
         SceneManager.sceneLoaded += InitManager;
@@ -84,7 +86,6 @@ public class GameManager : MonoBehaviour
         Slider currentSlider = currentLoadingScreen.GetComponentInChildren<Slider>();
         StartCoroutine(LoadLevelAsync(scene, currentSlider));
     }
-
     IEnumerator LoadLevelAsync(SceneField _scene, Slider _loadingSlider)
     {
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(_scene);
@@ -101,7 +102,6 @@ public class GameManager : MonoBehaviour
     }
     public void LoadLevel(string sceneName)
     {
-
         StopAllCoroutines();
         if (AudioManager.instance != null)
             AudioManager.instance.StopAllCoroutines();
@@ -142,8 +142,17 @@ public class GameManager : MonoBehaviour
         if(ObjectPoolManager.instance != null)
             ObjectPoolManager.instance.ClearPools();
         AudioManager.instance.PlayMusicForced(menuMusic, true);
+        Scene scene = SceneManager.GetActiveScene();
+        foreach (LevelsSO levelSO in levelsSO)
+        {
+            Debug.Log(levelSO.level.SceneName);
+            Debug.Log(scene.name);
+            if (levelSO.level.SceneName == scene.name)
+            {
+                levelSO.isUnlocked = true;
+            }
+        }
     }
-
     public void PauseGame()
     {
         //pause game

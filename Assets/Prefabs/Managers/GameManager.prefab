@@ -49,8 +49,16 @@ MonoBehaviour:
   gameIsPaused: 0
   playerRef: {fileID: 0}
   playerCameraRef: {fileID: 0}
+  playerFound: 0
   finalScore: 0
   scoreBeh: {fileID: 0}
+  levelsSO:
+  - {fileID: 11400000, guid: db9ce217d2b8af849a1c3b57e1abf094, type: 2}
+  - {fileID: 11400000, guid: 48becaf7e895a22478c904499b4219ac, type: 2}
+  - {fileID: 11400000, guid: 75d8990109fe2ef49a0fb282148c2e70, type: 2}
+  - {fileID: 11400000, guid: 34cffef4b38597145bc1c6d7704988b7, type: 2}
+  - {fileID: 11400000, guid: a51ee85279844d248be9e3118e5388bd, type: 2}
+  - {fileID: 11400000, guid: 922ee9fb070b44f4287385f85b9c635c, type: 2}
   menuMusic: {fileID: 8300000, guid: b8fd8ea7e7601144998686f4cd390ee8, type: 3}
   battleMusicClip: {fileID: 8300000, guid: d805186987ea62c4fa1dc4272d6e8c20, type: 3}
   endBattleMusicClip: {fileID: 8300000, guid: 51f676d48ab4582488f784cca7041138, type: 3}

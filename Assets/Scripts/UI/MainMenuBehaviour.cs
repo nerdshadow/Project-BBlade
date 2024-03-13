@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -84,6 +85,12 @@ public class MainMenuBehaviour : MonoBehaviour
         masterSlider.value = audioSettingsSO.masterVolume;
         musicSlider.value = audioSettingsSO.musicVolume;
         sfxSlider.value = audioSettingsSO.sfxVolume;
+    }
+    [SerializeField]
+    GameObject LoadLevelMenu;
+    public void OpenLoadingLevel()
+    {
+        LoadLevelMenu.SetActive(!settingsWindow.activeSelf);
     }
     #region "Graphics"
     [Header("Graphics")]

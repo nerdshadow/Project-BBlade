@@ -22,6 +22,7 @@ public class PlayerAnimRig : MonoBehaviour
     [SerializeField]
     float heightMod = -0.05f;
     public bool canRotate = true;
+    bool inAttack = false;
     #endregion Animations
 
     [SerializeField]
@@ -164,12 +165,20 @@ public class PlayerAnimRig : MonoBehaviour
     }
     [SerializeField]
     float normAnimTimeForAttack = 0.1f;
+    public void ChangeInAttack(bool inatk)
+    {
+        inAttack = inatk;
+    }
     public void Attack(bool isAttacking)
     {
         if (isAttacking == false)
         {
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("PrepareAtk") != true)
+            {
+                anim.CrossFade("MovementTree", 0.2f, 0);
+                anim.CrossFade("MovementTree", 0.2f, 1);
                 return;
+            }
             float nTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
             if (nTime >= normAnimTimeForAttack)
             {
